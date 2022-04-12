@@ -1,0 +1,2 @@
+DATABASE_HOST=database_erpenocis
+DISABLE_SPRING=true

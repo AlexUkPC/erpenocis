@@ -1,0 +1,39 @@
+version: "3" 
+services:
+  web_erpenocis:
+    image: alexrogna/erpenocis_web:prod
+    expose:
+      - 3000
+    env_file:
+      - .env/production/database_erpenocis
+      - .env/production/web_erpenocis
+    environment:
+      - VIRTUAL_HOST=erpenocis.alexrogna.com
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=erpenocis.alexrogna.com
+    networks:
+      - proxy
+    restart: always
+
+  database_erpenocis:
+    image: postgres
+    env_file:
+      - .env/production/database_erpenocis
+    volumes:
+      - db_data_erpenocis:/var/lib/postgresql/data
+    networks:
+      - proxy
+    restart: always
+    
+  db-migrator_erpenocis:
+    image: alexrogna/erpenocis_web:prod
+    command: ["./wait-for", "--timeout=300", "database_erpenocis:5432", "--", "bin/rails", "db:create" , "db:migrate"]
+    env_file:
+      - .env/production/database_erpenocis
+      - .env/production/web_erpenocis
+    networks:
+      - proxy
+volumes:
+  db_data_erpenocis:
+networks:
+  proxy:
