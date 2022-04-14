@@ -22,7 +22,6 @@ pipeline {
                     ).trim()
                     echo "Next version is ${version_g}"
                     sh "echo -n ${version_g} > version_f"
-                    sh "ls -la"
                 }
             }
         }
