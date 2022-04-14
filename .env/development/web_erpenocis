@@ -1,2 +1,5 @@
 DATABASE_HOST=database_erpenocis
 DISABLE_SPRING=true
+ADMIN_EMAIL=alexrogna@yahoo.com
+ADMIN_USERNAME=alexrogna
+ADMIN_PASSWORD=123456

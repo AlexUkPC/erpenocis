@@ -1,0 +1,26 @@
+<%= form_with(model: user) do |form| %>
+  
+  <div class="field">
+    <%= form.label "Username" %>
+    <%= form.text_field :username %>
+  </div>
+  <div class="field">
+    <%= form.label "Email" %>
+    <%= form.email_field :email %>
+  </div>
+  <div class="field">
+    <%= form.label "Parola" %>
+    <%= form.text_field :password %>
+  </div> 
+  <div class="field">
+    <%= form.label "Confirma Parola" %>
+    <%= form.text_field :password_confirmation %>
+  </div> 
+  <div class="field">
+    <%= form.label "Role" %>
+    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+  </div> 
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
