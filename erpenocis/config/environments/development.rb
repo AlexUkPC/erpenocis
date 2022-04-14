@@ -75,5 +75,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
   config.hosts << "erpenocis.local"
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
+  config.web_console.whitelisted_ips = '172.16.238.0/16'
 end
