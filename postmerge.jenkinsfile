@@ -61,7 +61,7 @@ pipeline {
             }
         }
         stage('Push git tag') {
-            agent { label 'docker' }
+            agent { label 'ssh' }
             steps {
                 script {
                     try {
