@@ -1,22 +1,72 @@
-<%= form_with(model: user) do |form| %>
-  
-  <div class="field">
-    <%= form.label "Username" %>
-    <%= form.text_field :username %>
+<%= form_with(model: user, class: "forms-sample") do |form| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "eroare") %> impiedica acest user sa fie creeat:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+    
+  <% end %>
+  <div class="form-group row">
+    <%= form.label "Username", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :username, class: "form-control",minlength: 4, placeholder: "Username...", required: true %>
+    </div>
+  </div>
+<p>d</p>
+  <div class="form-group row">
+    <%= form.label "Email", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.email_field :email, class: "form-control", placeholder: "Email...", required: true %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label "Email" %>
-    <%= form.email_field :email %>
-  </div>
-
-  <div class="field">
-    <%= form.label "Role" %>
-    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+  <div class="form-group row">
+    <%= form.label "Rol", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control' }) %>
+    </div> 
   </div> 
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <div class="form-group row">
+    <%= form.label "Status", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <div class="form-check mx-sm-2">
+        <%= form.label :active, class: "form-check-label" do %>
+          <%= form.check_box :active, class: 'form-check-input' %>
+          Active
+        <% end %>
+      </div>
+    </div> 
+  </div> 
+    <div class="form-group row profile_picture">
+      <div class="col-sm-3">
+        <%= form.label :profile_picture do %>
+          Poza
+        <% end %>
+      </div>
+      <div class="col-sm-9">
+        <div id="poza">
+          <%= form.label :profile_picture do %>
+            <%= image_tag user_profile_picture(user, 100), id: "image" %>
+            <br>
+             <%= form.label :remove_profile_picture do %>
+              <%= form.check_box :remove_profile_picture, onclick:"document.querySelector('#poza').style.display = 'none';"  %> 
+              Sterge
+            <% end %>
+          <% end %>
+          <%= form.file_field :profile_picture %>
+        </div>
+      </div>
+      
+    </div>
 
+  <div class="actions row">
+    <%= form.submit class: "btn btn-primary"%>
+  </div>
+  
 <% end %>

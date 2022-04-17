@@ -7,5 +7,3 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.username
-puts 'CREATED ADMIN USER: ' << user.email
-puts 'CREATED ADMIN USER: ' << user.password

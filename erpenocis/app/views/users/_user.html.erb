@@ -1,12 +1,54 @@
 <td>
-  <%= link_to user.email, user %>
+  <%= user.id %>
+</td>
+<td>
+  <%= image_tag user_profile_picture(user, 100) %>
+</td>
+<td>
+  <%= user.username %>
+</td>
+<td>
+  <%= user.email %>
 </td>
 <td>
   <%= form_for(user) do |f| %>
-    <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-    <%= f.submit 'Change Role', disabled: (user != current_user ? false : true) %>
+    <div class="row">
+      <div class="col-sm-6">
+        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control' }) %>
+      </div>
+      <div class="col-sm-6">
+        <%= f.submit 'Modifica Rol', disabled: (user != current_user ? false : true), class: "btn btn-outline-info" %>
+      </div>
+    </div>
   <% end %>
 </td>
 <td>
-  <%= link_to("Delete user", user_path(user), :data => { :confirm => "Are you sure?" }, :method => :delete) unless user == current_user %>
+  <% if user.current_sign_in_at %>
+    <%= user.current_sign_in_at.strftime("%d-%h-%Y") %>
+    <br>
+    <br>
+    <%= user.current_sign_in_at.strftime("%H:%M:%S") %>
+  <% else %>
+    Nu exista
+  <% end %>
+</td>
+<td>
+  <%if user.active? %>
+    <%= link_to users_path(status: "activ"), class: "badge badge-success" do %>
+      activ
+    <% end %>
+  <% else %>
+    <%= link_to users_path(status: "inactiv"), class: "badge badge-danger" do %>
+      inactiv
+    <% end %>
+  <% end %>
+</td>
+<td>
+  <%= link_to edit_user_path(user), class: "btn btn-success btn-icon-text" do %>
+    <i class="ti-pencil-alt btn-icon-prepend"></i>
+    Modifica
+  <% end %>
+</td>
+<td>
+  
 </td>

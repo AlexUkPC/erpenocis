@@ -17,5 +17,17 @@ module Erpenocis
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_model.i18n_customize_full_message
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: "glc27.hostico.ro",
+        domain: "alexrogna.com",
+        port: 465,
+        ssl: true,
+        authentication: :login,
+      user_name: ENV.fetch("EMAIL_USER_NAME"){ 'none'},
+      password: ENV.fetch("EMAIL_PSW"){ 'none'},
+      enable_starttls_auto: true
+    }
   end
 end
