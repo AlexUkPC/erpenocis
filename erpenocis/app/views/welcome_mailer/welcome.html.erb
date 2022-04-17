@@ -1,0 +1,6 @@
+<h1>Bine ai venit, <%= @user.username %></h1>
+
+<p>
+  Pentru a te loga in aplicatie apasa pe urmatorul link:
+  <%= link_to "ERP Enocis", edit_user_password_url(reset_password_token: @token) %>
+</p>

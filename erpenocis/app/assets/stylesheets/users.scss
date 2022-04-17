@@ -1,0 +1,12 @@
+.profile_picture{
+  img{
+    width: 100px;
+    height: 100px;
+  }
+  input[type="file"]{
+    display: none;
+  }
+  input[type=checkbox]{
+    display: none;
+  }
+}

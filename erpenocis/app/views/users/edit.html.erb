@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col-lg-12 grid-margin">
+    <%= link_to users_path, class: "btn btn-secondary btn-icon-text" do %>
+      <i class="ti-arrow-left btn-icon-prepend"></i>
+      Inapoi
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Editeaza utilizator</h4>
+        <%= render 'form', user: @user %>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Detalii user</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>Creat la</td>
+                <td><%= @user.created_at.strftime("%d-%h-%Y") %></td>
+                <td><%= @user.created_at.strftime("%H:%M:%S") %></td>
+              </tr>
+              <tr>
+                <td>Modificat la</td>
+                <td><%= @user.updated_at.strftime("%d-%h-%Y") %></td>
+                <td><%= @user.updated_at.strftime("%H:%M:%S") %></td>
+              </tr>
+              <tr>
+                <td>Autentificare curenta</td>
+                <% if @user.current_sign_in_at %>
+                  <td><%= @user.current_sign_in_at.strftime("%d-%h-%Y") %></td>
+                  <td><%= @user.current_sign_in_at.strftime("%H:%M:%S") %></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+              <tr>
+                <td>IP autentificare curenta</td>
+                <% if @user.current_sign_in_ip %>
+                  <td><%= @user.current_sign_in_ip %></td>
+                  <td></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+              <tr>
+                <td>Ultima autentificare</td>
+                <% if @user.last_sign_in_at %>
+                  <td><%= @user.last_sign_in_at.strftime("%d-%h-%Y") %></td>
+                  <td><%= @user.last_sign_in_at.strftime("%H:%M:%S") %></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+              <tr>
+                <td>IP ultima autentificare</td>
+                <% if @user.last_sign_in_ip %>
+                  <td><%= @user.last_sign_in_ip %></td>
+                  <td></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+              <tr>
+                <td>Nr autentificari reusite</td>
+                <td><%= @user.sign_in_count %></td>
+                <td></td>
+              </tr>
+              <tr style="<%= 'background-color: #FF1414' if @user.failed_attempts>=10 %>">
+                <td>Nr autentificari esuate</td>
+                <td><%= @user.failed_attempts %></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Blocat la</td>
+                <% if @user.locked_at %>
+                  <td><%= @user.locked_at.strftime("%d-%h-%Y") %></td>
+                  <td><%= @user.locked_at.strftime("%H:%M:%S") %></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+              <tr>
+                <td>Data resetare parola</td>
+                <% if @user.reset_password_sent_at && @user.reset_password_sent_at.strftime("%d-%h-%Y/%H:%M:%S")!=@user.created_at.strftime("%d-%h-%Y/%H:%M:%S") %>
+                  <td><%= @user.reset_password_sent_at.strftime("%d-%h-%Y") %></td>
+                  <td><%= @user.reset_password_sent_at.strftime("%H:%M:%S") %></td>
+                <% else %>
+                  <td>Nu exista date</td>
+                  <td></td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+          <% unless @user == current_user  %>
+            <%= link_to(@user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: "btn btn-danger btn-icon-text" ) do %>
+              <i class="ti-trash btn-icon-prepend"></i>
+              Sterge utilizatorul
+            <% end %>
+            Atentie!
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
