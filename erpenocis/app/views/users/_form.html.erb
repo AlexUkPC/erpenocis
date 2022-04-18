@@ -17,18 +17,17 @@
       <%= form.text_field :username, class: "form-control",minlength: 4, placeholder: "Username...", required: true %>
     </div>
   </div>
-<p>d</p>
   <div class="form-group row">
     <%= form.label "Email", class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.email_field :email, class: "form-control", placeholder: "Email...", required: true %>
+      <%= form.email_field :email, class: "form-control", disabled: (current_user.admin? ? false : true), title: (!current_user.admin? ? "Nu iti poti modifica adresa de email" : ""), placeholder: "Email...", required: true %>
     </div>
   </div>
 
   <div class="form-group row">
     <%= form.label "Rol", class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control' }) %>
+      <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") }) %>
     </div> 
   </div> 
 
@@ -37,8 +36,8 @@
     <div class="col-sm-9">
       <div class="form-check mx-sm-2">
         <%= form.label :active, class: "form-check-label" do %>
-          <%= form.check_box :active, class: 'form-check-input' %>
-          Active
+          <%= form.check_box :active, class: 'form-check-input', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica statusul propriu" : "") %>
+          Activ
         <% end %>
       </div>
     </div> 
@@ -66,7 +65,8 @@
     </div>
 
   <div class="actions row">
-    <%= form.submit class: "btn btn-primary"%>
+    <%= form.submit class: "btn btn-primary ml-3"%>
+    <%= link_to "Anuleaza", users_path, class: "btn btn-secondary ml-2" %>
   </div>
   
 <% end %>

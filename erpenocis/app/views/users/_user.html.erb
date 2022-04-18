@@ -13,11 +13,11 @@
 <td>
   <%= form_for(user) do |f| %>
     <div class="row">
-      <div class="col-sm-6">
-        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control' }) %>
+      <div class="col">
+        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control form-control-sm', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") }) %>
       </div>
-      <div class="col-sm-6">
-        <%= f.submit 'Modifica Rol', disabled: (user != current_user ? false : true), class: "btn btn-outline-info" %>
+      <div class="col">
+        <%= f.submit 'Modifica Rol', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") , class: "btn btn-outline-info" %>
       </div>
     </div>
   <% end %>
