@@ -6,15 +6,13 @@ class User < ApplicationRecord
     :recoverable,
     :rememberable,
     :lockable,
-    # :validatable,
+    :validatable,
     :trackable,
     authentication_keys: [:login],
 		reset_password_keys: [:login]
-  validates :email, presence: { message: "nu poate fi gol" }
-  validates :email, uniqueness: { message: "exista deja" }
-  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP, message: "trebuie sa fie o adresa valida de email"}
+  
   validates :username, presence: { message: "nu poate fi gol" }
-  validates :username, uniqueness: { message: "exista deja" }
+  validates :username, uniqueness: { message: "trebuie sa fie unic. Cel introdus exista deja in baza de date." }
   validates :username, length: {minimum: 4, message: "trebuie sa aiba minim 4 caractere" }
   has_one_attached :profile_picture
   attr_accessor :remove_profile_picture
@@ -31,7 +29,7 @@ class User < ApplicationRecord
     @login || username || email
   end
   def self.find_authenticatable(login)
-      where("username = :value OR email = :value", value: login).first
+      where("(username = :value OR email = :value)AND(active = true)", value: login).first
   end
   def self.find_for_database_authentication(conditions)
       conditions = conditions.dup
@@ -53,8 +51,8 @@ class User < ApplicationRecord
       recoverable = find_authenticatable(login)
 
       unless recoverable
-      recoverable = new(email: email)
-      recoverable.errors.add(:email, email.present? ? :not_found : :blank)
+      recoverable = new(email: login)
+      recoverable.errors.add(:email, login.present? ? :not_found : :blank)
       end
       recoverable
   end

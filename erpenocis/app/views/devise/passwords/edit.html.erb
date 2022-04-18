@@ -1,25 +1,54 @@
-<h2>Change your password</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+<div class="login">
+  <div class="brand-logo"><%= image_tag 'enocis_negru_150.png', alt: 'Logo' %></div>
+  <p class="subtitle">Enterprise Resource Planning</p>
+  <br>
+  <h1>Modifica parola</h1>
+  
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "pt-3"}) do |f| %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert2"><%= alert %></p>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    
+    <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
+    <div class="form-group">
+      <%= f.label "Parola noua" %><br />
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent ">
+            <i class="ti-lock text-primary"></i>
+          </span>
+        </div>
+        <%= f.password_field :password, required: true, autofocus: true, autocomplete: "new-password", class: "form-control form-control-lg border-left-0" , placeholder: "Parola noua - minim 6 caractere"%>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="form-group">
+      <%= f.label "Confirma parola noua" %><br />
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent ">
+            <i class="ti-lock text-primary"></i>
+          </span>
+        </div>
+        <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "form-control form-control-lg border-left-0", placeholder: "Confirma parola noua - minim 6 caractere" %>
+      </div>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+    <div class="my-2 d-flex justify-content-between align-items-center">
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check">
+          
+        </div>
+      <% end %>
+      <div class="links ml-3">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
 
-<%= render "devise/shared/links" %>
+    <div class="my-3">
+      <%= f.submit "Modifica parola", class: "btn btn-primary btn-lg font-weight-medium auth-form-btn" %>
+    </div>
+  <% end %>
+</div>
