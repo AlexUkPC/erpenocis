@@ -1,12 +1,12 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item">
+          <li class="nav-item <%= 'active' if controller_path=='dashboard' %>">
             <%= link_to root_path, class: "nav-link" do %>
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             <% end %>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">UI Elements</span>
@@ -67,21 +67,23 @@
                 <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
               </ul>
             </div>
-          </li>
-          <li class="nav-item">
-           <%= link_to users_path, class: "nav-link" do%>
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Utilizatori</span>
-              <%# <i class="menu-arrow"></i> %>
-            <% end %>
-            <%# <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-              </ul>
-            </div> %>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <% if current_user.admin? %>
+            <li class="nav-item <%= 'active' if controller_path=='users' %>">
+            <%= link_to users_path, class: "nav-link" do%>
+                <i class="icon-head menu-icon"></i>
+                <span class="menu-title">Utilizatori</span>
+                <%# <i class="menu-arrow"></i> %>
+              <% end %>
+              <%# <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                </ul>
+              </div> %>
+            </li>
+          <% end %>
+          <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
               <i class="icon-ban menu-icon"></i>
               <span class="menu-title">Error pages</span>
@@ -100,5 +102,6 @@
               <span class="menu-title">Documentation</span>
             </a>
           </li>
+          -->
         </ul>
       </nav>

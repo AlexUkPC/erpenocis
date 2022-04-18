@@ -20,6 +20,7 @@
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item">Welcome, <%= current_user.username.titleize() %></li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
@@ -73,20 +74,13 @@
             <%= image_tag user_profile_picture(current_user, 100) , alt: "profile" %>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
+              <%= link_to edit_user_path(current_user), class: "dropdown-item" do %>
                 <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
-              <% if current_user %>
-                <%= link_to destroy_user_session_path, class: "dropdown-item", method: :delete do %>
-                  <i class="ti-power-off text-primary"></i>
-                  Log out
-                <% end %>
-              <% else %>
-                <%= link_to new_user_session_path, class: "dropdown-item" do %>
-                  <i class="ti-power-off text-primary"></i>
-                  Log in
-                <% end %>
+                Setari
+              <% end %>
+              <%= link_to destroy_user_session_path, class: "dropdown-item", method: :delete do %>
+                <i class="ti-power-off text-primary"></i>
+                Log out
               <% end %>
             </div>
           </li>
