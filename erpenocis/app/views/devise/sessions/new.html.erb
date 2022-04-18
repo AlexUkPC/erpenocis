@@ -1,26 +1,55 @@
-<h2>Log in</h2>
+<div class="login">
+  <div class="brand-logo"><%= image_tag 'enocis_negru_150.png', alt: 'Logo' %></div>
+  <p class="subtitle">Enterprise Resource Planning</p>
+  <br>
+  <h1>Log In</h1>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label "Username / Email" %><br />
-    <%= f.text_field :login, autofocus: true, autocomplete: "username" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "pt-3"}) do |f| %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert2"><%= alert %></p>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    
+    <div class="form-group">
+      <%= f.label "Username / Email", style: "text-transform: capitalize" %><br />
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent ">
+            <i class="ti-user text-primary"></i>
+          </span>
+        </div>
+        <%= f.text_field :login, required: true, autofocus: true, autocomplete: "username", class: "form-control form-control-lg border-left-0", placeholder: "Username / Email" %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+    <div class="form-group">
+      <%= f.label :password %><br />
+      <div class="input-group">
+        <div class="input-group-prepend bg-transparent">
+          <span class="input-group-text bg-transparent ">
+            <i class="ti-lock text-primary"></i>
+          </span>
+        </div>
+        <%= f.password_field :password, required: true, autocomplete: "current-password", class: "form-control form-control-lg border-left-0", placeholder: "Parola" %>
+      </div>
+    </div>
+    
+    <div class="my-2 d-flex justify-content-between align-items-center">
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check">
+          <%= f.label :remember_me, class: "form-check-label text-muted" do %>
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            Tine-ma minte
+            <i class="input-helper"></i>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="links ml-3">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="my-3">
+      <%= f.submit "LOG IN", class: "btn btn-primary btn-lg font-weight-medium auth-form-btn" %>
     </div>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

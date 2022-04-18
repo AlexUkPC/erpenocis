@@ -39,10 +39,14 @@ class UsersController < ApplicationController
   end
 
   def create
+    psw = SecureRandom.alphanumeric(10)
     token, hashed_token = Devise.token_generator.generate(User, :reset_password_token)
     @user = User.new(secure_params)
     @user.reset_password_token = hashed_token
     @user.reset_password_sent_at = Time.now.utc
+    @user.password = psw
+    @user.password_confirmation = psw
+
     respond_to do |format|
       if @user.save
         WelcomeMailer.welcome(@user, token).deliver
