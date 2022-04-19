@@ -13,6 +13,7 @@
  *= require vertical-layout-light/style
  *= require devise
  *= require users
+ *= require dashboard
  *= require_self
  */
 

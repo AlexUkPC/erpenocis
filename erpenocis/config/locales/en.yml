@@ -38,6 +38,7 @@ en:
         email: "Email-ul"
         username: "Username-ul"
         password: "Parola"
+        current_password: "Parola curenta"
   helpers:
     submit:
       create: "Adauga"

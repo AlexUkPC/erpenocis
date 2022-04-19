@@ -1,7 +1,7 @@
 <%= form_with(model: user, class: "forms-sample") do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "eroare") %> impiedica acest user sa fie creeat:</h2>
+      <h2><%= pluralize(user.errors.count, "eroare") %> impiedica aceasta operatiune:</h2>
 
       <ul>
         <% user.errors.each do |error| %>
@@ -12,29 +12,40 @@
     
   <% end %>
   <div class="form-group row">
-    <%= form.label "Username", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= form.label :username do %>
+        Username
+      <% end %>
+    </div>
     <div class="col-sm-9">
       <%= form.text_field :username, class: "form-control",minlength: 4, placeholder: "Username...", required: true %>
     </div>
   </div>
      
-
   <div class="form-group row">
-    <%= form.label "Email", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= form.label :email do %>
+        Email
+      <% end %>
+    </div>
     <div class="col-sm-9">
       <%= form.email_field :email, class: "form-control", disabled: (current_user.admin? ? false : true), title: (!current_user.admin? ? "Nu iti poti modifica adresa de email" : ""), placeholder: "Email...", required: true %>
     </div>
   </div>
 
   <div class="form-group row">
-    <%= form.label "Rol", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= form.label "Rol" %>
+    </div>
     <div class="col-sm-9">
       <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") }) %>
     </div> 
   </div> 
 
   <div class="form-group row">
-    <%= form.label "Status", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= form.label "Status" %>
+    </div>
     <div class="col-sm-9">
       <div class="form-check mx-sm-2">
         <%= form.label :active, class: "form-check-label" do %>
