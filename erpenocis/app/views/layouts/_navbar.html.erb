@@ -1,6 +1,6 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <%= link_to root_path, class: "navbar-brand brand-logo mr-5" do %><img src="../../images/logo.svg" class="mr-2" alt="logo"/> <% end %>
+        <%= link_to root_path, class: "navbar-brand brand-logo mr-5" do %><%= image_tag 'enocis_negru_150.png', alt: 'Logo', class: "ml-2" %><% end %>
          <%= link_to root_path, class: "navbar-brand brand-logo-mini" do %><img src="../../images/logo-mini.svg" alt="logo"/><% end %>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -74,7 +74,7 @@
             <%= image_tag user_profile_picture(current_user, 100) , alt: "profile" %>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <%= link_to edit_user_path(current_user), class: "dropdown-item" do %>
+              <%= link_to settings_path, class: "dropdown-item" do %>
                 <i class="ti-settings text-primary"></i>
                 Setari
               <% end %>

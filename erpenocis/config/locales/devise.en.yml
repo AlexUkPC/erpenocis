@@ -63,6 +63,7 @@ en:
       not_saved:
         one: "1 eroare impiedica aceasta operatiune:"
         other: "%{count} erori impiedica aceasta operatiune:"
-      invalid: "nu este o adresa de email valida."
+      invalid: "nu este valid(a)."
       taken: "trebuie sa fie unic. Cel introdus exista deja in baza de date."
+      blank: "nu poate fi goala."
 
