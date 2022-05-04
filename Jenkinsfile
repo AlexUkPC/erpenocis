@@ -55,7 +55,7 @@ pipeline {
         }
         stage('Unit test') {
             steps {
-                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_erpenocis bin/rails test:models'
+                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_erpenocis bundle exec rspec spec/models'
             }   
         } 
     }
