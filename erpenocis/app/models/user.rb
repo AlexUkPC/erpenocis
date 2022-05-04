@@ -14,6 +14,7 @@ class User < ApplicationRecord
   validates :username, presence: { message: "nu poate fi gol" }
   validates :username, uniqueness: { message: "trebuie sa fie unic. Cel introdus exista deja in baza de date." }
   validates :username, length: {minimum: 4, message: "trebuie sa aiba minim 4 caractere" }
+  validates :email, uniqueness: true
   has_one_attached :profile_picture
   attr_accessor :remove_profile_picture
   after_save { profile_picture.purge if (remove_profile_picture == '1' ) }
