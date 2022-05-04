@@ -21,7 +21,7 @@ RSpec.describe User, type: :model do
 		it "is invalid if the email is taken" do
       create(:user, email: "adam@example.org" )
       user = User.new
-      user.email = "adam1@example.org"
+      user.email = "adam@example.org"
       user.username = "adam1"
       user.password = "parola"
       expect(user).not_to be_valid
