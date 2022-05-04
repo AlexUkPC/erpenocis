@@ -30,7 +30,7 @@ RSpec.describe User, type: :model do
       create(:user, username: "adam" )
       user = User.new
       user.email = "adam@example.org"
-      user.username = "adam1"
+      user.username = "adam"
       user.password = "parola"
       expect(user).not_to be_valid
     end
