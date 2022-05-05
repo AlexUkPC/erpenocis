@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_05_175202) do
+ActiveRecord::Schema.define(version: 2022_05_05_175737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,16 @@ ActiveRecord::Schema.define(version: 2022_05_05_175202) do
     t.index ["supplier_id"], name: "index_orders_on_supplier_id"
   end
 
+  create_table "project_costs", force: :cascade do |t|
+    t.decimal "amount", precision: 15, scale: 2
+    t.integer "month"
+    t.integer "year"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_project_costs_on_project_id"
+  end
+
   create_table "project_situations", force: :cascade do |t|
     t.date "advance_invoice_date"
     t.string "advance_invoice_number"
@@ -153,5 +163,6 @@ ActiveRecord::Schema.define(version: 2022_05_05_175202) do
   add_foreign_key "invoices", "projects"
   add_foreign_key "orders", "projects"
   add_foreign_key "orders", "suppliers"
+  add_foreign_key "project_costs", "projects"
   add_foreign_key "project_situations", "projects"
 end

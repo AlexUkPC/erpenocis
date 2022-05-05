@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Project Costs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Month</th>
+      <th>Year</th>
+      <th>Project</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @project_costs.each do |project_cost| %>
+      <tr>
+        <td><%= project_cost.amount %></td>
+        <td><%= project_cost.month %></td>
+        <td><%= project_cost.year %></td>
+        <td><%= project_cost.project_id %></td>
+        <td><%= link_to 'Show', project_cost %></td>
+        <td><%= link_to 'Edit', edit_project_cost_path(project_cost) %></td>
+        <td><%= link_to 'Destroy', project_cost, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Project Cost', new_project_cost_path %>

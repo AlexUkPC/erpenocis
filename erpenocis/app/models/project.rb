@@ -16,4 +16,5 @@ class Project < ApplicationRecord
   has_many :orders
   has_many :invoices
   has_many :project_situations
+  has_many :project_costs
 end
