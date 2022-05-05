@@ -1,0 +1,87 @@
+<%= form_with(model: order) do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+        <% order.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.number_field :status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :category %>
+    <%= form.text_field :category %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name_type_color %>
+    <%= form.text_field :name_type_color %>
+  </div>
+
+  <div class="field">
+    <%= form.label :needed_quantity %>
+    <%= form.number_field :needed_quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unit %>
+    <%= form.text_field :unit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cote %>
+    <%= form.text_field :cote %>
+  </div>
+
+  <div class="field">
+    <%= form.label :brother_id %>
+    <%= form.text_field :brother_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ordered_quantity %>
+    <%= form.number_field :ordered_quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier_id %>
+    <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier_contact %>
+    <%= form.text_field :supplier_contact %>
+  </div>
+
+  <div class="field">
+    <%= form.label :order_date %>
+    <%= form.date_select :order_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :delivery_date %>
+    <%= form.date_select :delivery_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :obs %>
+    <%= form.text_area :obs %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
