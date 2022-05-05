@@ -1,6 +1,6 @@
 Capybara.register_driver :headless_selenium_chrome_in_container do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--headless')
+  # options.add_argument('--headless')
   options.add_argument('--allow-insecure-localhost')
   options.add_argument('--ignore-certificate-errors')
 	Capybara::Selenium::Driver.new app,

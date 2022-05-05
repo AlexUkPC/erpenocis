@@ -3,7 +3,7 @@ FactoryBot.define do
     username {SecureRandom.hex(4)}
     email {"#{SecureRandom.hex(4)}@example.org"}
     password {SecureRandom.hex(6)}
-    role {SecureRandom.random_number(4)}
+    role {SecureRandom.random_number(3)}
     active {true}
   end
 end
