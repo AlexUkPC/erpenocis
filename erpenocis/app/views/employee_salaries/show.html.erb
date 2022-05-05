@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Net salary:</strong>
+  <%= @employee_salary.net_salary %>
+</p>
+
+<p>
+  <strong>Salary tax:</strong>
+  <%= @employee_salary.salary_tax %>
+</p>
+
+<p>
+  <strong>Salary tax due date:</strong>
+  <%= @employee_salary.salary_tax_due_date %>
+</p>
+
+<p>
+  <strong>Meal vouchers:</strong>
+  <%= @employee_salary.meal_vouchers %>
+</p>
+
+<p>
+  <strong>Gift vouchers:</strong>
+  <%= @employee_salary.gift_vouchers %>
+</p>
+
+<p>
+  <strong>Overtime:</strong>
+  <%= @employee_salary.overtime %>
+</p>
+
+<p>
+  <strong>Extra salary:</strong>
+  <%= @employee_salary.extra_salary %>
+</p>
+
+<p>
+  <strong>Month:</strong>
+  <%= @employee_salary.month %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @employee_salary.year %>
+</p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @employee_salary.employee_id %>
+</p>
+
+<%= link_to 'Edit', edit_employee_salary_path(@employee_salary) %> |
+<%= link_to 'Back', employee_salaries_path %>
