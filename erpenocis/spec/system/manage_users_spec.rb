@@ -47,6 +47,7 @@ feature "As admin manage users" do
       end
     end
     click_on "Sterge utilizatorul"
+    sleep 1
     accept_alert 
     expect(page.text).to match(/User-ul a fost sters./)
   end
