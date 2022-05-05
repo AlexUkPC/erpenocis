@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_05_174451) do
+ActiveRecord::Schema.define(version: 2022_05_05_175202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,25 @@ ActiveRecord::Schema.define(version: 2022_05_05_174451) do
     t.index ["supplier_id"], name: "index_orders_on_supplier_id"
   end
 
+  create_table "project_situations", force: :cascade do |t|
+    t.date "advance_invoice_date"
+    t.string "advance_invoice_number"
+    t.date "advance_payment_date"
+    t.decimal "advance_payment", precision: 15, scale: 2
+    t.integer "advance_month"
+    t.integer "advance_year"
+    t.date "closure_invoice_date"
+    t.string "closure_invoice_number"
+    t.date "closure_payment_date"
+    t.decimal "closure_payment", precision: 15, scale: 2
+    t.integer "closure_month"
+    t.integer "closure_year"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_project_situations_on_project_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.date "start_date"
@@ -134,4 +153,5 @@ ActiveRecord::Schema.define(version: 2022_05_05_174451) do
   add_foreign_key "invoices", "projects"
   add_foreign_key "orders", "projects"
   add_foreign_key "orders", "suppliers"
+  add_foreign_key "project_situations", "projects"
 end
