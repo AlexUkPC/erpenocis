@@ -1,0 +1,37 @@
+<%= form_with(model: project_cost) do |form| %>
+  <% if project_cost.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project_cost.errors.count, "error") %> prohibited this project_cost from being saved:</h2>
+
+      <ul>
+        <% project_cost.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount %>
+    <%= form.text_field :amount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :month %>
+    <%= form.number_field :month %>
+  </div>
+
+  <div class="field">
+    <%= form.label :year %>
+    <%= form.number_field :year %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
