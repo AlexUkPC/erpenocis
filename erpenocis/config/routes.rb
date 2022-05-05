@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :project_situations
   resources :invoices
   resources :orders
   resources :suppliers

@@ -1,0 +1,82 @@
+<%= form_with(model: project_situation) do |form| %>
+  <% if project_situation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project_situation.errors.count, "error") %> prohibited this project_situation from being saved:</h2>
+
+      <ul>
+        <% project_situation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_invoice_date %>
+    <%= form.date_select :advance_invoice_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_invoice_number %>
+    <%= form.text_field :advance_invoice_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_payment_date %>
+    <%= form.date_select :advance_payment_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_payment %>
+    <%= form.text_field :advance_payment %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_month %>
+    <%= form.number_field :advance_month %>
+  </div>
+
+  <div class="field">
+    <%= form.label :advance_year %>
+    <%= form.number_field :advance_year %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_invoice_date %>
+    <%= form.date_select :closure_invoice_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_invoice_number %>
+    <%= form.text_field :closure_invoice_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_payment_date %>
+    <%= form.date_select :closure_payment_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_payment %>
+    <%= form.text_field :closure_payment %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_month %>
+    <%= form.number_field :closure_month %>
+  </div>
+
+  <div class="field">
+    <%= form.label :closure_year %>
+    <%= form.number_field :closure_year %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

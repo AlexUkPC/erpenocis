@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Project Situations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advance invoice date</th>
+      <th>Advance invoice number</th>
+      <th>Advance payment date</th>
+      <th>Advance payment</th>
+      <th>Advance month</th>
+      <th>Advance year</th>
+      <th>Closure invoice date</th>
+      <th>Closure invoice number</th>
+      <th>Closure payment date</th>
+      <th>Closure payment</th>
+      <th>Closure month</th>
+      <th>Closure year</th>
+      <th>Project</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @project_situations.each do |project_situation| %>
+      <tr>
+        <td><%= project_situation.advance_invoice_date %></td>
+        <td><%= project_situation.advance_invoice_number %></td>
+        <td><%= project_situation.advance_payment_date %></td>
+        <td><%= project_situation.advance_payment %></td>
+        <td><%= project_situation.advance_month %></td>
+        <td><%= project_situation.advance_year %></td>
+        <td><%= project_situation.closure_invoice_date %></td>
+        <td><%= project_situation.closure_invoice_number %></td>
+        <td><%= project_situation.closure_payment_date %></td>
+        <td><%= project_situation.closure_payment %></td>
+        <td><%= project_situation.closure_month %></td>
+        <td><%= project_situation.closure_year %></td>
+        <td><%= project_situation.project_id %></td>
+        <td><%= link_to 'Show', project_situation %></td>
+        <td><%= link_to 'Edit', edit_project_situation_path(project_situation) %></td>
+        <td><%= link_to 'Destroy', project_situation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Project Situation', new_project_situation_path %>
