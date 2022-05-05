@@ -47,8 +47,7 @@ feature "As admin manage users" do
       end
     end
     click_on "Sterge utilizatorul"
-    sleep 1
-    page.driver.browser.switch_to.alert.accept
+    # page.driver.browser.switch_to.alert.accept
     expect(page.text).to match(/User-ul a fost sters./)
   end
 end
