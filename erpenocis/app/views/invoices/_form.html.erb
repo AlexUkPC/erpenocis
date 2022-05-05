@@ -1,0 +1,67 @@
+<%= form_with(model: invoice) do |form| %>
+  <% if invoice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+
+      <ul>
+        <% invoice.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_id %>
+    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :category %>
+    <%= form.text_field :category %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier %>
+    <%= form.text_field :supplier %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invoice_number %>
+    <%= form.text_field :invoice_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invoice_date %>
+    <%= form.date_select :invoice_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invoice_value_without_vat %>
+    <%= form.text_field :invoice_value_without_vat %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invoice_value_for_project_without_vat %>
+    <%= form.text_field :invoice_value_for_project_without_vat %>
+  </div>
+
+  <div class="field">
+    <%= form.label :code %>
+    <%= form.text_field :code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :obs %>
+    <%= form.text_area :obs %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
