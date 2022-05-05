@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Employee Salaries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Net salary</th>
+      <th>Salary tax</th>
+      <th>Salary tax due date</th>
+      <th>Meal vouchers</th>
+      <th>Gift vouchers</th>
+      <th>Overtime</th>
+      <th>Extra salary</th>
+      <th>Month</th>
+      <th>Year</th>
+      <th>Employee</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employee_salaries.each do |employee_salary| %>
+      <tr>
+        <td><%= employee_salary.net_salary %></td>
+        <td><%= employee_salary.salary_tax %></td>
+        <td><%= employee_salary.salary_tax_due_date %></td>
+        <td><%= employee_salary.meal_vouchers %></td>
+        <td><%= employee_salary.gift_vouchers %></td>
+        <td><%= employee_salary.overtime %></td>
+        <td><%= employee_salary.extra_salary %></td>
+        <td><%= employee_salary.month %></td>
+        <td><%= employee_salary.year %></td>
+        <td><%= employee_salary.employee_id %></td>
+        <td><%= link_to 'Show', employee_salary %></td>
+        <td><%= link_to 'Edit', edit_employee_salary_path(employee_salary) %></td>
+        <td><%= link_to 'Destroy', employee_salary, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Employee Salary', new_employee_salary_path %>
