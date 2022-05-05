@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Start server') {
             steps {
-                sh '/usr/local/bin/docker-compose up -d --remove-orphans'
+                sh '/usr/local/bin/docker-compose up -d --remove-orphans --force-recreate'
             }
         }
         stage('Create database') {
