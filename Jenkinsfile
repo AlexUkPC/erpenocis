@@ -23,11 +23,12 @@ pipeline {
         }
         stage('Start server') {
             steps {
-                sh '/usr/local/bin/docker-compose up -d --remove-orphans'
+                sh '/usr/local/bin/docker-compose up -d --remove-orphans --force-recreate'
             }
         }
         stage('Create database') {
             steps {
+                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_erpenocis bin/rails db:drop'
                 sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_erpenocis bin/rails db:create'
             }
         }
