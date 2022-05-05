@@ -8,6 +8,7 @@ services:
         GROUP_ID: "${GROUP_ID:-1000}"
     ports:
       - "3028:3000"
+      - "5028:4000"
     volumes: 
       - ./erpenocis:/opt/app
       - gem_cache_erpenocis:/gems
@@ -43,6 +44,14 @@ services:
       - .env/development/database_erpenocis
     volumes: 
       - db_data_erpenocis:/var/lib/postgresql/data
+    networks:
+      - network_erpenocis
+  selenium_chrome:
+    image: selenium/standalone-chrome-debug
+    logging:
+      driver: none
+    ports:
+      - "5900:5900"
     networks:
       - network_erpenocis
 volumes: 

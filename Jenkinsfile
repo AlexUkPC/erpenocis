@@ -58,5 +58,10 @@ pipeline {
                 sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_erpenocis bundle exec rspec spec/models'
             }   
         } 
+        stage('End-to-end test') {
+            steps {
+                sh '/usr/local/bin/docker-compose exec -T web_erpenocis bundle exec rspec spec/system'
+            }   
+        } 
     }
 }
