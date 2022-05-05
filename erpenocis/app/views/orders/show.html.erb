@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @order.status %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @order.category %>
+</p>
+
+<p>
+  <strong>Name type color:</strong>
+  <%= @order.name_type_color %>
+</p>
+
+<p>
+  <strong>Needed quantity:</strong>
+  <%= @order.needed_quantity %>
+</p>
+
+<p>
+  <strong>Unit:</strong>
+  <%= @order.unit %>
+</p>
+
+<p>
+  <strong>Cote:</strong>
+  <%= @order.cote %>
+</p>
+
+<p>
+  <strong>Brother:</strong>
+  <%= @order.brother_id %>
+</p>
+
+<p>
+  <strong>Ordered quantity:</strong>
+  <%= @order.ordered_quantity %>
+</p>
+
+<p>
+  <strong>Supplier:</strong>
+  <%= @order.supplier_id %>
+</p>
+
+<p>
+  <strong>Supplier contact:</strong>
+  <%= @order.supplier_contact %>
+</p>
+
+<p>
+  <strong>Order date:</strong>
+  <%= @order.order_date %>
+</p>
+
+<p>
+  <strong>Delivery date:</strong>
+  <%= @order.delivery_date %>
+</p>
+
+<p>
+  <strong>Obs:</strong>
+  <%= @order.obs %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @order.project_id %>
+</p>
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>
