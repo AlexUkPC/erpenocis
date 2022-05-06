@@ -5,7 +5,7 @@
 #  id         :bigint           not null, primary key
 #  date       :date
 #  due_date   :date
-#  value      :decimal(, )
+#  value      :decimal(15, 2)
 #  vat_taxes  :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
