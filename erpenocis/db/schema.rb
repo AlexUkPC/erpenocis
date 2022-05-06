@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_06_074609) do
+ActiveRecord::Schema.define(version: 2022_05_06_080216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2022_05_06_074609) do
   end
 
   create_table "expense_values", force: :cascade do |t|
-    t.decimal "value"
+    t.decimal "value", precision: 15, scale: 2
     t.date "date"
     t.date "due_date"
     t.boolean "vat_taxes"
@@ -162,6 +162,18 @@ ActiveRecord::Schema.define(version: 2022_05_06_074609) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "supplier_invoices", force: :cascade do |t|
+    t.string "number"
+    t.decimal "value", precision: 15, scale: 2
+    t.decimal "paid_amount", precision: 15, scale: 2
+    t.date "date"
+    t.date "due_date"
+    t.bigint "supplier_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["supplier_id"], name: "index_supplier_invoices_on_supplier_id"
+  end
+
   create_table "suppliers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -201,4 +213,5 @@ ActiveRecord::Schema.define(version: 2022_05_06_074609) do
   add_foreign_key "orders", "suppliers"
   add_foreign_key "project_costs", "projects"
   add_foreign_key "project_situations", "projects"
+  add_foreign_key "supplier_invoices", "suppliers"
 end
