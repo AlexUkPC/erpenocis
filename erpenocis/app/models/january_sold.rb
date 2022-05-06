@@ -9,4 +9,5 @@
 #  updated_at   :datetime         not null
 #
 class JanuarySold < ApplicationRecord
+  validates :year, uniqueness: { message: "Ai setat deja soldul pentru ianuarie pe acest an" }
 end

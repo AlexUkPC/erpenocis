@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= form.label :advance_payment %>
-    <%= form.text_field :advance_payment %>
+    <%= form.number_field :advance_payment, step: 0.01 %>
   </div>
 
   <div class="field">
@@ -63,7 +63,7 @@
 
   <div class="field">
     <%= form.label :closure_payment %>
-    <%= form.text_field :closure_payment %>
+    <%= form.number_field :closure_payment, step: 0.01 %>
   </div>
 
   <div class="field">
