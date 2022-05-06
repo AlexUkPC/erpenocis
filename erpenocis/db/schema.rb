@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_06_081337) do
+ActiveRecord::Schema.define(version: 2022_05_06_082300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,17 @@ ActiveRecord::Schema.define(version: 2022_05_06_081337) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "records", force: :cascade do |t|
+    t.string "record_type"
+    t.string "location"
+    t.string "initial_data"
+    t.string "modified_data"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_records_on_user_id"
+  end
+
   create_table "supplier_invoices", force: :cascade do |t|
     t.string "number"
     t.decimal "value", precision: 15, scale: 2
@@ -229,5 +240,6 @@ ActiveRecord::Schema.define(version: 2022_05_06_081337) do
   add_foreign_key "orders", "suppliers"
   add_foreign_key "project_costs", "projects"
   add_foreign_key "project_situations", "projects"
+  add_foreign_key "records", "users"
   add_foreign_key "supplier_invoices", "suppliers"
 end
