@@ -43,12 +43,12 @@
 
   <div class="field">
     <%= form.label :invoice_value_without_vat %>
-    <%= form.text_field :invoice_value_without_vat %>
+    <%= form.number_field :invoice_value_without_vat, step: 0.01 %>
   </div>
 
   <div class="field">
     <%= form.label :invoice_value_for_project_without_vat %>
-    <%= form.text_field :invoice_value_for_project_without_vat %>
+    <%= form.number_field :invoice_value_for_project_without_vat, step: 0.01 %>
   </div>
 
   <div class="field">

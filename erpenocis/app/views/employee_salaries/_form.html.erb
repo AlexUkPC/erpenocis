@@ -10,7 +10,7 @@
       </ul>
     </div>
   <% end %>
-  
+
   <div class="field">
     <%= form.label :employee_id %>
     <%= form.select :employee_id, Employee.all.map {|c| [c.name, c.id]} %>
@@ -18,12 +18,12 @@
 
   <div class="field">
     <%= form.label :net_salary %>
-    <%= form.text_field :net_salary %>
+    <%= form.number_field :net_salary, step: 0.01 %>
   </div>
 
   <div class="field">
     <%= form.label :salary_tax %>
-    <%= form.text_field :salary_tax %>
+    <%= form.number_field :salary_tax, step: 0.01 %>
   </div>
 
   <div class="field">
@@ -33,22 +33,22 @@
 
   <div class="field">
     <%= form.label :meal_vouchers %>
-    <%= form.text_field :meal_vouchers %>
+    <%= form.number_field :meal_vouchers, step: 0.01 %>
   </div>
 
   <div class="field">
     <%= form.label :gift_vouchers %>
-    <%= form.text_field :gift_vouchers %>
+    <%= form.number_field :gift_vouchers, step: 0.01 %>
   </div>
 
   <div class="field">
     <%= form.label :overtime %>
-    <%= form.text_field :overtime %>
+    <%= form.number_field :overtime, step: 0.01 %>
   </div>
 
   <div class="field">
     <%= form.label :extra_salary %>
-    <%= form.text_field :extra_salary %>
+    <%= form.number_field :extra_salary, step: 0.01 %>
   </div>
 
   <div class="field">
