@@ -56,6 +56,7 @@
               </ul>
             </div>
           </li>
+          
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
               <i class="icon-contract menu-icon"></i>
@@ -68,19 +69,106 @@
               </ul>
             </div>
           </li> -->
+          
           <% if current_user.admin? %>
+            <li class="nav-item <%= 'active' if controller_path=='projects' %>">
+              <%= link_to projects_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Proiecte</span>
+              <% end %>
+            </li>
+
+            <li class="nav-item <%= 'active' if controller_path=='orders' %>">
+              <%= link_to orders_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Comenzi</span>
+              <% end %>
+            </li>
+            
+            <li class="nav-item <%= 'active' if controller_path=='invoices' %>">
+              <%= link_to invoices_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Cost management</span>
+              <% end %>
+            </li>
+
+            <li class="nav-item <%= 'active' if controller_path=='stock' %>">
+              <%= link_to stock_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Stocuri</span>
+              <% end %>
+            </li>
+            <hr>
+            <li class="nav-item <%= 'active' if controller_path=='project_situations' %>">
+              <%= link_to project_situations_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Situatie proiecte</span>
+              <% end %>
+            </li>
+
+            <li class="nav-item <%= 'active' if controller_path=='project_costs' %>">
+              <%= link_to project_costs_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Costuri proiecte</span>
+              <% end %>
+            </li>
+
+            <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' %>">
+              <%= link_to indirect_expenses_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Cheltuieli indirecte</span>
+                <i class="menu-arrow"></i>
+              <% end %>
+              <div class="collapse <%= 'show' if controller_path=='indirect_expenses' %>" id="indirect_expenses">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <%= link_to employees_path, class: "nav-link" do%><span class="menu-title">Salariale</span> <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Administrative</span> <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Financiare</span> <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Investitii</span> <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Alte cheltuieli</span> <% end %></li>
+                </ul>
+              </div>
+            </li>
+            
+            <li class="nav-item <%= 'active' if controller_path=='suppliers' %>">
+              <%= link_to suppliers_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Situatie furnizori</span>
+              <% end %>
+            </li>
+            
+            <li class="nav-item <%= 'active' if controller_path=='financial_centralization' %>">
+              <%= link_to financial_centralization_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Centralizare financiara</span>
+              <% end %>
+            </li>
+            <hr>
+            <li class="nav-item <%= 'active' if controller_path=='cars' %>">
+              <%= link_to cars_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Flota auto</span>
+              <% end %>
+            </li>
+            
+            <li class="nav-item <%= 'active' if controller_path=='import_data' %>">
+              <%= link_to import_data_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Import date</span>
+              <% end %>
+            </li>
+
             <li class="nav-item <%= 'active' if controller_path=='users' %>">
-            <%= link_to users_path, class: "nav-link" do%>
+              <%= link_to users_path, class: "nav-link" do%>
                 <i class="icon-head menu-icon"></i>
                 <span class="menu-title">Utilizatori</span>
-                <%# <i class="menu-arrow"></i> %>
               <% end %>
-              <%# <div class="collapse" id="auth">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                </ul>
-              </div> %>
+            </li>
+            <li class="nav-item <%= 'active' if controller_path=='records' %>">
+              <%= link_to records_path, class: "nav-link" do%>
+                <i class="fal fa-recycle menu-icon"></i>
+                <span class="menu-title">Istoric inregistrari</span>
+              <% end %>
             </li>
           <% end %>
           <!-- <li class="nav-item">
