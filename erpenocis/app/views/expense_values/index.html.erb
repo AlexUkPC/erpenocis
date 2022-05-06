@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Expense Values</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Date</th>
+      <th>Due date</th>
+      <th>Vat taxes</th>
+      <th>Expense</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expense_values.each do |expense_value| %>
+      <tr>
+        <td><%= expense_value.value %></td>
+        <td><%= expense_value.date %></td>
+        <td><%= expense_value.due_date %></td>
+        <td><%= expense_value.vat_taxes %></td>
+        <td><%= expense_value.expense_id %></td>
+        <td><%= link_to 'Show', expense_value %></td>
+        <td><%= link_to 'Edit', edit_expense_value_path(expense_value) %></td>
+        <td><%= link_to 'Destroy', expense_value, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Expense Value', new_expense_value_path %>
