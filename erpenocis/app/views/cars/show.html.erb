@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Number plate:</strong>
+  <%= @car.number_plate %>
+</p>
+
+<p>
+  <strong>Rca expiry date:</strong>
+  <%= @car.rca_expiry_date %>
+</p>
+
+<p>
+  <strong>Rov expiry date:</strong>
+  <%= @car.rov_expiry_date %>
+</p>
+
+<p>
+  <strong>Itp expiry date:</strong>
+  <%= @car.itp_expiry_date %>
+</p>
+
+<%= link_to 'Edit', edit_car_path(@car) %> |
+<%= link_to 'Back', cars_path %>
