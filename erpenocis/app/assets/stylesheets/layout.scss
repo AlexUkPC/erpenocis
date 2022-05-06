@@ -1,0 +1,14 @@
+.nav{
+  hr{
+    border: 1px solid #DDDDDD;
+    width: 90%;
+    margin: 0.25rem auto 0;
+  }
+  #indirect_expenses{
+    .nav-link.active{
+      .menu-title{
+        color: rgb(145, 145, 145);
+      }
+    }
+  }
+}

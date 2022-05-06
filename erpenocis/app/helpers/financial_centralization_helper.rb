@@ -1,0 +1,2 @@
+module FinancialCentralizationHelper
+end
