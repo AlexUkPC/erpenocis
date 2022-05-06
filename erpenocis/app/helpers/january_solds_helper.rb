@@ -1,0 +1,2 @@
+module JanuarySoldsHelper
+end

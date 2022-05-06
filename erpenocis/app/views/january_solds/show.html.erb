@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>January sold:</strong>
+  <%= @january_sold.january_sold %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @january_sold.year %>
+</p>
+
+<%= link_to 'Edit', edit_january_sold_path(@january_sold) %> |
+<%= link_to 'Back', january_solds_path %>

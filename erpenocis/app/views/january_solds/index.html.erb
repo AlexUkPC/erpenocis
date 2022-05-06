@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>January Solds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>January sold</th>
+      <th>Year</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @january_solds.each do |january_sold| %>
+      <tr>
+        <td><%= january_sold.january_sold %></td>
+        <td><%= january_sold.year %></td>
+        <td><%= link_to 'Show', january_sold %></td>
+        <td><%= link_to 'Edit', edit_january_sold_path(january_sold) %></td>
+        <td><%= link_to 'Destroy', january_sold, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New January Sold', new_january_sold_path %>
