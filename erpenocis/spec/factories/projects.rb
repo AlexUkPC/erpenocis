@@ -11,6 +11,7 @@
 #  value      :decimal(15, 2)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :string
 #
 FactoryBot.define do
   factory :project do

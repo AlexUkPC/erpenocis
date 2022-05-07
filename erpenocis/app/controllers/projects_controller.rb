@@ -4,10 +4,13 @@ class ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     @projects = Project.where(stoc: false)
+    @users = User.all
   end
 
   # GET /projects/1 or /projects/1.json
   def show
+    @invoices = Invoice.where(:project_id => @project.id)
+    @orders = Order.where(:project_id => @project.id)
   end
 
   # GET /projects/new
@@ -65,6 +68,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :start_date, :end_date, :value, :obs, :stoc)
+      params.require(:project).permit(:name, :start_date, :end_date, :value, :obs, :stoc, :user_id)
     end
 end
