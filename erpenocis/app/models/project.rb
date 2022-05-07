@@ -11,10 +11,11 @@
 #  value      :decimal(15, 2)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :string
 #
 class Project < ApplicationRecord
-  has_many :orders
-  has_many :invoices
-  has_many :project_situations
-  has_many :project_costs
+  has_many :orders, dependent: :destroy
+  has_many :invoices, dependent: :destroy
+  has_many :project_situations, dependent: :destroy
+  has_many :project_costs, dependent: :destroy
 end

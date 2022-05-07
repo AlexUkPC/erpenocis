@@ -12,7 +12,13 @@
 
 <p>
   <strong>End date:</strong>
-  <%= @project.end_date %>
+  
+  <% if !@project.end_date %>
+    In derulare
+  <% else %>
+    <%= @project.end_date %>
+  <% end %>
+
 </p>
 
 <p>
@@ -26,9 +32,116 @@
 </p>
 
 <p>
-  <strong>Stoc:</strong>
-  <%= @project.stoc %>
+  <strong>Suma cheltuita:</strong>
+  <%= expenses_amount(@project.id, @project.value) %>
+</p>
+<p>
+  <strong>Profit:</strong>
+  <%= profit(@project.id, @project.value) %>
+</p>
+<p>
+  <strong>Profit%:</strong>
+  <%= profit_proc(@project.id, @project.value) %>
 </p>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>
+<% if !current_page?(project_path(:show => 'orders')) %>
+  <h1>Invoices</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Supplier</th>
+        <th>Invoice number</th>
+        <th>Invoice date</th>
+        <th>Invoice value without vat</th>
+        <th>Invoice value for project without vat</th>
+        <th>Code</th>
+        <th>Obs</th>
+        <th>Project</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @invoices.each do |invoice| %>
+        <tr>
+          <td><%= invoice.description %></td>
+          <td><%= invoice.category %></td>
+          <td><%= invoice.supplier %></td>
+          <td><%= invoice.invoice_number %></td>
+          <td><%= invoice.invoice_date %></td>
+          <td><%= invoice.invoice_value_without_vat %></td>
+          <td><%= invoice.invoice_value_for_project_without_vat %></td>
+          <td><%= invoice.code %></td>
+          <td><%= invoice.obs %></td>
+          <td><%= invoice.project_id %></td>
+          <td><%= link_to 'Show', invoice %></td>
+          <td><%= link_to 'Edit', edit_invoice_path(invoice) %></td>
+          <td><%= link_to 'Destroy', invoice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Invoice', new_invoice_path %>
+<% end %>
+
+<% if !current_page?(project_path(:show => 'invoices')) %>
+  <h1>Orders</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Category</th>
+        <th>Name type color</th>
+        <th>Needed quantity</th>
+        <th>Unit</th>
+        <th>Cote</th>
+        <th>Brother</th>
+        <th>Ordered quantity</th>
+        <th>Supplier</th>
+        <th>Supplier contact</th>
+        <th>Order date</th>
+        <th>Delivery date</th>
+        <th>Obs</th>
+        <th>Project</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.status %></td>
+          <td><%= order.category %></td>
+          <td><%= order.name_type_color %></td>
+          <td><%= order.needed_quantity %></td>
+          <td><%= order.unit %></td>
+          <td><%= order.cote %></td>
+          <td><%= order.brother_id %></td>
+          <td><%= order.ordered_quantity %></td>
+          <td><%= order.supplier_id %></td>
+          <td><%= order.supplier_contact %></td>
+          <td><%= order.order_date %></td>
+          <td><%= order.delivery_date %></td>
+          <td><%= order.obs %></td>
+          <td><%= order.project_id %></td>
+          <td><%= link_to 'Show', order %></td>
+          <td><%= link_to 'Edit', edit_order_path(order) %></td>
+          <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Order', new_order_path %>
+<% end %>
