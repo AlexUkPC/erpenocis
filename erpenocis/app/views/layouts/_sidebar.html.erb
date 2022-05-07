@@ -2,7 +2,7 @@
         <ul class="nav">
           <li class="nav-item <%= 'active' if controller_path=='dashboard' %>">
             <%= link_to root_path, class: "nav-link" do %>
-              <i class="icon-grid menu-icon"></i>
+              <i class="far fa-border-all menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             <% end %>
           </li>
@@ -73,100 +73,100 @@
           <% if current_user.admin? %>
             <li class="nav-item <%= 'active' if controller_path=='projects' %>">
               <%= link_to projects_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-folder-tree menu-icon"></i>
                 <span class="menu-title">Proiecte</span>
               <% end %>
             </li>
 
             <li class="nav-item <%= 'active' if controller_path=='orders' %>">
               <%= link_to orders_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-ballot-check menu-icon"></i>
                 <span class="menu-title">Comenzi</span>
               <% end %>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='invoices' %>">
               <%= link_to invoices_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-file-invoice-dollar menu-icon"></i>
                 <span class="menu-title">Cost management</span>
               <% end %>
             </li>
 
             <li class="nav-item <%= 'active' if controller_path=='stock' %>">
               <%= link_to stock_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-layer-group menu-icon"></i>
                 <span class="menu-title">Stocuri</span>
               <% end %>
             </li>
             <hr>
             <li class="nav-item <%= 'active' if controller_path=='project_situations' %>">
               <%= link_to project_situations_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-file-chart-line menu-icon"></i>
                 <span class="menu-title">Situatie proiecte</span>
               <% end %>
             </li>
 
             <li class="nav-item <%= 'active' if controller_path=='project_costs' %>">
               <%= link_to project_costs_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-recycle menu-icon"></i>
                 <span class="menu-title">Costuri proiecte</span>
               <% end %>
             </li>
 
             <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' %>">
               <%= link_to indirect_expenses_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-file-contract menu-icon"></i>
                 <span class="menu-title">Cheltuieli indirecte</span>
                 <i class="menu-arrow"></i>
               <% end %>
               <div class="collapse <%= 'show' if controller_path=='indirect_expenses' %>" id="indirect_expenses">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <%= link_to employees_path, class: "nav-link" do%><span class="menu-title">Salariale</span> <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Administrative</span> <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Financiare</span> <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Investitii</span> <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%><span class="menu-title">Alte cheltuieli</span> <% end %></li>
+                  <li class="nav-item"> <%= link_to employees_path, class: "nav-link" do%>Salariale <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%>Administrative <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%>Financiare <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%>Investitii <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path, class: "nav-link" do%>Alte cheltuieli <% end %></li>
                 </ul>
               </div>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='suppliers' %>">
               <%= link_to suppliers_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-users-class menu-icon"></i>
                 <span class="menu-title">Situatie furnizori</span>
               <% end %>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='financial_centralization' %>">
               <%= link_to financial_centralization_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-money-check-alt menu-icon"></i>
                 <span class="menu-title">Centralizare financiara</span>
               <% end %>
             </li>
             <hr>
             <li class="nav-item <%= 'active' if controller_path=='cars' %>">
               <%= link_to cars_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-truck-couch menu-icon"></i>
                 <span class="menu-title">Flota auto</span>
               <% end %>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='import_data' %>">
               <%= link_to import_data_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-upload menu-icon"></i>
                 <span class="menu-title">Import date</span>
               <% end %>
             </li>
 
             <li class="nav-item <%= 'active' if controller_path=='users' %>">
               <%= link_to users_path, class: "nav-link" do%>
-                <i class="icon-head menu-icon"></i>
+                <i class="far fa-users menu-icon"></i>
                 <span class="menu-title">Utilizatori</span>
               <% end %>
             </li>
             <li class="nav-item <%= 'active' if controller_path=='records' %>">
               <%= link_to records_path, class: "nav-link" do%>
-                <i class="fal fa-recycle menu-icon"></i>
+                <i class="far fa-list-ol menu-icon"></i>
                 <span class="menu-title">Istoric inregistrari</span>
               <% end %>
             </li>
