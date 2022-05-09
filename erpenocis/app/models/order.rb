@@ -10,7 +10,7 @@
 #  needed_quantity  :integer
 #  obs              :text
 #  order_date       :date
-#  ordered_quantity :integer
+#  ordered_quantity :integer          default(0)
 #  status           :integer
 #  supplier_contact :string
 #  unit             :string
@@ -18,7 +18,8 @@
 #  updated_at       :datetime         not null
 #  brother_id       :string
 #  project_id       :bigint           not null
-#  supplier_id      :bigint           not null
+#  supplier_id      :bigint
+#  user_id          :string
 #
 # Indexes
 #
@@ -31,6 +32,22 @@
 #  fk_rails_...  (supplier_id => suppliers.id)
 #
 class Order < ApplicationRecord
-  belongs_to :supplier
+  # belongs_to :supplier
   belongs_to :project
+  # validates :supplier, presence: false
+  validates :ordered_quantity, presence: true
+  enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
+  before_save :check_quantity
+  private
+  def check_quantity
+    if self.ordered_quantity!=0 
+      if self.needed_quantity>self.ordered_quantity
+        self.needed_quantity = self.ordered_quantity
+      end
+      self.status == "necesar_materiale" ? self.status = 1 : ""
+    # else
+    #   self.status = 0
+    end
+    
+  end
 end

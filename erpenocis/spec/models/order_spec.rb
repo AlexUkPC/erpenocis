@@ -10,7 +10,7 @@
 #  needed_quantity  :integer
 #  obs              :text
 #  order_date       :date
-#  ordered_quantity :integer
+#  ordered_quantity :integer          default(0)
 #  status           :integer
 #  supplier_contact :string
 #  unit             :string
@@ -18,7 +18,8 @@
 #  updated_at       :datetime         not null
 #  brother_id       :string
 #  project_id       :bigint           not null
-#  supplier_id      :bigint           not null
+#  supplier_id      :bigint
+#  user_id          :string
 #
 # Indexes
 #

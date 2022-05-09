@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_07_094816) do
+ActiveRecord::Schema.define(version: 2022_05_09_080540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,8 +126,7 @@ ActiveRecord::Schema.define(version: 2022_05_07_094816) do
     t.string "unit"
     t.string "cote"
     t.string "brother_id"
-    t.integer "ordered_quantity"
-    t.bigint "supplier_id", null: false
+    t.integer "ordered_quantity", default: 0
     t.string "supplier_contact"
     t.date "order_date"
     t.date "delivery_date"
@@ -135,6 +134,8 @@ ActiveRecord::Schema.define(version: 2022_05_07_094816) do
     t.bigint "project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "user_id"
+    t.bigint "supplier_id"
     t.index ["project_id"], name: "index_orders_on_project_id"
     t.index ["supplier_id"], name: "index_orders_on_supplier_id"
   end
