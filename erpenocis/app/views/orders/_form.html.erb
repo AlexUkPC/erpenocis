@@ -10,7 +10,8 @@
       </ul>
     </div>
   <% end %>
-  
+  <%= form.hidden_field :user_id, value: current_user.id %>
+
   <div class="field">
     <%= form.label :project_id %>
     <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
@@ -18,7 +19,7 @@
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.number_field :status %>
+    <%= form.select(:status, Order.statuses.keys.map {|status| [status.titleize, status]}) %>
   </div>
 
   <div class="field">
@@ -47,18 +48,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :brother_id %>
-    <%= form.text_field :brother_id %>
-  </div>
-
-  <div class="field">
     <%= form.label :ordered_quantity %>
-    <%= form.number_field :ordered_quantity %>
+    <%= form.number_field :ordered_quantity, required: true %>
   </div>
 
   <div class="field">
     <%= form.label :supplier_id %>
-    <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]} %>
+    <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]}, { include_blank: true } %>
   </div>
 
   <div class="field">
@@ -68,12 +64,12 @@
 
   <div class="field">
     <%= form.label :order_date %>
-    <%= form.date_select :order_date %>
+    <%= form.date_field :order_date %>
   </div>
 
   <div class="field">
     <%= form.label :delivery_date %>
-    <%= form.date_select :delivery_date %>
+    <%= form.date_field :delivery_date %>
   </div>
 
   <div class="field">

@@ -31,21 +31,17 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (supplier_id => suppliers.id)
 #
-FactoryBot.define do
-  factory :order do
-    status { 1 }
-    category { "MyString" }
-    name_type_color { "MyString" }
-    needed_quantity { 1 }
-    unit { "MyString" }
-    cote { "MyString" }
-    brother_id { "MyString" }
-    ordered_quantity { 1 }
-    supplier { nil }
-    supplier_contact { "MyString" }
-    order_date { "2022-05-05" }
-    delivery_date { "2022-05-05" }
-    obs { "MyText" }
-    project { nil }
+class Order < ApplicationRecord
+  # belongs_to :supplier
+  belongs_to :project
+  # validates :supplier, presence: false
+  enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
+  before_save :check_quantity
+  private
+  def check_quantity
+    if self.ordered_quantity && self.ordered_quantity!=0 && self.needed_quantity>self.ordered_quantity
+      self.needed_quantity = self.ordered_quantity
+      self.status = 1
+    end
   end
 end
