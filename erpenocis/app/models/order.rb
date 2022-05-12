@@ -38,6 +38,9 @@ class Order < ApplicationRecord
   validates :ordered_quantity, presence: true
   enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
   before_save :check_quantity
+  def full_description
+  "Categorie:" +  self.category + " Denumire/Tip/Nuanta:" + self.name_type_color + " Cantitate necesara:" + self.needed_quantity.to_s + " UM:" + self.unit + " Cote:" + self.cote
+  end
   private
   def check_quantity
     if self.ordered_quantity!=0 
@@ -50,4 +53,5 @@ class Order < ApplicationRecord
     end
     
   end
+  
 end

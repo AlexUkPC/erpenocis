@@ -8,6 +8,8 @@ import Rails from "@rails/ujs"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "users"
+import "orders"
+
 
 Rails.start()
 // Turbolinks.start()

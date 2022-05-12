@@ -18,4 +18,13 @@ class Project < ApplicationRecord
   has_many :invoices, dependent: :destroy
   has_many :project_situations, dependent: :destroy
   has_many :project_costs, dependent: :destroy
+  def ord
+    if self.stoc
+      Order.where(project_id: self.id).order("id ASC")
+    else
+      Order.where(ordered_quantity: 0, project_id: self.id).order("id ASC") 
+    end
+
+    # Order.where(if !self.stoc then (ordered_quantity: 0) end, project_id: self.id).order("id ASC")
+  end
 end

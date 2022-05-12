@@ -12,8 +12,17 @@ Rails.application.routes.draw do
   resources :employee_salaries
   resources :project_costs
   resources :project_situations
-  resources :invoices
-  resources :orders
+  resources :invoices 
+  resources :orders do
+    member do
+      patch :move
+      put :move
+      get :move_order
+      patch :move_order, to: "orders#move"
+    end
+  end
+ 
+ 
   resources :suppliers
   resources :employees
   resources :projects

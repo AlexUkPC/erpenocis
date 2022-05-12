@@ -19,6 +19,8 @@ services:
       - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server_erpenocis
     networks:
       - network_erpenocis
+    stdin_open: true
+    tty: true
   webpack_dev_server_erpenocis:
     build:
       context: .

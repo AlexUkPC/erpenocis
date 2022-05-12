@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[ show edit update destroy ]
+  before_action :set_order, only: %i[ show edit update destroy move move_order ]
   # GET /orders or /orders.json
   def index
     @orders = Order.all.order("id DESC")
@@ -74,7 +74,71 @@ class OrdersController < ApplicationController
       end
     # end
   end
+  def move_order
+  end
 
+  def move
+    # Mutare de la proiect1 la proiect2
+    if order_params_move[:to_order_id]=="" #Daca nu a fost selectata o comanda pe care sa se mute
+      @new_order_project2 = Order.new(@order.attributes.reject{|k,_v| k.to_s == 'id' || k.to_s == 'brother_id' || k.to_s == 'created_at' || k.to_s == 'updated_at' }) #creeaza o copie a comenzii din proiect1 ca o comanda pt proiect2 
+      @new_order_project2.user_id = order_params_move[:user_id] #retine userul care a modificat
+      @new_order_project2.project_id = order_params_move[:to_project_id] #ataseaza la proiect2
+      
+      @new_order_project2.needed_quantity = order_params_move[:quantity] #seteaza cantitatea necesara ca si cantitatea ceruta pt mutare
+      @new_order_project2.ordered_quantity = order_params_move[:quantity] #seteaza cantitatea comandata ca si cantitatea ceruta pt mutare
+      @new_order_project2.obs ? @new_order_project2.obs = @new_order_project2.obs + " | Mutat de la #{@order.project.name} | " : @new_order_project2.obs = "Mutat de la #{@order.project.name}" #adauga observatii cum ca a fost mutat de la proiectul1
+      @new_order_project2.save #salveaza noua comanda
+      @new_order_project2.brother_id = @new_order_project2.id #seteaza brother id
+      @new_order_project2.save #salveaza noua comanda
+    else #Daca a fost selectata o comanda pe care sa se mute
+      @existing_order_project2 = Order.find(order_params_move[:to_order_id]) #ia detaliile comenzii
+      @existing_order_project2.user_id = order_params_move[:user_id] #retine userul care a modificat
+      @existing_order_project2.brother_id = @existing_order_project2.id == @existing_order_project2.brother_id ? @existing_order_project2.id : @existing_order_project2.brother_id #seteaza brother_id ca id propriu daca nu mai exista alta comanda cu acelasi brother_id
+      if Project.find(order_params_move[:to_project_id]).stoc 
+        @existing_order_project2.ordered_quantity += order_params_move[:quantity].to_i 
+        @existing_order_project2.needed_quantity += order_params_move[:quantity].to_i  
+      else
+        @existing_order_project2.ordered_quantity = order_params_move[:quantity].to_i
+        @existing_order_project2.status = @order.status
+          #seteaza cantitatea comandata ca si cantitatea ceruta pt mutare
+        @existing_order_project2.supplier_id = @order.supplier_id #copiaza furnizorul din comanda 1
+        @existing_order_project2.supplier_contact = @order.supplier_contact #copiaza contact furnizor din comanda 1
+        @existing_order_project2.order_date = @order.order_date #copiaza data comenzii din comanda 1
+        @existing_order_project2.delivery_date = @order.delivery_date #copiaza data livrarii din comanda 1
+        @existing_order_project2.obs ? @existing_order_project2.obs = @order.obs + " | Mutat de la #{@order.project.name} | " : @existing_order_project2.obs = "Mutat de la #{@order.project.name}" #adauga observatii cum ca a fost mutat de la proiectul1
+        if @existing_order_project2.needed_quantity > order_params_move[:quantity].to_i #Daca cantiatea mutata este mai mica decat necesar
+          @new_order_project2 = Order.new(@existing_order_project2.attributes.reject{|k,_v| k.to_s == 'id' || k.to_s == 'brother_id' || k.to_s == 'ordered_quantity' || k.to_s == 'supplier_id' || k.to_s == 'supplier_contact' || k.to_s == 'order_date' || k.to_s == 'delivery_date' || k.to_s == 'obs' || k.to_s == 'created_at' || k.to_s == 'updated_at' }) #creeaza o copie a comenzii cu necesarul ramas
+          @new_order_project2.user_id = order_params_move[:user_id] #retine userul care a modificat
+          @new_order_project2.project_id = order_params_move[:to_project_id] #leaga comanda de proiectul 2
+          @new_order_project2.needed_quantity = @existing_order_project2.needed_quantity -  order_params_move[:quantity].to_i #calculeaza cantiatea necesara ramasa
+          @new_order_project2.brother_id = @existing_order_project2.brother_id #seteaza acelasi brother_id cu comanda existenta
+          @new_order_project2.status = 0 #seteaza statusul in necesar materiale
+          @new_order_project2.save #salveaza modificarile
+        end
+      end
+      @existing_order_project2.save #salveaza modificarile
+    end
+    @order.ordered_quantity -= order_params_move[:quantity].to_i #scade din comanda proiectului 1 cantiatea ce s-a cerut mutata
+    if !@order.project.stoc #Daca proiect1 nu este marcat ca stoc
+      @existing_order_project1 = Order.where(brother_id: @order.brother_id, ordered_quantity: 0).first
+      if @existing_order_project1 && @existing_order_project1.id!=@order.id
+        Order.find(@existing_order_project1.id).update(needed_quantity: @existing_order_project1.needed_quantity + order_params_move[:quantity].to_i)
+      else
+        @new_order_project1 = Order.new(@order.attributes.reject{|k,_v| k.to_s == 'id' || k.to_s == 'ordered_quantity' || k.to_s == 'supplier_id' || k.to_s == 'supplier_contact' || k.to_s == 'order_date' || k.to_s == 'delivery_date' || k.to_s == 'obs' || k.to_s == 'created_at' || k.to_s == 'updated_at' })
+            @new_order_project1.status = 0
+            @new_order_project1.brother_id = @order.brother_id
+            @new_order_project1.needed_quantity = order_params_move[:quantity].to_i
+            @new_order_project1.save
+      end
+    end
+    if @order.ordered_quantity > 0 #Daca mai sunt produse in comanda din care se muta
+      @order.save #salveaza modificarile
+    else 
+      @order.destroy #sterge
+    end
+    redirect_to orders_url, notice: "Order was successfully moved."
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -85,6 +149,11 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:status, :category, :name_type_color, :needed_quantity, :unit, :cote, :brother_id, :ordered_quantity, :supplier_id, :supplier_contact, :order_date, :delivery_date, :obs, :project_id, :user_id)
     end
+
+    def order_params_move
+      params.permit(:to_project_id, :_method, :authenticity_token, :user_id, :quantity, :commit, :id, :to_order_id, :from_project_id)
+    end
+
     def update_quantity_create
       if order_params[:ordered_quantity].to_i!=0
         if order_params[:needed_quantity].to_i>order_params[:ordered_quantity].to_i
