@@ -36,7 +36,6 @@ class ProjectsController < ApplicationController
       end
     end
   end
-
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
     respond_to do |format|

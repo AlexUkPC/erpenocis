@@ -1,0 +1,38 @@
+<%= form_with(action: "move", method: "patch") do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+        <% order.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  Muta comanda de
+  <br>
+  <span id="order_description"><%= "Categorie:" + order.category + " Denumire/Tip/Nuanta:" + order.name_type_color + " Cantitate comandata:" + order.ordered_quantity.to_s + " UM:" + order.unit + " Cote:" + order.cote %></span>
+  <br>
+  <% project = order.project %>
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  De la proiectul: <%= project.name %>
+  <div class="field">
+    <%= form.label :to_project_id, "La ce proiect muti:" %>
+    <%= form.collection_select :to_project_id, Project.where.not(id: project.id).order("id ASC"), :id, :name , { prompt: 'Selecteaza proiectul' }  %>
+  </div>
+  
+  <% projects = Project.where.not(id: project.id).order("id ASC") %>
+  <div class="field">
+      <%= form.label :to_order_id,"La ce comanda muti:" %>
+      <%= form.grouped_collection_select(:to_order_id, Project.where.not(id: project.id).order("id ASC"), :ord, :name, :id, :full_description, { prompt: 'Selecteaza comada'}) %>
+  </div>
+  <div class="field">
+    <%= form.label :quantity, "Ce cantitate muti?"%>
+    <%= form.number_field :quantity, min: 0, max: order.ordered_quantity %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
