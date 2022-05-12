@@ -53,7 +53,7 @@
     "nouislider": "^13.1.5",
     "owl-carousel-2": "0.0.3",
     "perfect-scrollbar": "^1.4.0",
-    "popper.js": "^1.15.0",
+    "popper.js": "^1.16.1",
     "progressbar.js": "1.0.1",
     "puse-icons-feather": "^1.1.0",
     "pwstabs": "1.4.0",
@@ -77,7 +77,10 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "browser-sync": "^2.16.0",
     "compass-mixins": "^0.12.10",
+    "del": "^4.1.1",
+    "minimatch": "^3.0.4",
     "webpack-dev-server": "^3"
   }
 }
