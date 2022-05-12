@@ -3,7 +3,7 @@
 @mixin popover-variant($color) {
 	border-color: $color;
 	.popover-header {
-		background: theme-color($color);
+		background: $color;
 		color: $white;
 		border-bottom: 0;
 	}
@@ -11,7 +11,7 @@
 		.arrow {
 			&:before,
 			&:after {
-				border-top-color: theme-color($color);
+				border-top-color: $color;
 			}
 		}
 	}
@@ -19,7 +19,7 @@
 		.arrow {
 			&:before,
 			&:after {
-				border-right-color: theme-color($color);
+				border-right-color: $color;
 			}
 		}
 	}
@@ -27,7 +27,7 @@
 		.arrow {
 			&:before,
 			&:after {
-				border-bottom-color: theme-color($color);
+				border-bottom-color: $color;
 			}
 		}
 	}
@@ -35,7 +35,7 @@
 		.arrow {
 			&:before,
 			&:after {
-				border-left-color: theme-color($color);
+				border-left-color: $color;
 			}
 		}
 	}

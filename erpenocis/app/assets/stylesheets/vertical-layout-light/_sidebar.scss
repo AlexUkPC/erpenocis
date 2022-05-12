@@ -141,7 +141,7 @@
       margin-right: 1rem;
       > .nav-item {
         margin-top: .2rem;
-        &:hover {
+        &:hover { 
           > .nav-link, &[aria-expanded="true"] {
             background: $sidebar-light-menu-hover-bg;
             color: $sidebar-light-menu-hover-color;                    

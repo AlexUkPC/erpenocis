@@ -27,7 +27,7 @@ select {
     padding: .4375rem .75rem;
     border: 0;
     outline: 1px solid $border-color;
-    color: #495057;
+    color: $input-placeholder-color;
     &:focus {
       outline: 1px solid $border-color;
     }
@@ -50,7 +50,7 @@ select {
   }
   &.has-danger {
     .form-control {
-      border-color: theme-color(danger);
+      border-color: $danger;
     }
   }
   .file-upload-default {

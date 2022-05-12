@@ -19,14 +19,14 @@
 						padding: 0.5rem 0;
 
 						&.prev {
-							color: color(gray);
+							color: $gray;
 							padding-bottom: 1rem;
 							padding-top: 1rem;
 							background: transparent;
 						}
 
 						&.datepicker-switch {
-							color: color(gray);
+							color: $gray;
 							background: transparent;
 							padding-bottom: 1rem;
 							padding-top: 1rem;
@@ -43,7 +43,7 @@
 
 						&.dow {
 							font-family: $type1;
-							color: color(gray);
+							color: $gray;
 							font-size: 0.875rem;
 							font-weight: initial;
 						}
@@ -77,7 +77,7 @@
 								content: "";
 								width: 28px;
 								height: 28px;
-								background: theme-color(success);
+								background: $success;
 								@include border-radius(4px);
 								display: block;
 								margin: auto;
@@ -100,7 +100,7 @@
 								content: "";
 								width: 28px;
 								height: 28px;
-								background: theme-color(primary);
+								background: $primary;
 								@include border-radius(4px);
 								display: block;
 								margin: auto;
@@ -126,12 +126,12 @@
 					&.range-end {
 					  background: transparent;
 						position: relative;
-						color: theme-color(success);
+						color: $success;
 						&::before {
 							content: "";
 							width: 28px;
 							height: 28px;
-							background: rgba(theme-color(success), .2);
+							background: rgba($success, .2);
 							border-radius: 4px;
 							display: block;
 							margin: auto;
@@ -184,7 +184,7 @@
 				}
 
 				&.datepicker-switch {
-					color: theme-color(primary);
+					color: $primary;
 					padding-bottom: 0.5rem;
 					padding-top: 0.5rem;
 				}

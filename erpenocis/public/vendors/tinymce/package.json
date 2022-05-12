@@ -1,8 +1,8 @@
 {
   "_from": "tinymce@^5.0.8",
-  "_id": "tinymce@5.7.0",
+  "_id": "tinymce@5.6.2",
   "_inBundle": false,
-  "_integrity": "sha512-WikgMpJbqYPaucV3lfstCj+Y4NquZlK61gyuJ2eqDUBlSU+4fFh6rpwnelVTxuvtEyJsAVOl8HZmbzBfDJiLsQ==",
+  "_integrity": "sha512-z7zvM5seOPiW86/vqf08kStwW5Zs5U9oQfuqh2rTj4jEcT2QzxT0v72i2zw3W6rbTLldkAej6edFZphj5ee5zg==",
   "_location": "/tinymce",
   "_phantomChildren": {},
   "_requested": {
@@ -18,10 +18,10 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.7.0.tgz",
-  "_shasum": "bc565877e4041db83848a330dfa7916993110cba",
+  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.6.2.tgz",
+  "_shasum": "4c20c22e328c5d0baab204928dbc2b0ecbed18b4",
   "_spec": "tinymce@^5.0.8",
-  "_where": "/Users/jyothish/Documents/skydash-free-bootstrap-admin-template/template",
+  "_where": "/Users/jyothish/Documents/skydash/template",
   "author": {
     "name": "Tiny Technologies, Inc"
   },
@@ -40,7 +40,7 @@
     "javascript",
     "html"
   ],
-  "license": "LGPL-2.1",
+  "license": "LGps-2.1",
   "main": "tinymce.js",
   "name": "tinymce",
   "repository": {
@@ -48,5 +48,5 @@
     "url": "git+https://github.com/tinymce/tinymce-dist.git"
   },
   "types": "tinymce.d.ts",
-  "version": "5.7.0"
+  "version": "5.6.2"
 }

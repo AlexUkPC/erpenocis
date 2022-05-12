@@ -18,6 +18,7 @@
     vertical-align: middle;
     line-height: 1;
     white-space: nowrap;
+    padding: $table-cell-padding;
   }
   td {
     font-size: $default-font-size;
@@ -36,9 +37,22 @@
     td,
     th {
       border: none;
+      // box-shadow: none;
     }
   }
   &.table-bordered {
     border-top: 1px solid $border-color;
   }
+  &.dataTable { 
+    tbody {
+      >tr {
+        &.selected {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+.table > :not(:last-child) > :last-child > *, .jsgrid .jsgrid-table > :not(:last-child) > :last-child > * {
+  border-bottom-color: transparent;
 }

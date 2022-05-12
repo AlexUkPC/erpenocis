@@ -54,7 +54,7 @@
 .btn-toolbar {
   .btn-group {
     +.btn-group {
-      @extend .ml-2;
+      @extend .ms-2;
     }
   }
 }
@@ -70,7 +70,7 @@
 /* inverse buttons */
 @each $color, $value in $theme-colors {
   .btn-inverse-#{$color} {
-    @include button-inverse-variant($value);
+    @include button-inverse-variant($value); 
   }
 }
 

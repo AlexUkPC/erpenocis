@@ -30,7 +30,7 @@
           display: block;
         }
         &[aria-expanded="true"] {
-          color: theme-color(primary);
+          color: $primary;
           &:before {
             content: "\e622";
           }
@@ -70,7 +70,7 @@
       .card-header {
         a {
           &:before {
-            color: theme-color(danger);
+            color: $danger;
           }
           &[aria-expanded="true"] {
             color: inherit;
@@ -106,7 +106,7 @@
             right: 40px;
           }
           &[aria-expanded="true"] {
-            background: theme-color(primary);
+            background: $primary;
             color: $white;
             &:before {
               content: "\e648";
@@ -122,7 +122,7 @@
       }
       .card-body {
         padding: 0 2rem 2rem 2rem;
-        background: theme-color(primary);
+        background: $primary;
         color: $white;
       }
     }
@@ -140,7 +140,7 @@
             right: 40px;
           }
           &[aria-expanded="true"] {
-            background: theme-color(primary);
+            background: $primary;
             color: $white;
             &:before {
               content: "\e648";
@@ -186,7 +186,7 @@
       }
       .card-body {
         padding: 2rem;
-        background: theme-color(success);
+        background: $success;
         color: $white;
       }
     }
@@ -199,19 +199,19 @@
         color: $white;
       }
       &:nth-child(1) {
-        background: theme-color(primary);
+        background: $primary;
       }
       &:nth-child(2) {
-        background: theme-color(success);
+        background: $success;
       }
       &:nth-child(3) {
-        background: theme-color(danger);
+        background: $danger;
       }
       &:nth-child(4) {
-        background: theme-color(warning);
+        background: $warning;
       }
       &:nth-child(5) {
-        background: theme-color(info);
+        background: $info;
       }
       .card-header {
         a {

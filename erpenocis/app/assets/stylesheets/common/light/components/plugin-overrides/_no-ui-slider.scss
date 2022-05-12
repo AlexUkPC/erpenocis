@@ -20,17 +20,17 @@
   }
 
   .noUi-base {
-    background: color(gray-lightest);
+    background: $gray-lightest;
     box-shadow: none;
     border: none;
 
     .noUi-connect {
-      background: theme-color(primary);
+      background: $primary;
       box-shadow: none;
     }
 
     .noUi-origin {
-      background: theme-color(success);
+      background: $success;
 
       .noUi-handle {
         background: $white;
@@ -55,7 +55,7 @@
           margin: auto;
           width: 6px;
           height: 6px;
-          background: theme-color(primary);
+          background: $primary;
           @include border-radius(100%);
         }
         .noUi-tooltip{
