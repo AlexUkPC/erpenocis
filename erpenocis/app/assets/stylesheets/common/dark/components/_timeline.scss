@@ -60,7 +60,7 @@
             }
             .timeline-title {
                 margin-top: 0;
-				color: theme-color(dark);
+				color: $dark;
 				text-transform: uppercase;
             }
             .timeline-body {
@@ -144,11 +144,11 @@
 	.timeline-wrapper-#{$color} {
 		.timeline-panel {
 			&:before {
-				background: theme-color($color);
+				background: $color;
 			}
 		}
 		.timeline-badge {
-			background: theme-color($color);
+			background: $color;
 		}
 	}
 }

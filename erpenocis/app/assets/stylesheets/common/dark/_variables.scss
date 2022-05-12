@@ -69,7 +69,8 @@ $theme-gradient-colors: (
 $content-bg: #151419;
 $border-color: #575757;
 $border-radius: 8px;
-
+$gray-dark:        #0f1531;
+$gray-lightest:    #e6e9ed;
 ////////// COLOR VARIABLES //////////
 
 
@@ -170,7 +171,7 @@ $input-color:             #e9e6e6;
 $input-focus-color:       $input-color;
 $input-font-size:         .875rem;
 
-$input-padding-y:       .875rem;
+$input-padding-y:       1.125rem;
 $input-padding-x:       1.375rem;
 $input-line-height:     1;
 
@@ -192,7 +193,10 @@ $input-height-lg:       3.175rem;
 //////// TABLES ////////
 
 $table-color: $body-color;
-$table-accent-bg: #2A292C;
+$table-accent-bg: transparent;
+$table-striped-color: #fff;
+$table-striped-bg:$content-bg;
+
 $table-hover-bg:  $content-bg;
 $table-cell-padding: 1.25rem .9375rem;
 $table-border-color: $border-color;
@@ -233,7 +237,7 @@ $dropdown-border-color: $border-color;
 $dropdown-divider-bg:   $border-color;
 $dropdown-link-color:   $body-color;
 $dropdown-header-color: $body-color;
-$dropdown-link-hover-bg: theme-color(dark);
+$dropdown-link-hover-bg: $dark;
 ////////  DROPDOWNS ///////
 
 
@@ -317,7 +321,7 @@ $fullcalendar-color: #a8b2b9;
 ////////   CALENDAR  //////////////
 
 ////////  PAGINATION //////////////
-$pagination-bg: theme-color(dark);
+$pagination-bg: $dark;
 $pagination-disabled-bg: #8b8d91;
 ////////  PAGINATION //////////////
 
@@ -326,5 +330,11 @@ $progress-bg: #878c9e;
 ////////  PROGRESS BAR ///////////
 
 //////// NOUI SLIDER ////////////
-$noui-base-bg: theme-color(dark);
+$noui-base-bg: $dark;
 //////// NOUI SLIDER ////////////
+
+$card-columns-margin: .75rem;
+$card-columns-count:3;
+$card-columns-gap:1.25rem;
+
+$gray :    #2e383e;

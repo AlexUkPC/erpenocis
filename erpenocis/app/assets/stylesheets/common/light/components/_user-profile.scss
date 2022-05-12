@@ -3,7 +3,7 @@
 		.nav-link {
 			color: $body-color;
 			&.active {
-				color: theme-color(primary);
+				color: $primary;
 			}
 			i {
 				font-size: 1.25rem;

@@ -8,7 +8,7 @@
       &.br-selected,
       &.br-active {
         &:after {
-          color: theme-color(primary);
+          color: $primary;
         }
       }
     }
@@ -22,11 +22,11 @@
 .br-theme-bars-horizontal {
   .br-widget {
     a {
-      background-color: rgba(theme-color(primary), .6);
-      color: theme-color(primary);
+      background-color: rgba($primary, .6);
+      color: $primary;
       &.br-selected,
       &.br-active {
-        background-color: theme-color(primary);
+        background-color: $primary;
       }
     }
   }
@@ -35,12 +35,12 @@
 .br-theme-bars-square {
   .br-widget {
     a {
-      border-color: rgba(theme-color(primary), .6);
-      color: rgba(theme-color(primary), .6);
+      border-color: rgba($primary, .6);
+      color: rgba($primary, .6);
       &.br-selected,
       &.br-active {
-        border-color: theme-color(primary);
-        color: theme-color(primary);
+        border-color: $primary;
+        color: $primary;
       }
     }
   }

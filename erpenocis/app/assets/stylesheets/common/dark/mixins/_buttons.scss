@@ -3,7 +3,7 @@
     color: $white;
   
     &:hover,
-    &:focus {
+    &:focus { 
       background: darken($color, 10%);
       color: $white;
     }
@@ -35,11 +35,11 @@
     &:not(.btn-inverse-light) {
       color: $color;      
     }
-    @include hover {
-      color: $color-hover;
-      background-color: $color;
-      border-color: $color;
-    }
+    // @include hover {
+    //   color: $color-hover;
+    //   background-color: $color;
+    //   border-color: $color;
+    // }
   
     &.focus,
     &:focus {

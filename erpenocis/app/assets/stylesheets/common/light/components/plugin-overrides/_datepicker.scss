@@ -77,7 +77,7 @@
 								content: "";
 								width: 28px;
 								height: 28px;
-								background: theme-color(success);
+								background: $success;
 								@include border-radius(4px);
 								display: block;
 								margin: auto;
@@ -100,7 +100,7 @@
 								content: "";
 								width: 28px;
 								height: 28px;
-								background: theme-color(primary);
+								background: $primary;
 								@include border-radius(4px);
 								box-shadow: 3px 3px 6px 0 rgba(147, 127, 201, 0.43);
 								-webkit-box-shadow: 3px 3px 6px 0 rgba(147, 127, 201, 0.43);
@@ -118,7 +118,7 @@
 					}
 
 					&.old.day {
-						color: darken(color(gray-lightest),4.5%);
+						color: darken($gray-lightest, 4.5%);
 					}
 
 					&.new.day {}
@@ -131,7 +131,7 @@
 							content: "";
 							width: 28px;
 							height: 28px;
-							background: rgba(theme-color(success), .2);
+							background: rgba($success, .2);
 							border-radius: 4px;
 							display: block;
 							margin: auto;
@@ -184,7 +184,7 @@
 				}
 
 				&.datepicker-switch {
-					color: theme-color(primary);
+					color: $primary;
 					padding-bottom: 0.5rem;
 					padding-top: 0.5rem;
 				}

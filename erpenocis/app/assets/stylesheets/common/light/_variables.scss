@@ -23,7 +23,7 @@ $colors: (
   blue:             $blue,
   indigo:           $indigo,
   purple:           $purple,
-  pink:             $pink,
+  pink:             $pink, 
   red:              $red,
   orange:           $orange,
   yellow:           $yellow,
@@ -64,11 +64,23 @@ $theme-gradient-colors: (
 
 ////////// COLOR SYSTEM //////////
 
+
+$primary:         #4B49AC;
+$secondary:       #a3a4a5;
+$success:         #57B657;
+$info:            #248AFD;
+$warning:         #FFC100;
+$danger:          #FF4747;
+$light:           #f8f9fa;
+$dark:            #282f3a;
+
 ////////// COLOR VARIABLES //////////
 $content-bg: #F5F7FF;
 $border-color: #CED4DA;
 $border-radius: 8px;
-
+$gray-dark:        #0f1531;
+$gray-lightest:    #e6e9ed;
+$gray:             #434a54;
 ////////// COLOR VARIABLES //////////
 
 
@@ -158,7 +170,7 @@ $input-border-radius:     2px;
 $input-placeholder-color: #c9c8c8;
 $input-font-size: .875rem;
 
-$input-padding-y:       .875rem;
+$input-padding-y:       1.125rem;
 $input-padding-x:       1.375rem;
 $input-line-height:     1;
 
@@ -188,9 +200,9 @@ $dropdown-link-hover-bg: #eaeaf1;
 
 //////// TABLES ////////
 
-$table-accent-bg: $content-bg;
+$table-accent-bg: transparent;
 $table-hover-bg:  #eaeaf1;
-$table-cell-padding: 1.125rem 1.375rem;
+$table-cell-padding: 1.125rem 1.375rem; 
 $table-border-color: $border-color;
 
 $table-inverse-bg: #2a2b32;
@@ -301,3 +313,6 @@ $nav-pills-custom-bg:               #fcfcfd;
 ////////   CALENDAR  //////////////
 $fullcalendar-color: #a8b2b9;
 ////////   CALENDAR  //////////////
+$card-columns-margin: .75rem;
+$card-columns-count:3;
+$card-columns-gap:1.25rem;

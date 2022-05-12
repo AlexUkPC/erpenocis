@@ -30,12 +30,12 @@
 	.tooltip-inner {
 		font-weight: 400;
 	}
-	z-index: 1029;
-}
+	z-index: 1029; 
+} 
 
 @each $color, $value in $theme-colors {
 	.tooltip-#{$color} {
-	  @include tooltip-variant($color);
+	  @include tooltip-variant($value);
 	}
 }
   

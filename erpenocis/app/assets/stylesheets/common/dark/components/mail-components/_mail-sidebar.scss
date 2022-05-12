@@ -80,7 +80,7 @@
 
 				.chat {
 					font-size: $default-font-size;
-					color: theme-color(primary);
+					color: $primary;
 					margin-bottom: 0;
 					font-weight: 600;
 				}
@@ -101,7 +101,7 @@
 				}
 
 				.status.offline {
-					background: theme-color(danger);
+					background: $danger;
 
 					&:after {
 						content: "Offline";
@@ -109,7 +109,7 @@
 				}
 
 				.status.online {
-					background: theme-color(success);
+					background: $success;
 
 					&:after {
 						content: "Online";
