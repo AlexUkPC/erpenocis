@@ -36,13 +36,16 @@ Total proiecte de incasat: <%= @total_to_be_collected %>
     <% @projects.each do |project| %>
       <% project_situation = ProjectSituation.where(project_id: project.id).first %>
       <% platit = project_situation.advance_payment + project_situation.closure_payment %>
+
+      <% sum = ProjectCost.where(project_id: project.id).sum(:amount) %>
+
       <tr>
         <td><%= project.name %></td>
         <td><%= project.value %></td>
-        <td><%= project.value - platit  %></td>
-        <td>to add project_costs</td>
-        <td>to add project.value - project_costs </td>
-        <td>to add sprintf('%.2f', (project.value - project_costs) * 100/  project.value)%</td>
+        <td><%= project.value - platit %></td>
+        <td><%= sum %></td>
+        <td><%= project.value - sum  %> </td>
+        <td><%= sprintf('%.2f', (project.value - sum) * 100/  project.value)%>%</td>
         
         <% if project_situation %>
           <td><%= project_situation.advance_invoice_date %></td>

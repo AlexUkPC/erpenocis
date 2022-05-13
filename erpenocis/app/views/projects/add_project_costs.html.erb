@@ -1,5 +1,5 @@
-<%= form_with(model: project, url: edit_project_cost_path(project), method: "patch") do |form| %>
-  <%= form.hidden_field :project, value: project %>
+<%= form_with(model: @project, url: update_project_costs_project_path(@project), method: "patch") do |form| %>
+  <%= form.hidden_field :project, value: @project %>
   <div class="field">
     <%= form.fields_for :project_costs do |project_cost| %>
       <%= render 'project_cost_fields', f: project_cost %>

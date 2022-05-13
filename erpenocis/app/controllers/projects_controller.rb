@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ show edit update destroy ]
+  before_action :set_project, only: %i[ show edit update destroy add_project_costs update_project_costs]
 
   # GET /projects or /projects.json
   def index
@@ -62,6 +62,24 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def index_project_costs
+    @projects = Project.where(stoc: false)
+  end
+  
+  def add_project_costs
+
+  end
+  def update_project_costs
+    respond_to do |format|
+      if @project.update(project_params)
+        format.html { redirect_to index_project_costs_url, notice: "Costuri proiecte modificate cu success." }
+        format.json { render :show, status: :ok, location: @project }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
@@ -70,6 +88,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :start_date, :end_date, :value, :obs, :stoc, :user_id)
+      params.require(:project).permit(:name, :start_date, :end_date, :value, :obs, :stoc, :user_id, project_costs_attributes: [:id, :amount, :month, :year, :_destroy])
     end
 end

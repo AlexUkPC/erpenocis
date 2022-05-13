@@ -18,6 +18,8 @@ class Project < ApplicationRecord
   has_many :invoices, dependent: :destroy
   has_one :project_situation, dependent: :destroy
   has_many :project_costs, dependent: :destroy
+  accepts_nested_attributes_for :project_costs, reject_if: :all_blank, allow_destroy: true
+  
   def ord
     if self.stoc
       Order.where(project_id: self.id).order("id ASC")
