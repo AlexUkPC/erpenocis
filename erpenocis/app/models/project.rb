@@ -16,7 +16,7 @@
 class Project < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :invoices, dependent: :destroy
-  has_many :project_situations, dependent: :destroy
+  has_one :project_situation, dependent: :destroy
   has_many :project_costs, dependent: :destroy
   def ord
     if self.stoc

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_080540) do
+ActiveRecord::Schema.define(version: 2022_05_13_091904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,13 +154,13 @@ ActiveRecord::Schema.define(version: 2022_05_09_080540) do
     t.date "advance_invoice_date"
     t.string "advance_invoice_number"
     t.date "advance_payment_date"
-    t.decimal "advance_payment", precision: 15, scale: 2
+    t.decimal "advance_payment", precision: 15, scale: 2, default: "0.0"
     t.integer "advance_month"
     t.integer "advance_year"
     t.date "closure_invoice_date"
     t.string "closure_invoice_number"
     t.date "closure_payment_date"
-    t.decimal "closure_payment", precision: 15, scale: 2
+    t.decimal "closure_payment", precision: 15, scale: 2, default: "0.0"
     t.integer "closure_month"
     t.integer "closure_year"
     t.bigint "project_id", null: false

@@ -12,13 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :project_id %>
-    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
-  </div>
-
-  <div class="field">
     <%= form.label :advance_invoice_date %>
-    <%= form.date_select :advance_invoice_date %>
+    <%= form.date_field :advance_invoice_date %>
   </div>
 
   <div class="field">
@@ -28,7 +23,7 @@
 
   <div class="field">
     <%= form.label :advance_payment_date %>
-    <%= form.date_select :advance_payment_date %>
+    <%= form.date_field :advance_payment_date %>
   </div>
 
   <div class="field">
@@ -48,7 +43,7 @@
 
   <div class="field">
     <%= form.label :closure_invoice_date %>
-    <%= form.date_select :closure_invoice_date %>
+    <%= form.date_field :closure_invoice_date %>
   </div>
 
   <div class="field">
@@ -58,7 +53,7 @@
 
   <div class="field">
     <%= form.label :closure_payment_date %>
-    <%= form.date_select :closure_payment_date %>
+    <%= form.date_field :closure_payment_date %>
   </div>
 
   <div class="field">
