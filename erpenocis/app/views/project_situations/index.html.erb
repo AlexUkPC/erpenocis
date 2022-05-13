@@ -1,10 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Project Situations</h1>
-
+Total avansuri incasate: <%= @total_advance_payment %>
+<br>
+Total proiecte de incasat: <%= @total_to_be_collected %>
+<br>
 <table>
   <thead>
     <tr>
+      <th>Project</th>
+      <th>Project value</th>
+      <th>Rest de plata</th>
+      <th>Cost materiale</th>
+      <th>Profitabilitate</th>
+      <th>Profitabilitate %</th>
       <th>Advance invoice date</th>
       <th>Advance invoice number</th>
       <th>Advance payment date</th>
@@ -23,24 +32,41 @@
   </thead>
 
   <tbody>
-    <% @project_situations.each do |project_situation| %>
+    <% @projects.each do |project| %>
+      <% project_situation = ProjectSituation.where(project_id: project.id).first %>
+      <% project_costs = project.value/2+1 %>
+      <% if project_situation %>
+        <% platit = project_situation.advance_payment + project_situation.closure_payment %>
+      <% else %>
+        <% platit = 0 %>
+      <% end %>
       <tr>
-        <td><%= project_situation.advance_invoice_date %></td>
-        <td><%= project_situation.advance_invoice_number %></td>
-        <td><%= project_situation.advance_payment_date %></td>
-        <td><%= project_situation.advance_payment %></td>
-        <td><%= project_situation.advance_month %></td>
-        <td><%= project_situation.advance_year %></td>
-        <td><%= project_situation.closure_invoice_date %></td>
-        <td><%= project_situation.closure_invoice_number %></td>
-        <td><%= project_situation.closure_payment_date %></td>
-        <td><%= project_situation.closure_payment %></td>
-        <td><%= project_situation.closure_month %></td>
-        <td><%= project_situation.closure_year %></td>
-        <td><%= project_situation.project_id %></td>
-        <td><%= link_to 'Show', project_situation %></td>
-        <td><%= link_to 'Edit', edit_project_situation_path(project_situation) %></td>
-        <td><%= link_to 'Destroy', project_situation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= project.name %></td>
+        <td><%= project.value %></td>
+        <td><%= project.value - platit  %></td>
+        <td><%= project_costs %></td>
+        <td><%= project.value - project_costs %></td>
+        <td><%= sprintf('%.2f', (project.value - project_costs) * 100/  project.value)%>%</td>
+        
+        <% if project_situation %>
+          <td><%= project_situation.advance_invoice_date %></td>
+          <td><%= project_situation.advance_invoice_number %></td>
+          <td><%= project_situation.advance_payment_date %></td>
+          <td><%= project_situation.advance_payment %></td>
+          <td><%= project_situation.advance_month %></td>
+          <td><%= project_situation.advance_year %></td>
+          <td><%= project_situation.closure_invoice_date %></td>
+          <td><%= project_situation.closure_invoice_number %></td>
+          <td><%= project_situation.closure_payment_date %></td>
+          <td><%= project_situation.closure_payment %></td>
+          <td><%= project_situation.closure_month %></td>
+          <td><%= project_situation.closure_year %></td>
+          <td><%= project_situation.project_id %></td>
+          <td><%= link_to 'Show', project_situation %></td>
+          <td><%= link_to 'Edit', edit_project_situation_path(project_situation) %></td>
+          <td><%= link_to 'Destroy', project_situation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+
       </tr>
     <% end %>
   </tbody>

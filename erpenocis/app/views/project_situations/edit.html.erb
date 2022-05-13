@@ -1,5 +1,15 @@
-<h1>Editing Project Situation</h1>
-
+<h1><%= @project_situation.project.name %></h1>
+<br>
+Valoare proiect:<%= @project_situation.project.value %>
+<br>
+Cost materiale :
+<br>
+Profitabilitate:
+<br>
+Profitabilitate %:
+<br>
+Rest de plata: <%= @project_situation.project.value - @project_situation.advance_payment - @project_situation.closure_payment %>
+<br>
 <%= render 'form', project_situation: @project_situation %>
 
 <%= link_to 'Show', @project_situation %> |

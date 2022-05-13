@@ -6,13 +6,13 @@
 #  advance_invoice_date   :date
 #  advance_invoice_number :string
 #  advance_month          :integer
-#  advance_payment        :decimal(15, 2)
+#  advance_payment        :decimal(15, 2)   default(0.0)
 #  advance_payment_date   :date
 #  advance_year           :integer
 #  closure_invoice_date   :date
 #  closure_invoice_number :string
 #  closure_month          :integer
-#  closure_payment        :decimal(15, 2)
+#  closure_payment        :decimal(15, 2)   default(0.0)
 #  closure_payment_date   :date
 #  closure_year           :integer
 #  created_at             :datetime         not null

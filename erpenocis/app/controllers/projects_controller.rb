@@ -30,11 +30,14 @@ class ProjectsController < ApplicationController
       if @project.save
         format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
+        project_situation = ProjectSituation.new(project_id: @project.id)
+        project_situation.save
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
+    
   end
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
