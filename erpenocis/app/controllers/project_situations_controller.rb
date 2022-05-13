@@ -5,9 +5,9 @@ class ProjectSituationsController < ApplicationController
   def index
     @project_situations = ProjectSituation.all
     @projects = Project.where(stoc: false)
-    @total_closure_payment = ProjectSituation.all.sum(:closure_payment)
+    total_closure_payment = ProjectSituation.all.sum(:closure_payment)
     @total_advance_payment = ProjectSituation.all.sum(:advance_payment)
-    @total_to_be_collected = Project.all.sum(:value) - @total_advance_payment - @total_closure_payment
+    @total_to_be_collected = Project.all.sum(:value) - @total_advance_payment - total_closure_payment
   end
 
   # GET /project_situations/1 or /project_situations/1.json

@@ -10,6 +10,7 @@ Profitabilitate %:
 <br>
 Rest de plata: <%= @project_situation.project.value - @project_situation.advance_payment - @project_situation.closure_payment %>
 <br>
+<br>
 <%= render 'form', project_situation: @project_situation %>
 
 <%= link_to 'Show', @project_situation %> |
