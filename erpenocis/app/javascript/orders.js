@@ -25,7 +25,7 @@ $(document).ready(function(){
   function change_quantity() {
     cn = $('#to_order_id :selected').text().search(/Cantitate necesara:/)
     um = $('#to_order_id :selected').text().search(/ UM:/)
-    quantity_order2 = $('#to_order_id :selected').text().slice(cn+19,um)
+    quantity_order2 = $('#to_order_id :selected').text().slice(cn+19,um).to_i
     quantity = $('#quantity').val()
     if (quantity>quantity_order2){
       if(!confirm(`Atentie! Esti sigur ca vrei sa muti cantitatea de ${quantity} pe comanda cu necesar de ${quantity_order2}?`)){
