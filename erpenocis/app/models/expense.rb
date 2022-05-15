@@ -9,5 +9,7 @@
 #  updated_at   :datetime         not null
 #
 class Expense < ApplicationRecord
-  has_many :expense_values
+  has_many :expense_values, dependent: :destroy
+  enum expense_type: [:administrative, :financiare, :investitii, :alte_cheltuieli]
+  accepts_nested_attributes_for :expense_values, reject_if: proc { |attributes| attributes['value'].blank? }, allow_destroy: true
 end

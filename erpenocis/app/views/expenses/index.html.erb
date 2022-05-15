@@ -1,29 +1,107 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Expenses</h1>
-
+<h1><%= params[:expense_type] ? params[:expense_type].titleize : "Cheltuieli" %></h1>
+<%= render 'date_form' %>
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Name</th>
-      <th>Type</th>
+      <% extra_years = 0 %>
+      <%# List all months and years %>
+        <% @months.times do |month| %>
+          <th>
+            <% if @start_month + month - extra_years * 12 > 12 %> 
+              <% extra_years += 1 %>
+            <% end %>
+            <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+          </th>
+        <% end %>
+      <%# End List all months and years %>
+      <th>Total</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
+    <% total_expense_values = 0 %>
     <% @expenses.each do |expense| %>
       <tr>
-        <td><%= expense.name %></td>
-        <td><%= expense.expense_type %></td>
-        <td><%= link_to 'Show', expense %></td>
-        <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
-        <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= expense.id %></td>
+
+        <%# Expense name with link %>
+          <td>
+            <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
+          </td>
+        <%# End Expense name with link %>
+
+        <%# Expense values with links %>
+          <% expense_values = expense.expense_values.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
+          <% expense_index = 0 %>
+          <% extra_years = 0 %>
+          <% @months.times do |month| %>
+            <td>
+              <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                <% if !expense_values.nil? && expense_index < expense_values.length && expense_values[expense_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && expense_values[expense_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
+                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense_values[expense_index].id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %>
+                    <div>
+                      <%= expense_values[expense_index].value %>
+                    </div>
+                  <% end %>
+                  <% expense_index += 1 %>
+                <% else %>
+                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                    <div>&nbsp</div>
+                  <% end %>
+                <% end %>
+            </td>
+          <% end %>
+        <%# End Expense values with links %>
+
+        <%# Total per Expense %>
+          <td>
+            <% if expense_values.length > 0 %>
+              <%= expense_values_sum = expense_values.sum(:value)  %>
+              <% total_expense_values += expense_values_sum  %>
+            <% else %>
+              <%= 0 %>
+            <% end %>    
+          </td>
+        <%# End Total per Expense %>
+
+        <%# Links %>
+          <!-- <td><%= link_to 'Show', expense %></td>
+          <td><%= link_to 'Edit', edit_expense_path(expense) %></td> -->
+          <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%# End Links %> 
       </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <th></th>
+      <th>Total</th>
+      <%# Total per month %>
+        <% extra_years = 0 %>
+        <% @months.times do |month| %>
+          <th>         
+            <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+            <%= sum = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).sum(:value) %>
+          </th>
+        <% end %>
+      <%# End Total per month %>
+
+      <%# GrandTotal of totals %>
+        <th><%= total_expense_values %></th>
+      <%# End GrandTotal of totals %>
+
+      <th colspan="3"></th>
+    </tr>
+  </tfoot>
 </table>
 
+<br>
+<%= render 'form', expense: @expense %>
 <br>
 
 <%= link_to 'New Expense', new_expense_path %>
