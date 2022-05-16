@@ -25,6 +25,10 @@
 
   <tbody>
     <% total_expense_values = 0 %>
+    <% @total_per_months = [] %>
+    <% @months.times do |month| %>
+      <% @total_per_months[month] = 0 %>
+    <% end %>
     <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.id %></td>
@@ -42,10 +46,12 @@
           <% @months.times do |month| %>
             <td>
               <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                
                 <% if !expense_values.nil? && expense_index < expense_values.length && expense_values[expense_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && expense_values[expense_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
                   <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense_values[expense_index].id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %>
                     <div>
-                      <%= expense_values[expense_index].value %>
+                      <%= total = expense_values[expense_index].value %>
+                      <% @total_per_months[month] += total %>
                     </div>
                   <% end %>
                   <% expense_index += 1 %>
@@ -61,7 +67,7 @@
         <%# Total per Expense %>
           <td>
             <% if expense_values.length > 0 %>
-              <%= expense_values_sum = expense_values.sum(:value)  %>
+              <%= expense_values_sum = expense_values.map(&:value).sum  %>
               <% total_expense_values += expense_values_sum  %>
             <% else %>
               <%= 0 %>
@@ -85,8 +91,9 @@
         <% extra_years = 0 %>
         <% @months.times do |month| %>
           <th>         
-            <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-            <%= sum = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).sum(:value) %>
+            <%# @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+            <%#= sum = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).sum(:value) %>
+            <%= sum = @total_per_months[month] %>
           </th>
         <% end %>
       <%# End Total per month %>
