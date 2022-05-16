@@ -1,0 +1,132 @@
+<table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <% extra_years = 0 %>
+          <%# List all months and years %>
+            <% @months.times do |month| %>
+              <th>
+                <% if @start_month + month - extra_years * 12 > 12 %> 
+                  <% extra_years += 1 %>
+                <% end %>
+                <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+              </th>
+            <% end %>
+          <%# End List all months and years %>
+          <th>Total</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% total_employee_salaries = 0 %>
+      <% @total_per_months = [] %>
+      <% @months.times do |month| %>
+        <% @total_per_months[month] = 0 %>
+      <% end %>
+        <% @employees.each do |employee| %>
+          <tr>
+            <td><%= employee.id %></td>
+
+            <%# Employee name with link %>
+              <td>
+                <%= link_to employees_path(employee_id: employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%></div><% end %>
+              </td>
+            <%# End Employee name with link %>
+
+            <%# Employee salaries with links %>
+              <% if of_what=="total" %>
+                <% @employee_salariess[employee.id] = employee.employee_salaries.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
+              <% end %>
+              <% employee_salaries = @employee_salariess[employee.id] %>
+              <% employee_index = 0 %>
+              <% extra_years = 0 %>
+              
+              <% @months.times do |month| %>
+                <td>
+                  
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                    <% if !employee_salaries.nil? && employee_index < employee_salaries.length && employee_salaries[employee_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && employee_salaries[employee_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee_salaries[employee_index].id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %>
+                        <div>
+                          <% if of_what=="total" %>
+                            <%= total = employee_salaries[employee_index].net_salary + employee_salaries[employee_index].salary_tax + employee_salaries[employee_index].meal_vouchers + employee_salaries[employee_index].gift_vouchers + employee_salaries[employee_index].overtime + employee_salaries[employee_index].extra_salary %>&nbsp
+                            <% @total_per_months[month] += total %>
+                          <% else %>
+                            <%= total = employee_salaries[employee_index].public_send(of_what.to_sym) %>&nbsp
+                            <% @total_per_months[month] += total %>
+                          <% end %>
+                        </div>
+                      <% end %>
+                      <% employee_index += 1 %>
+                    <% else %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                        <div>&nbsp</div>
+                      <% end %>
+                    <% end %>
+                </td>
+              <% end %>
+            <%# End Employee salaries with links %>
+
+            <%# Total per Employee %>
+              <td>
+                <% if employee_salaries.length > 0 %>
+                  <% if of_what=="total" %>
+                    <%= employee_salaries_sum = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum  %>
+                  <% else %>
+                    <%#= employee_salaries_sum = employee_salaries.map(&:net_salary).sum  %>
+                    <%= employee_salaries_sum = employee_salaries.sum(&of_what.to_sym) %>
+                  <% end %>
+                  <% total_employee_salaries += employee_salaries_sum  %>
+                <% else %>
+                  <%= 0 %>
+                <% end %>    
+              </td>
+            <%# End Total per Employee %>
+
+            <%# Links %>
+            <!-- <td><%= link_to 'Show', employee %></td>
+            <td><%= link_to 'Edit', edit_employee_path(employee) %></td> -->
+            <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <%# End Links %> 
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Total</th>
+          <%# Total per month %>
+            <%# extra_years = 0 %>
+            <% @months.times do |month| %>
+              <th>         
+                <%# @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                <%# start_date = Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01') %>
+                <%# end_date = Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day %>
+                <%# es = @employee_salaries.created_between(start_date, end_date) %>
+                <%# if of_what=="total" %>
+
+                  
+                  <%# puts es %>
+                  <%#= sum = es.map(&:net_salary).sum+ es.map(&:salary_tax).sum+ es.map(&:meal_vouchers).sum+ es.map(&:gift_vouchers).sum+ es.map(&:overtime).sum+ es.map(&:extra_salary).sum %>
+                  <%= sum = @total_per_months[month] %>
+
+                <%# else %>
+                <%# puts "=============total per month =============" %>
+                  <%#= sum = es.sum(&of_what.to_sym) %>
+                  <%# puts "=============total per month end=============" %>
+                <%# end %>
+                
+              </th>
+            <% end %>
+          <%# End Total per month %>
+
+          <%# GrandTotal of totals %>
+            <th><%= total_employee_salaries %></th>
+          <%# End GrandTotal of totals %>
+
+          <th colspan="3"></th>
+        </tr>
+      </tfoot>
+    </table>

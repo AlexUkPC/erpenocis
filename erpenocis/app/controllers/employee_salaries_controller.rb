@@ -65,6 +65,6 @@ class EmployeeSalariesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def employee_salary_params
-      params.require(:employee_salary).permit(:net_salary, :salary_tax, :salary_tax_due_date, :meal_vouchers, :gift_vouchers, :overtime, :extra_salary, :month, :year, :employee_id)
+      params.require(:employee_salary).permit(:net_salary, :salary_tax, :salary_tax_due_date, :meal_vouchers, :gift_vouchers, :overtime, :extra_salary, :date, :employee_id)
     end
 end

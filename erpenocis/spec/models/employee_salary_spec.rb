@@ -3,15 +3,14 @@
 # Table name: employee_salaries
 #
 #  id                  :bigint           not null, primary key
-#  extra_salary        :decimal(15, 2)
-#  gift_vouchers       :decimal(15, 2)
-#  meal_vouchers       :decimal(15, 2)
-#  month               :integer
-#  net_salary          :decimal(15, 2)
-#  overtime            :decimal(15, 2)
-#  salary_tax          :decimal(15, 2)
+#  date                :date
+#  extra_salary        :decimal(15, 2)   default(0.0)
+#  gift_vouchers       :decimal(15, 2)   default(0.0)
+#  meal_vouchers       :decimal(15, 2)   default(0.0)
+#  net_salary          :decimal(15, 2)   default(0.0)
+#  overtime            :decimal(15, 2)   default(0.0)
+#  salary_tax          :decimal(15, 2)   default(0.0)
 #  salary_tax_due_date :date
-#  year                :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  employee_id         :bigint           not null

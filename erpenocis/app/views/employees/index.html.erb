@@ -1,31 +1,58 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Employees</h1>
+<h1>Cheltuieli salariale</h1>
+<%= render 'date_form' %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Hire date</th>
-      <th>Dismiss date</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<br>
+<ul class="nav nav-tabs" id="employees" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="total-tab" data-bs-toggle="tab" data-bs-target="#total" type="button" role="tab" aria-controls="total" aria-selected="true">Total</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="net-salary-tab" data-bs-toggle="tab" data-bs-target="#net-salary" type="button" role="tab" aria-controls="net-salary" aria-selected="false">Net</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="salary-tax-tab" data-bs-toggle="tab" data-bs-target="#salary-tax" type="button" role="tab" aria-controls="salary-tax" aria-selected="false">Taxe</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="meal-vouchers-tab" data-bs-toggle="tab" data-bs-target="#meal-vouchers" type="button" role="tab" aria-controls="meal-vouchers" aria-selected="false">Bonuri de masa</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="gift-vouchers-tab" data-bs-toggle="tab" data-bs-target="#gift-vouchers" type="button" role="tab" aria-controls="gift-vouchers" aria-selected="false">Bonuri cadou</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="overtime-tab" data-bs-toggle="tab" data-bs-target="#overtime" type="button" role="tab" aria-controls="overtime" aria-selected="false">Ore suplimentare</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="extra-salary-tab" data-bs-toggle="tab" data-bs-target="#extra-salary" type="button" role="tab" aria-controls="extra-salary" aria-selected="false">Salariu extra</button>
+  </li>
+</ul>
+<div class="tab-content" id="employeesContent">
+  <div class="tab-pane fade show active" id="total" role="tabpanel" aria-labelledby="total-tab">
+    <%= render 'table', of_what: "total" %>
+  </div>
+  <div class="tab-pane fade" id="net-salary" role="tabpanel" aria-labelledby="net-salary-tab">
+    <%= render 'table', of_what: "net_salary" %>
+  </div>
+  <div class="tab-pane fade" id="salary-tax" role="tabpanel" aria-labelledby="salary-tax-tab">
+    <%= render 'table', of_what: "salary_tax" %>
+  </div>
+  <div class="tab-pane fade" id="meal-vouchers" role="tabpanel" aria-labelledby="meal-vouchers-tab">
+    <%= render 'table', of_what: "meal_vouchers" %>
+  </div>
+  <div class="tab-pane fade" id="gift-vouchers" role="tabpanel" aria-labelledby="gift-vouchers-tab">
+    <%= render 'table', of_what: "gift_vouchers" %>
+  </div>
+  <div class="tab-pane fade" id="overtime" role="tabpanel" aria-labelledby="overtime-tab">
+    <%= render 'table', of_what: "overtime" %>
+  </div>
+  <div class="tab-pane fade" id="extra-salary" role="tabpanel" aria-labelledby="extra-salary-tab">
+    <%= render 'table', of_what: "extra_salary" %>
+  </div>
+</div>
 
-  <tbody>
-    <% @employees.each do |employee| %>
-      <tr>
-        <td><%= employee.name %></td>
-        <td><%= employee.hire_date %></td>
-        <td><%= employee.dismiss_date %></td>
-        <td><%= link_to 'Show', employee %></td>
-        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
-        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<br>
+<%= render 'form', employee: @employee %>
 <br>
 
 <%= link_to 'New Employee', new_employee_path %>
