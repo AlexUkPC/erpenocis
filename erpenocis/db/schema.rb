@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_13_091904) do
+ActiveRecord::Schema.define(version: 2022_05_16_105051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,18 +53,17 @@ ActiveRecord::Schema.define(version: 2022_05_13_091904) do
   end
 
   create_table "employee_salaries", force: :cascade do |t|
-    t.decimal "net_salary", precision: 15, scale: 2
-    t.decimal "salary_tax", precision: 15, scale: 2
+    t.decimal "net_salary", precision: 15, scale: 2, default: "0.0"
+    t.decimal "salary_tax", precision: 15, scale: 2, default: "0.0"
     t.date "salary_tax_due_date"
-    t.decimal "meal_vouchers", precision: 15, scale: 2
-    t.decimal "gift_vouchers", precision: 15, scale: 2
-    t.decimal "overtime", precision: 15, scale: 2
-    t.decimal "extra_salary", precision: 15, scale: 2
-    t.integer "month"
-    t.integer "year"
+    t.decimal "meal_vouchers", precision: 15, scale: 2, default: "0.0"
+    t.decimal "gift_vouchers", precision: 15, scale: 2, default: "0.0"
+    t.decimal "overtime", precision: 15, scale: 2, default: "0.0"
+    t.decimal "extra_salary", precision: 15, scale: 2, default: "0.0"
     t.bigint "employee_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "date"
     t.index ["employee_id"], name: "index_employee_salaries_on_employee_id"
   end
 

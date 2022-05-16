@@ -10,4 +10,6 @@
 #  updated_at   :datetime         not null
 #
 class Employee < ApplicationRecord
+  has_many :employee_salaries, dependent: :destroy
+  accepts_nested_attributes_for :employee_salaries, reject_if: proc { |attributes| attributes['net_salary'].blank? }, allow_destroy: true
 end
