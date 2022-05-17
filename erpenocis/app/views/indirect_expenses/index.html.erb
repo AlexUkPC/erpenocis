@@ -1,2 +1,87 @@
-<h1>IndirectExpenses#index</h1>
-<p>Find me in app/views/indirect_expenses/index.html.erb</p>
+<h1>Cheltuieli indirecte</h1>
+<%= render 'date_form' %>
+<table>
+  <thead>
+    <tr>
+      <th>Cheltuieli</th>
+      <% extra_years = 0 %>
+      <%# List all months and years %>
+        <% @months.times do |month| %>
+          <th>
+            <% if @start_month + month - extra_years * 12 > 12 %> 
+              <% extra_years += 1 %>
+            <% end %>
+            <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+          </th>
+        <% end %>
+      <%# End List all months and years %>
+      <th>Total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% total_values = 0 %>
+    <% salary_expenses = 0 %>
+    <% @total_per_months = [] %>
+    <% @months.times do |month| %>
+      <% @total_per_months[month] = 0 %> 
+    <% end %>
+    <tr>
+      <td><%= link_to employees_path(start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year) do%>Salariale<% end %></td>
+      <% extra_years = 0 %>
+      
+      <% @months.times do |month| %>
+        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+        <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+        <td>
+          <%= for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+          <% salary_expenses += for_total_salary_expenses %>
+          <% @total_per_months[month] += for_total_salary_expenses %>
+        </td>
+      <% end %>
+      <td>
+        <%= salary_expenses %>
+        <% total_values += salary_expenses %>
+      </td>
+    </tr>
+    
+    <% @expense_types.each do |expense_type| %>
+      <% other_expenses = 0 %>
+      <tr>
+        <td><%= link_to expenses_path(expense_type: expense_type, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year) do expense_type.titleize end %></td>
+        <% extra_years = 0 %>
+        <% @expense_values = ExpenseValue.where(expense_id: Expense.where(expense_type: expense_type)) %>
+        <% @months.times do |month| %>
+          <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+          <td>
+            <%= for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+            <% other_expenses += for_total_other_expenses %>
+            <% @total_per_months[month] += for_total_other_expenses %>
+          </td>
+        <% end %>
+        <td>
+          <%= other_expenses %>
+          <% total_values += other_expenses %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <%# Total per month %>
+        <% extra_years = 0 %>
+        <% @months.times do |month| %>
+          <th>         
+            <%= sum = @total_per_months[month] %>
+          </th>
+        <% end %>
+      <%# End Total per month %>
+
+      <%# GrandTotal of totals %>
+        <th><%= total_values %></th>
+      <%# End GrandTotal of totals %>
+
+    </tr>
+  </tfoot>
+</table>

@@ -28,7 +28,10 @@ if a=="y"
   q.times do |j|
     expense = Expense.create(name: SecureRandom.hex(4),expense_type: rand(4))
     qm.times do |i|
-      ExpenseValue.create(expense_id: expense.id, value: rand(100), date: Date.today-4.months+i.months)
+      r = rand(100)
+      if r<50
+        ExpenseValue.create(expense_id: expense.id, value: rand(100), date: Date.today-4.months+i.months)
+      end
     end
     print j.to_s+'|'
     
