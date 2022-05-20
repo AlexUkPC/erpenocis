@@ -1,0 +1,15 @@
+<div class="nested-fields">
+  <div class="field">
+    <%= f.label :paid_amount %>
+    <%= f.number_field :paid_amount, step: 0.01 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :date %>
+    <%= f.date_field :date %>
+  </div>
+
+  <div class="actions">
+    <%= link_to_remove_association "Sterge", f %>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="nested-fields col-lg-4 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <div class="field mb-1">
+        <%= f.label :number, "Numar factura" %>
+        <%= f.text_field :number %>
+      </div>
+      
+      <div class="field mb-1">
+        <%= f.label :value, "Suma factura" %>
+        <%= f.number_field :value, step: 0.01 %>
+      </div>
+
+      <div class="field mb-1">
+        <%= f.label :date, "Data emiterii" %>
+        <%= f.date_field :date, value: (f.object.date || Date.parse("01/"+params[:current_month]+"/"+params[:current_year]))%>
+      </div>
+
+      <div class="field mb-1">
+        <%= f.label :due_date, "Data scadenta" %>
+        <%= f.date_field :due_date, value: (f.object.due_date || Date.parse("01/"+params[:current_month]+"/"+params[:current_year])) %>
+      </div>
+      <div class="field mb-1">
+        Plati:
+      </div>
+      
+      <div class="field row ms-3">
+        <%= f.fields_for :supplier_invoice_payments do |supplier_invoice_payment| %>
+          <%= render 'supplier_invoice_payment_fields', f: supplier_invoice_payment %>
+        <% end %>
+ 
+        <div class="mb-3">
+          <%= link_to_add_association "Adauga plata", f, :supplier_invoice_payments %>
+        </div>
+      </div>
+      <div class="actions">
+        <%= link_to_remove_association "Sterge factura", f %>
+      </div>
+    </div>
+  </div>
+
+</div>

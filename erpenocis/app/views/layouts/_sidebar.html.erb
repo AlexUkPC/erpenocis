@@ -131,7 +131,7 @@
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='suppliers' %>">
-              <%= link_to suppliers_path, class: "nav-link" do%>
+              <%= link_to suppliers_path(current_tab: "fe", start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
                 <i class="far fa-users-class menu-icon"></i>
                 <span class="menu-title">Situatie furnizori</span>
               <% end %>

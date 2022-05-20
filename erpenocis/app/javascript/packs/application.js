@@ -9,6 +9,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "users"
 import "orders"
+import "suppliers"
 
 
 Rails.start()
