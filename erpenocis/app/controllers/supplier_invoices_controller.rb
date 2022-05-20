@@ -65,6 +65,6 @@ class SupplierInvoicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def supplier_invoice_params
-      params.require(:supplier_invoice).permit(:number, :value, :paid_amount, :date, :due_date, :supplier_id)
+      params.require(:supplier_invoice).permit(:number, :value, :date, :due_date, :supplier_id, supplier_invoice_payments_attributes:[:id, :paid_amount, :date, :_destroy])
     end
 end

@@ -1,0 +1,19 @@
+<div class="nested-fields col-lg-12 grid-margin stretch-card mb-3">
+  <div class="card bg-info">
+    <div class="card-body text-light">
+      <div class="field ms-2 mb-1">
+        <%= f.label :paid_amount, "Suma platita" %>
+        <%= f.number_field :paid_amount, step: 0.01 %>
+      </div>
+
+      <div class="field ms-2 mb-1">
+        <%= f.label :date, "Data platii" %>
+        <%= f.date_field :date, value: (f.object.date || Date.today) %>
+      </div>
+
+      <div class="actions">
+        <%= link_to_remove_association "Sterge plata", f %>
+      </div>
+    </div>
+  </div>
+</div>

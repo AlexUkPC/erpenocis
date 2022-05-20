@@ -1,32 +1,35 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Suppliers</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @suppliers.each do |supplier| %>
-      <tr>
-        <td><%= supplier.name %></td>
-        <td><%= link_to 'Show', supplier %></td>
-        <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>
-        <td><%= link_to 'Destroy', supplier, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h1>Furnizori</h1>
+<%= render 'date_form' %>
+<br>
+<ul class="nav nav-tabs" id="suppliers" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= "active" if params[:current_tab]=="fe" %>" id="issued-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#issued-supplier-invoices" type="button" role="tab" aria-controls="issued-supplier-invoices" aria-selected="true">Facturi emise</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= "active" if params[:current_tab]=="fp" %>" id="to-be-payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#to-be-payed-supplier-invoices" type="button" role="tab" aria-controls="to-be-payed-supplier-invoices" aria-selected="false">Facturi de plata</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= "active" if params[:current_tab]=="fa" %>" id="payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#payed-supplier-invoices" type="button" role="tab" aria-controls="payed-supplier-invoices" aria-selected="false">Facturi achitate</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= "active" if params[:current_tab]=="fr" %>" id="unpaid-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#unpaid-supplier-invoices" type="button" role="tab" aria-controls="unpaid-supplier-invoices" aria-selected="false">Facturi restante</button>
+  </li>
+</ul>
+<div class="tab-content" id="employeesContent">
+  <div class="tab-pane fade <%= "show active" if params[:current_tab]=="fe" %>" id="issued-supplier-invoices" role="tabpanel" aria-labelledby="issued-supplier-invoices-tab">
+    <%= render 'table', of_what: "issued_supplier_invoices" %>
+  </div>
+  <div class="tab-pane fade <%= "show active" if params[:current_tab]=="fp" %>" id="to-be-payed-supplier-invoices" role="tabpanel" aria-labelledby="to-be-payed-supplier-invoices-tab">
+    <%= render 'table', of_what: "to_be_payed_supplier_invoices" %>
+  </div>
+  <div class="tab-pane fade <%= "show active" if params[:current_tab]=="fa" %>" id="payed-supplier-invoices" role="tabpanel" aria-labelledby="payed-supplier-invoices-tab">
+    <%= render 'table', of_what: "payed_supplier_invoices" %>
+  </div>
+  <div class="tab-pane fade <%= "show active" if params[:current_tab]=="fr" %>" id="unpaid-supplier-invoices" role="tabpanel" aria-labelledby="unpaid-supplier-invoices-tab">
+    <%= render 'table', of_what: "unpaid_supplier_invoices" %>
+  </div>
+</div>
 
 <br>
 
-<%= link_to 'New Supplier', new_supplier_path %>
-<br>
-<br>
-<%= link_to 'View Supplier Invoices', supplier_invoices_path %>
-<br>
-<%= link_to 'New Supplier Invoice', new_supplier_invoice_path %>
+<%= link_to 'Furnizor nou', new_supplier_path(new: true, current_tab: "fe", start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]) %>

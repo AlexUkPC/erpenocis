@@ -6,7 +6,6 @@
 #  date        :date
 #  due_date    :date
 #  number      :string
-#  paid_amount :decimal(15, 2)
 #  value       :decimal(15, 2)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

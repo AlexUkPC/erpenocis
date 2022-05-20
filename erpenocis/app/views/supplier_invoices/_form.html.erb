@@ -27,18 +27,24 @@
   </div>
 
   <div class="field">
-    <%= form.label :paid_amount %>
-    <%= form.text_field :paid_amount %>
-  </div>
-
-  <div class="field">
     <%= form.label :date %>
-    <%= form.date_select :date %>
+    <%= form.date_field :date %>
   </div>
 
   <div class="field">
     <%= form.label :due_date %>
-    <%= form.date_select :due_date %>
+    <%= form.date_field :due_date %>
+  </div>
+  
+  <div class="field">
+    <%= form.fields_for :supplier_invoice_payments do |supplier_invoice_payment| %>
+      <%= render 'supplier_invoice_payment_fields', f: supplier_invoice_payment %>
+    <% end %>
+  </div>
+  <div class="field">
+    <div class="">
+      <%= link_to_add_association "Adauga plata", form, :supplier_invoice_payments %>
+    </div>
   </div>
 
   <div class="actions">
