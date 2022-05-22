@@ -1,28 +1,34 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Cars</h1>
+<h1>Flota auto</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Number plate</th>
-      <th>Rca expiry date</th>
-      <th>Rov expiry date</th>
-      <th>Itp expiry date</th>
-      <th colspan="3"></th>
+      <th>Id</th>
+      <th>Numar inmatriculare</th>
+      <th>Data expirare Rca</th>
+      <th>Data expirare Rovinieta</th>
+      <th>Data expirare Itp</th>
+
     </tr>
   </thead>
 
   <tbody>
-    <% @cars.each do |car| %>
+    <% @cars.each do |car| %> 
       <tr>
-        <td><%= car.number_plate %></td>
-        <td><%= car.rca_expiry_date %></td>
-        <td><%= car.rov_expiry_date %></td>
-        <td><%= car.itp_expiry_date %></td>
-        <td><%= link_to 'Show', car %></td>
-        <td><%= link_to 'Edit', edit_car_path(car) %></td>
-        <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= car.id %></td>
+          <td>
+            <%= link_to cars_path(id: car.id) do %> 
+              <div>
+                <%= car.number_plate %>&nbsp
+              </div>
+            <% end %>
+          </td>
+          <td><%= car.rca_expiry_date %></td>
+          <td><%= car.rov_expiry_date %></td>
+          <td><%= car.itp_expiry_date %></td>
+          <!--<td><%= link_to 'Show', car %></td>
+          <td><%= link_to 'Edit', edit_car_path(car) %></td>-->
+
       </tr>
     <% end %>
   </tbody>
@@ -30,4 +36,4 @@
 
 <br>
 
-<%= link_to 'New Car', new_car_path %>
+<%= render 'form', car: @car %>

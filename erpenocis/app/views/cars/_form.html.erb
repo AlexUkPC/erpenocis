@@ -12,26 +12,30 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :number_plate %>
+    <%= form.label :number_plate, "Numar inmatriculare" %>
     <%= form.text_field :number_plate %>
   </div>
 
   <div class="field">
-    <%= form.label :rca_expiry_date %>
-    <%= form.date_select :rca_expiry_date %>
+    <%= form.label :rca_expiry_date, "Data expirare Rca" %>
+    <%= form.date_field :rca_expiry_date %>
   </div>
 
   <div class="field">
-    <%= form.label :rov_expiry_date %>
-    <%= form.date_select :rov_expiry_date %>
+    <%= form.label :rov_expiry_date, "Data expirare Rovinieta" %>
+    <%= form.date_field :rov_expiry_date %>
   </div>
 
   <div class="field">
-    <%= form.label :itp_expiry_date %>
-    <%= form.date_select :itp_expiry_date %>
+    <%= form.label :itp_expiry_date, "Data expirare Itp" %>
+    <%= form.date_field :itp_expiry_date %>
   </div>
 
   <div class="actions">
     <%= form.submit %>
+    <% if car.id %>
+      <%= link_to "Anuleaza", cars_path %>
+      <%= link_to 'Sterge masina', car, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
   </div>
 <% end %>
