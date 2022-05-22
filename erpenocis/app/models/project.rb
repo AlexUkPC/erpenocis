@@ -19,7 +19,7 @@ class Project < ApplicationRecord
   has_one :project_situation, dependent: :destroy
   has_many :project_costs, dependent: :destroy
   accepts_nested_attributes_for :project_costs, reject_if: :all_blank, allow_destroy: true
-  
+  scope :created_between, lambda {|start_date, end_date| where("start_date >= ? AND start_date <= ?", start_date, end_date )}
   def ord
     if self.stoc
       Order.where(project_id: self.id).order("id ASC")

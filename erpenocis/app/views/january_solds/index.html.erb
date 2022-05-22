@@ -14,7 +14,7 @@
   <tbody>
     <% @january_solds.each do |january_sold| %>
       <tr>
-        <td><%= january_sold.january_sold %></td>
+        <td><%= january_sold.value %></td>
         <td><%= january_sold.year %></td>
         <td><%= link_to 'Show', january_sold %></td>
         <td><%= link_to 'Edit', edit_january_sold_path(january_sold) %></td>

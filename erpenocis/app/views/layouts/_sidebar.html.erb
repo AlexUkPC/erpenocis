@@ -138,7 +138,7 @@
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='financial_centralization' %>">
-              <%= link_to financial_centralization_path, class: "nav-link" do%>
+              <%= link_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
                 <i class="far fa-money-check-alt menu-icon"></i>
                 <span class="menu-title">Centralizare financiara</span>
               <% end %>
