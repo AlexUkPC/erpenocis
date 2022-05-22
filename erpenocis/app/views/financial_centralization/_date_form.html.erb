@@ -1,0 +1,14 @@
+<%= form_with( method: "get" ) do |form| %>
+  <% months = (1..12).to_a %>
+  <% years = (2022..Date.today().strftime("%Y").to_i+10).to_a %>
+  De la: 
+  <%= form.select :start_month, options_for_select(months, params[:start_month]) %>
+  <%= form.select :start_year, options_for_select(years, params[:start_year] ) %>
+  Pana la: 
+  <%= form.select :end_month, options_for_select(months, params[:end_month]) %>
+  <%= form.select :end_year, options_for_select(years, params[:end_year]) %>
+  <%= hidden_field_tag(:jsid, "") %>
+  <%= hidden_field_tag(:year, Date.today().strftime("%Y")) %>
+
+  <%= form.submit "Afiseaza" %>
+<% end %>

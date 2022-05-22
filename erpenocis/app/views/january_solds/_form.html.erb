@@ -1,4 +1,5 @@
 <%= form_with(model: january_sold) do |form| %>
+  <% years = (2022..Date.today().strftime("%Y").to_i+10).to_a %>
   <% if january_sold.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(january_sold.errors.count, "error") %> prohibited this january_sold from being saved:</h2>
@@ -12,16 +13,26 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :january_sold %>
-    <%= form.number_field :january_sold, step: 0.01 %>
+    <%= form.label :value, "Sold Ianuarie" %>
+    <%= form.number_field :value, step: 0.01 %>
   </div>
 
   <div class="field">
-    <%= form.label :year %>
-    <%= form.number_field :year %>
+    <%= form.label :year, "Anul" %>
+    <%= form.select :year, options_for_select(years, params[:year]) %>
   </div>
+  <%= hidden_field_tag(:start_month, @start_month) %>
+  <%= hidden_field_tag(:start_year, @start_year) %>
+  <%= hidden_field_tag(:end_month, @end_month) %>
+  <%= hidden_field_tag(:end_year, @end_year) %>
 
   <div class="actions">
     <%= form.submit %>
   </div>
+  
+  
+  <% if january_sold.id %>
+    <%= link_to 'Sterge sold ianuarie', january_sold_url(id: january_sold.id, jsid: "", year: Date.today().strftime("%Y"), start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>   
+  <% end %>
+  
 <% end %>
