@@ -1,0 +1,12 @@
+<%= form_with( method: "get" ) do |form| %>
+  <% months = (1..12).to_a %>
+  <% years = (2022..Date.today().strftime("%Y").to_i+10).to_a %>
+  De la: 
+  <%= form.select :sm, options_for_select(months, @start_month) %>
+  <%= form.select :sy, options_for_select(years, @start_year ) %>
+  Pana la: 
+  <%= form.select :em, options_for_select(months, @end_month) %>
+  <%= form.select :ey, options_for_select(years, @end_year) %>
+
+  <%= form.submit "Afiseaza" %>
+<% end %>

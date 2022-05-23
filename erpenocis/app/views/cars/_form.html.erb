@@ -30,12 +30,16 @@
     <%= form.label :itp_expiry_date, "Data expirare Itp" %>
     <%= form.date_field :itp_expiry_date %>
   </div>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
     <%= form.submit %>
     <% if car.id %>
-      <%= link_to "Anuleaza", cars_path %>
-      <%= link_to 'Sterge masina', car, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Anuleaza", cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
+      <%= link_to 'Sterge masina', car_path(car, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
   </div>
 <% end %>

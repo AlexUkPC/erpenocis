@@ -11,4 +11,5 @@
 #  updated_at      :datetime         not null
 #
 class Car < ApplicationRecord
+  scope :between_dates, lambda {|start_date, end_date| where("rca_expiry_date >= ? AND rca_expiry_date <= ? OR rov_expiry_date >= ? AND rov_expiry_date <= ? OR itp_expiry_date >= ? AND itp_expiry_date <= ?", start_date, end_date, start_date, end_date, start_date, end_date )}
 end
