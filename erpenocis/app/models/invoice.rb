@@ -27,4 +27,5 @@
 #
 class Invoice < ApplicationRecord
   belongs_to :project
+  scope :between_dates, lambda {|start_date, end_date| where("invoice_date >= ? AND invoice_date <= ?", start_date, end_date )}
 end
