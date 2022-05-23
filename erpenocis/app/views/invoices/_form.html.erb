@@ -15,47 +15,47 @@
   <%= form.hidden_field :user_id, value: current_user.id %>
 
   <div class="field">
-    <%= form.label :project_id %>
+    <%= form.label :project_id, "Proiect" %>
     <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
   </div>
 
   <div class="field">
-    <%= form.label :description %>
+    <%= form.label :description, "Descriere" %>
     <%= form.text_field :description %>
   </div>
 
   <div class="field">
-    <%= form.label :category %>
+    <%= form.label :category, "Categorie" %>
     <%= form.text_field :category %>
   </div>
 
   <div class="field">
-    <%= form.label :supplier %>
+    <%= form.label :supplier, "Furnizor" %>
     <%= form.text_field :supplier %>
   </div>
 
   <div class="field">
-    <%= form.label :invoice_number %>
+    <%= form.label :invoice_number, "Nr. factura" %>
     <%= form.text_field :invoice_number %>
   </div>
 
   <div class="field">
-    <%= form.label :invoice_date %>
+    <%= form.label :invoice_date, "Data factura" %>
     <%= form.date_field :invoice_date %>
   </div>
   
   <div class="field">
-    <%= form.label :invoice_value_without_vat %>
+    <%= form.label :invoice_value_without_vat, "Valoare factura fara TVA" %>
     <%= form.number_field :invoice_value_without_vat, step: 0.01 %>
   </div>
 
   <div class="field">
-    <%= form.label :invoice_value_for_project_without_vat %>
+    <%= form.label :invoice_value_for_project_without_vat, "Valoare factura pt proiect fara TVA" %>
     <%= form.number_field :invoice_value_for_project_without_vat, step: 0.01%>
   </div>
 
   <div class="field">
-    <%= form.label :obs %>
+    <%= form.label :obs, "Observatii" %>
     <%= form.text_area :obs %>
   </div>
 

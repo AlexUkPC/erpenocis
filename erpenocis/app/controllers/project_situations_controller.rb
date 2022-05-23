@@ -42,7 +42,7 @@ class ProjectSituationsController < ApplicationController
   def update
     respond_to do |format|
       if @project_situation.update(project_situation_params)
-        format.html { redirect_to project_situation_url(@project_situation), notice: "Project situation was successfully updated." }
+        format.html { redirect_to project_situations_path, notice: "Project situation was successfully updated." }
         format.json { render :show, status: :ok, location: @project_situation }
       else
         format.html { render :edit, status: :unprocessable_entity }

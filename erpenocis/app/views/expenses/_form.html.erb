@@ -14,29 +14,29 @@
   <%= form.hidden_field :expense_type, value: @expense.expense_type %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name, "Denumire cheltuiala" %>
     <%= form.text_field :name %>
   </div>
   <% if !@expense.name %>
     <%= form.fields_for :expense_values do |f| %>
 
       <div class="field">
-        <%= f.label :value %>
+        <%= f.label :value, "Suma" %>
         <%= f.number_field :value, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :date %>
+        <%= f.label :date, "Data cheltuiala" %>
         <%= f.date_field :date %>
       </div>
 
       <div class="field">
-        <%= f.label :due_date %>
+        <%= f.label :due_date, "Data scadenta" %>
         <%= f.date_field :due_date %>
       </div>
 
       <div class="field">
-        <%= f.label :vat_taxes %>
+        <%= f.label :vat_taxes, "Taxe stat/TVA?" %>
         <%= f.check_box :vat_taxes %>
       </div>
     <% end %>
@@ -44,17 +44,17 @@
     <%= form.fields_for :expense_values, @expense_value do |f| %>
 
       <div class="field">
-        <%= f.label :value %>
+        <%= f.label :value, "Suma" %>
         <%= f.number_field :value, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :date %>
+        <%= f.label :date, "Data cheltuiala" %>
         <%= f.date_field :date %>
       </div>
 
       <div class="field">
-        <%= f.label :due_date %>
+        <%= f.label :due_date, "Data scadenta" %>
         <%= f.date_field :due_date %>
       </div>
 

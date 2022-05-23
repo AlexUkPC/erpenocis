@@ -1,16 +1,17 @@
 <%= form_with(model: project, url: edit_project_cost_path(project), method: "patch") do |form| %>
   <%= form.hidden_field :project, value: project %>
-  <div class="field">
+  <h1>Editeaza costuri pt proiectul <%= project.name %></h1>
+  <div class="field mt-3">
     <%= form.fields_for :project_costs do |project_cost| %>
       <%= render 'project_cost_fields', f: project_cost %>
     <% end %>
   </div>
-  <div class="field">
+  <div class="field mb-3">
     <div class="">
-      <%= link_to_add_association "Adauga cost", form, :project_costs %>
+      <%= link_to_add_association "Adauga cost materiale", form, :project_costs %>
     </div>
   </div>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Salveaza" %>
   </div>
 <% end %>

@@ -2,7 +2,7 @@
       <thead>
         <tr>
           <th>Id</th>
-          <th>Name</th>
+          <th>Nume angajat</th>
           <% extra_years = 0 %>
           <%# List all months and years %>
             <% @months.times do |month| %>
@@ -31,7 +31,7 @@
 
             <%# Employee name with link %>
               <td>
-                <%= link_to employees_path(employee_id: employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%></div><% end %>
+                <%= link_to employees_path(employee_id: employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
               </td>
             <%# End Employee name with link %>
 
@@ -88,7 +88,7 @@
             <%# Links %>
             <!-- <td><%= link_to 'Show', employee %></td>
             <td><%= link_to 'Edit', edit_employee_path(employee) %></td> -->
-            <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Sterge', employee_path(employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
             <%# End Links %> 
           </tr>
         <% end %>

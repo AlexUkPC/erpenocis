@@ -1,12 +1,10 @@
-<p id="notice"><%= notice %></p>
-
-<h1><%= params[:expense_type] ? params[:expense_type].titleize : "Cheltuieli" %></h1>
+<h1><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %></h1>
 <%= render 'date_form' %>
 <table>
   <thead>
     <tr>
       <th>Id</th>
-      <th>Name</th>
+      <th>Denumire cheltuiala</th>
       <% extra_years = 0 %>
       <%# List all months and years %>
         <% @months.times do |month| %>
@@ -78,7 +76,7 @@
         <%# Links %>
           <!-- <td><%= link_to 'Show', expense %></td>
           <td><%= link_to 'Edit', edit_expense_path(expense) %></td> -->
-          <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Sterge', expense_path(expense,start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %></td>
         <%# End Links %> 
       </tr>
     <% end %>
@@ -110,10 +108,3 @@
 <br>
 <%= render 'form', expense: @expense %>
 <br>
-
-<%= link_to 'New Expense', new_expense_path %>
-<br>
-<br>
-<%= link_to 'View Expense Values', expense_values_path %>
-<br>
-<%= link_to 'New Expense Value', new_expense_value_path %>

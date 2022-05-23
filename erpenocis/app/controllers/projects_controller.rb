@@ -5,6 +5,7 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.where(stoc: false)
     @users = User.all
+    
   end
 
   # GET /projects/1 or /projects/1.json
