@@ -28,7 +28,7 @@ class Project < ApplicationRecord
 
   def after_01_01_2020
     if start_date.present? && start_date<Date.parse('2020.01.01')
-      errors.add(:start_date, "nu poate fi inainte de 2020")
+      errors.add(:start_date, "nu poate fi inainte de 01.01.2020")
     end
   end
 
