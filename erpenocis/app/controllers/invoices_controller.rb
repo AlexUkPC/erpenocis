@@ -13,7 +13,7 @@ class InvoicesController < ApplicationController
 
   # GET /invoices/new
   def new
-    @invoice = Invoice.new
+    @invoice = Invoice.new(invoice_date: Date.today())
   end
 
   # GET /invoices/1/edit
