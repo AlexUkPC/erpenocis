@@ -1,4 +1,5 @@
 <h1>Situatie proiecte</h1>
+<%= render 'layouts/date_form' %>
 Total avansuri incasate: <%= @total_advance_payment %>
 <br>
 Total proiecte de incasat: <%= @total_to_be_collected %>
@@ -57,7 +58,7 @@ Total proiecte de incasat: <%= @total_to_be_collected %>
           <td><%= project_situation.closure_payment %></td>
           <td><%= project_situation.closure_month %></td>
           <td><%= project_situation.closure_year %></td>
-          <td><%= link_to 'Modifica', edit_project_situation_path(project_situation) %></td>
+          <td><%= link_to 'Modifica', edit_project_situation_path(project_situation, which_date: @which_date, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %></td>
         <% end %>
 
       </tr>

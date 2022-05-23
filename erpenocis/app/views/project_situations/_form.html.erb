@@ -10,66 +10,73 @@
       </ul>
     </div>
   <% end %>
+  <% months = (1..12).to_a %>
+  <% years = (2020..Date.today().strftime("%Y").to_i+10).to_a %>
 
   <div class="field">
-    <%= form.label :advance_invoice_date %>
+    <%= form.label :advance_invoice_date, "Data ff avans" %>
     <%= form.date_field :advance_invoice_date %>
   </div>
 
   <div class="field">
-    <%= form.label :advance_invoice_number %>
+    <%= form.label :advance_invoice_number, "FF avans" %>
     <%= form.text_field :advance_invoice_number %>
   </div>
 
   <div class="field">
-    <%= form.label :advance_payment_date %>
+    <%= form.label :advance_payment_date, "Data avans" %>
     <%= form.date_field :advance_payment_date %>
   </div>
 
   <div class="field">
-    <%= form.label :advance_payment %>
+    <%= form.label :advance_payment, "Avans" %>
     <%= form.number_field :advance_payment, step: 0.01 %>
   </div>
 
   <div class="field">
-    <%= form.label :advance_month %>
-    <%= form.number_field :advance_month %>
+    <%= form.label :advance_month, "Luna comanda/avans" %>
+    <%= form.select :advance_month, options_for_select(months, project_situation.advance_month), include_blank: true %>
   </div>
 
   <div class="field">
-    <%= form.label :advance_year %>
-    <%= form.number_field :advance_year %>
+    <%= form.label :advance_year, "An comanda/avans" %>
+    <%= form.select :advance_year, options_for_select(years, project_situation.advance_year), include_blank: true %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_invoice_date %>
+    <%= form.label :closure_invoice_date, "Data ff finala" %>
     <%= form.date_field :closure_invoice_date %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_invoice_number %>
+    <%= form.label :closure_invoice_number, "FF finala" %>
     <%= form.text_field :closure_invoice_number %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_payment_date %>
+    <%= form.label :closure_payment_date, "Data inchidere" %>
     <%= form.date_field :closure_payment_date %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_payment %>
+    <%= form.label :closure_payment, "Inchidere" %>
     <%= form.number_field :closure_payment, step: 0.01 %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_month %>
-    <%= form.number_field :closure_month %>
+    <%= form.label :closure_month, "Luna finalizare/rest de plata" %>
+    <%= form.select :closure_month, options_for_select(months, project_situation.closure_month), include_blank: true %>
   </div>
 
   <div class="field">
-    <%= form.label :closure_year %>
-    <%= form.number_field :closure_year %>
+    <%= form.label :closure_year, "An finalizare/rest de plata" %>
+    <%= form.select :closure_year, options_for_select(years, project_situation.closure_year), include_blank: true %>
   </div>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
+  <%= hidden_field_tag(:which_date, @which_date) %>
 
   <div class="actions">
     <%= form.submit %>

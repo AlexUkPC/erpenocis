@@ -1,6 +1,16 @@
 <%= form_with( method: "get" ) do |form| %>
+
   <% months = (1..12).to_a %>
   <% years = (2020..Date.today().strftime("%Y").to_i+10).to_a %>
+
+  <% if @which_date %>
+    <%= form.radio_button :which_date, 'advance', checked: (true if @which_date=='advance') %>
+    <%= form.label :which_date, 'Data comanda/avans', value: 'advance' %>
+    <%= form.radio_button :which_date, 'closure', checked: (true if @which_date=='closure') %>
+    <%= form.label :which_date, 'Data finalizare/rest de plata', value: 'closure' %>
+    <br>
+  <% end %>
+
   De la: 
   <%= form.select :sm, options_for_select(months, @start_month) %>
   <%= form.select :sy, options_for_select(years, @start_year ) %>

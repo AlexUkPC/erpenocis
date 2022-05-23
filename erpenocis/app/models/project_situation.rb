@@ -29,4 +29,6 @@
 #
 class ProjectSituation < ApplicationRecord
   belongs_to :project
+  scope :between_advance_dates, lambda {|start_month, end_month, start_year, end_year| where("advance_month IS null OR advance_year IS null OR advance_month >= ? AND advance_month <= ? AND advance_year >= ? AND advance_year <= ?", start_month, end_month, start_year, end_year )}
+  scope :between_closure_dates, lambda {|start_month, end_month, start_year, end_year| where("closure_month IS null OR closure_year IS null OR closure_month >= ? AND closure_month <= ? AND closure_year >= ? AND closure_year <= ?", start_month, end_month, start_year, end_year )}
 end
