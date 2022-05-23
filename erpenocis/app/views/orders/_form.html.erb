@@ -76,8 +76,13 @@
     <%= form.label :obs, "Observatii" %>
     <%= form.text_area :obs %>
   </div>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
     <%= form.submit %>
+    <%= link_to "Renunta", orders_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
   </div>
 <% end %>

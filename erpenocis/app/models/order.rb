@@ -38,6 +38,8 @@ class Order < ApplicationRecord
   validates :ordered_quantity, presence: true
   enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
   before_save :check_quantity
+  scope :between_dates, lambda {|start_date, end_date| where("order_date IS null OR order_date >= ? AND order_date <= ?", start_date, end_date )}
+
   def full_description
   "Categorie:" +  self.category + " Denumire/Tip/Nuanta:" + self.name_type_color + " Cantitate necesara:" + self.needed_quantity.to_s + " UM:" + self.unit + " Cote:" + self.cote
   end

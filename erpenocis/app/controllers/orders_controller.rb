@@ -1,8 +1,9 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy move move_order ]
+  before_action :set_dates_params
   # GET /orders or /orders.json
   def index
-    @orders = Order.all.order("id DESC")
+    @orders = Order.between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year)).order("id DESC")
     @users = User.all
     @suppliers = Supplier.all
   end
@@ -31,7 +32,7 @@ class OrdersController < ApplicationController
         if @new_order
           @new_order.update(brother_id: @order.id)
         end
-        format.html { redirect_to orders_url, notice: "Order was successfully created." }
+        format.html { redirect_to orders_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Comanda a fost creeata." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,7 +48,7 @@ class OrdersController < ApplicationController
     if @zero!=0
       respond_to do |format|
         if @order.update(order_params)
-          format.html { redirect_to orders_url, notice: "Order was successfully updated." }
+          format.html { redirect_to orders_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Comanda a fost modificata." }
           format.json { render :show, status: :ok, location: @order }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -69,7 +70,7 @@ class OrdersController < ApplicationController
         update_brother_id_delete(id)
       end
       respond_to do |format|
-        format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
+        format.html { redirect_to orders_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Comanda a fost stearsa." }
         format.json { head :no_content }
       end
     # end
@@ -136,7 +137,7 @@ class OrdersController < ApplicationController
     else 
       @order.destroy #sterge
     end
-    redirect_to orders_url, notice: "Order was successfully moved."
+    redirect_to orders_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Comanda a fost mutata."
   end
   
   private
