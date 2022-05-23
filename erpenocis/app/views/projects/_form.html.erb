@@ -13,32 +13,32 @@
   <%= form.hidden_field :user_id, value: current_user.id %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name, "Nume" %>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :start_date %>
+    <%= form.label :start_date, "Data inceput" %>
     <%= form.date_field :start_date %>
   </div>
 
   <div class="field">
-    <%= form.label :end_date %>
+    <%= form.label :end_date, "Data finalizare" %>
     <%= form.date_field :end_date %>
   </div>
 
   <div class="field">
-    <%= form.label :value %>
+    <%= form.label :value, "Valoare" %>
     <%= form.number_field :value, step: 0.01  %>
   </div>
 
   <div class="field">
-    <%= form.label :obs %>
+    <%= form.label :obs, "Observatii" %>
     <%= form.text_area :obs %>
   </div>
 
   <div class="field">
-    <%= form.label :stoc %>
+    <%= form.label :stoc, "Este stoc?" %>
     <%= form.check_box :stoc %>
   </div>
 

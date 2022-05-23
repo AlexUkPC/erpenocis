@@ -1,6 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Project Costs</h1>
+<h1>Costuri proiecte</h1>
 
 <table>
   <% max = 0 %>
@@ -10,7 +8,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
+      <th>Nume</th>
       <% max.times do |i| %>
         <th>Cost <%= i+1 %> </th>
         <th>Data cost <%= i+1 %> </th>
@@ -41,10 +39,8 @@
               <td></td>
             <% end %>
           <% end %>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_cost_path(project
+        <td><%= link_to 'Modifica', edit_project_cost_path(project
         ) %></td>
-        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

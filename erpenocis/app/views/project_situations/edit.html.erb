@@ -1,12 +1,15 @@
 <h1><%= @project_situation.project.name %></h1>
+<% project_situation = ProjectSituation.where(project_id: @project_situation.project.id).first %>
+
+<% sum = ProjectCost.where(project_id: @project_situation.project.id).sum(:amount) %>
 <br>
 Valoare proiect:<%= @project_situation.project.value %>
 <br>
-Cost materiale :
+Cost materiale :<%= sum %>
 <br>
-Profitabilitate:
+Profitabilitate:<%= @project_situation.project.value - sum %>
 <br>
-Profitabilitate %:
+Profitabilitate %:<%= sprintf('%.2f', (@project_situation.project.value - sum) * 100/  @project_situation.project.value) %>
 <br>
 Rest de plata: <%= @project_situation.project.value - @project_situation.advance_payment - @project_situation.closure_payment %>
 <br>

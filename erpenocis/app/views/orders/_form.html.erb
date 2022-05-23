@@ -13,7 +13,7 @@
   <%= form.hidden_field :user_id, value: current_user.id %>
 
   <div class="field">
-    <%= form.label :project_id %>
+    <%= form.label :project_id, "Proiect" %>
     <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
   </div>
 
@@ -23,22 +23,22 @@
   </div>
 
   <div class="field">
-    <%= form.label :category %>
+    <%= form.label :category, "Categorie" %>
     <%= form.text_field :category %>
   </div>
 
   <div class="field">
-    <%= form.label :name_type_color %>
+    <%= form.label :name_type_color, "Denumire/Tip/Nuanta" %>
     <%= form.text_field :name_type_color %>
   </div>
 
   <div class="field">
-    <%= form.label :needed_quantity %>
+    <%= form.label :needed_quantity, "Cant. necesara" %>
     <%= form.number_field :needed_quantity %>
   </div>
 
   <div class="field">
-    <%= form.label :unit %>
+    <%= form.label :unit, "UM" %>
     <%= form.text_field :unit %>
   </div>
 
@@ -48,32 +48,32 @@
   </div>
 
   <div class="field">
-    <%= form.label :ordered_quantity %>
+    <%= form.label :ordered_quantity, "Cant. comandata" %>
     <%= form.number_field :ordered_quantity, required: true %>
   </div>
 
   <div class="field">
-    <%= form.label :supplier_id %>
+    <%= form.label :supplier_id, "Furnizor" %>
     <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]}, { include_blank: true } %>
   </div>
 
   <div class="field">
-    <%= form.label :supplier_contact %>
+    <%= form.label :supplier_contact, "Contact furnizor" %>
     <%= form.text_field :supplier_contact %>
   </div>
 
   <div class="field">
-    <%= form.label :order_date %>
+    <%= form.label :order_date, "Data comanda" %>
     <%= form.date_field :order_date %>
   </div>
 
   <div class="field">
-    <%= form.label :delivery_date %>
+    <%= form.label :delivery_date, "Data livrare" %>
     <%= form.date_field :delivery_date %>
   </div>
 
   <div class="field">
-    <%= form.label :obs %>
+    <%= form.label :obs, "Observatii" %>
     <%= form.text_area :obs %>
   </div>
 

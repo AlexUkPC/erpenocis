@@ -12,17 +12,17 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name, "Nume" %>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :hire_date %>
+    <%= form.label :hire_date, "Data angajarii" %>
     <%= form.date_field :hire_date %>
   </div>
 
   <div class="field">
-    <%= form.label :dismiss_date %>
+    <%= form.label :dismiss_date, "Data incheierii" %>
     <%= form.date_field :dismiss_date %>
   </div>
 
@@ -30,42 +30,42 @@
     <%= form.fields_for :employee_salaries do |f| %>
 
       <div class="field">
-        <%= f.label :net_salary %>
+        <%= f.label :net_salary, "Salariu net" %>
         <%= f.number_field :net_salary, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :salary_tax %>
+        <%= f.label :salary_tax, "Taxe de achitat" %>
         <%= f.number_field :salary_tax, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :salary_tax_due_date %>
+        <%= f.label :salary_tax_due_date, "Data scadenta taxe" %>
         <%= f.date_field :salary_tax_due_date %>
       </div>
 
       <div class="field">
-        <%= f.label :meal_vouchers %>
+        <%= f.label :meal_vouchers, "Bonuri de masa" %>
         <%= f.number_field :meal_vouchers, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :gift_vouchers %>
+        <%= f.label :gift_vouchers, "Bonuri cadou" %>
         <%= f.number_field :gift_vouchers, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :overtime %>
+        <%= f.label :overtime, "Ore suplimentare" %>
         <%= f.number_field :overtime, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :extra_salary %>
+        <%= f.label :extra_salary, "Salariu extra" %>
         <%= f.number_field :extra_salary, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :date %>
+        <%= f.label :date, "Data" %>
         <%= f.date_field :date %>
       </div>
 
@@ -74,42 +74,42 @@
     <%= form.fields_for :employee_salaries, @employee_salary do |f| %>
 
       <div class="field">
-        <%= f.label :net_salary %>
+        <%= f.label :net_salary, "Salariu net" %>
         <%= f.number_field :net_salary, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :salary_tax %>
+        <%= f.label :salary_tax, "Taxe de achitat" %>
         <%= f.number_field :salary_tax, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :salary_tax_due_date %>
+        <%= f.label :salary_tax_due_date, "Data scadenta taxe" %>
         <%= f.date_field :salary_tax_due_date %>
       </div>
 
       <div class="field">
-        <%= f.label :meal_vouchers %>
+        <%= f.label :meal_vouchers, "Bonuri de masa" %>
         <%= f.number_field :meal_vouchers, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :gift_vouchers %>
+        <%= f.label :gift_vouchers, "Bonuri cadou" %>
         <%= f.number_field :gift_vouchers, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :overtime %>
+        <%= f.label :overtime, "Ore suplimentare" %>
         <%= f.number_field :overtime, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :extra_salary %>
+        <%= f.label :extra_salary, "Salariu extra" %>
         <%= f.number_field :extra_salary, step: 0.01 %>
       </div>
 
       <div class="field">
-        <%= f.label :date %>
+        <%= f.label :date, "Data" %>
         <%= f.date_field :date %>
       </div>
     <% end %>

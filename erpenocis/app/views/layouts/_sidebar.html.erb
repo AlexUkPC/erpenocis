@@ -69,9 +69,9 @@
               </ul>
             </div>
           </li> -->
-          
+          <% proj = Project.find_by(id: params[:id]) if Project.find_by(id: params[:id]) %>
           <% if current_user.admin? %>
-            <li class="nav-item <%= 'active' if controller_path=='projects' %>">
+            <li class="nav-item <%= 'active' if controller_path=='projects' && (proj==nil || proj.stoc == false) %>">
               <%= link_to projects_path, class: "nav-link" do%>
                 <i class="far fa-folder-tree menu-icon"></i>
                 <span class="menu-title">Proiecte</span>
@@ -88,11 +88,11 @@
             <li class="nav-item <%= 'active' if controller_path=='invoices' %>">
               <%= link_to invoices_path, class: "nav-link" do%>
                 <i class="far fa-file-invoice-dollar menu-icon"></i>
-                <span class="menu-title">Cost management</span>
+                <span class="menu-title">Facturi</span>
               <% end %>
             </li>
 
-            <li class="nav-item <%= 'active' if controller_path=='stock' %>">
+            <li class="nav-item <%= 'active' if controller_path=='stock' || (proj!=nil && proj.stoc == true) %>">
               <%= link_to stock_path, class: "nav-link" do%>
                 <i class="far fa-layer-group menu-icon"></i>
                 <span class="menu-title">Stocuri</span>
@@ -112,14 +112,13 @@
                 <span class="menu-title">Costuri proiecte</span>
               <% end %>
             </li>
-
-            <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' %>">
+            <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>">
               <%= link_to indirect_expenses_path(start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
                 <i class="far fa-file-contract menu-icon"></i>
                 <span class="menu-title">Cheltuieli indirecte</span>
                 <i class="menu-arrow"></i>
               <% end %>
-              <div class="collapse <%= 'show' if controller_path=='indirect_expenses' %>" id="indirect_expenses">
+              <div class="collapse <%= 'show' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>" id="indirect_expenses">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <%= link_to employees_path(start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Salariale <% end %></li>
                   <li class="nav-item"> <%= link_to expenses_path(expense_type: :administrative, start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Administrative <% end %></li>

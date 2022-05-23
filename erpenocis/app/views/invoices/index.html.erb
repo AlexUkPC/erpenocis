@@ -1,21 +1,19 @@
-
-<p id="notice"><%= notice %></p>
-
-<h1>Invoices</h1>
+<h1>Facturi</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Description</th>
-      <th>Category</th>
-      <th>Supplier</th>
-      <th>Invoice number</th>
-      <th>Invoice date</th>
-      <th>Invoice value without vat</th>
-      <th>Invoice value for project without vat</th>
-      <th>Code</th>
-      <th>Obs</th>
-      <th>Project</th>
+      <th>Id</th>
+      <th>Proiect</th>
+      <th>Descriere</th>
+      <th>Categorie</th>
+      <th>Furnizor</th>
+      <th>Nr. factura</th>
+      <th>Data factura</th>
+      <th>Valoare factura fara TVA</th>
+      <th>Valoare factura pt proiect fara TVA</th>
+      <th>Cod</th>
+      <th>Observatii</th>
       <th>Ultima modificare</th>
       <th>Data ultimei modificari</th>
       <th colspan="4"></th>
@@ -26,6 +24,8 @@
     <% @invoices.each do |invoice| %>
       <% project = invoice.project %>
       <tr>
+        <td><%= invoice.id %></td>
+        <td><%= project.name %></td>
         <td><%= invoice.description %></td>
         <td><%= invoice.category %></td>
         <td><%= invoice.supplier %></td>
@@ -35,13 +35,11 @@
         <td><%= invoice.invoice_value_for_project_without_vat %></td>
         <td><%= invoice.code %></td>
         <td><%= invoice.obs %></td>
-        <td><%= project.name %></td>
         <td><%= @users.find(invoice.user_id).username %></td>
         <td><%= invoice.updated_at.strftime('%d/%m/%Y (ora: %H:%M)') %></td>
-        <td><%= link_to 'Show project', project %></td>
-        <td><%= link_to 'Show', invoice %></td>
-        <td><%= link_to 'Edit', edit_invoice_path(invoice) %></td>
-        <td><%= link_to 'Destroy', invoice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Vezi proiect', project %></td>
+        <td><%= link_to 'Modifica', edit_invoice_path(invoice) %></td>
+        <td><%= link_to 'Sterge', invoice, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -49,4 +47,4 @@
 
 <br>
 
-<%= link_to 'New Invoice', new_invoice_path %>
+<%= link_to 'Adauga factura', new_invoice_path %>

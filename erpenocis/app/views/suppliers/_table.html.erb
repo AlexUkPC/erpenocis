@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th>Id</th>
-      <th>Name</th>
+      <th>Nume furnizor</th>
       <% extra_years = 0 %>
       <%# List all months and years %>
         <% @months.times do |month| %>
@@ -87,7 +87,7 @@
         </td>
         <!-- <td><%= link_to 'Show', supplier %></td>
         <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>-->
-        <td><%= link_to 'Sterge furnizor', supplier_url(supplier, current_tab: @current_tab, start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Sterge', supplier_url(supplier, current_tab: @current_tab, start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
