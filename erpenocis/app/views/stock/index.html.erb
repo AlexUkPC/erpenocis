@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Stocuri</h1>
 
 <table>
@@ -7,11 +5,6 @@
     <tr>
       <th>ID</th>
       <th>Nume</th>
-      <th>Data inceput</th>
-      <th>Data finalizare</th>
-      <th>Valoare</th>
-      <th>Profit</th>
-      <th>Profit %</th>
       <th>Observatii</th>
       <th>Ultima modificare</th>
       <th>Data ultimei modificari</th>
@@ -24,19 +17,14 @@
       <tr>
         <td><%= project.id %></td>
         <td><%= project.name %></td>
-        <td><%= project.start_date %></td>
-        <td><%= project.end_date %></td>
-        <td><%= project.value %></td>
-        <td><%= profit(project.id, project.value) %></td>
-        <td><%= profit_proc(project.id, project.value) %> %</td>
         <td><%= project.obs %></td>
         <td><%= @users.find(project.user_id).username %></td>
         <td><%= project.updated_at.strftime('%d/%m/%Y (ora: %H:%M)') %></td>
-        <td><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders') %></td>
-        <td><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices') %></td>
-        <td><%= link_to 'Vezi Proiect', project %></td>
-        <td><%= link_to 'Modifica', edit_project_path(project) %></td>
-        <td><%= link_to 'Sterge', project, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' } %></td>
+        <td><%= link_to 'Vezi comenzi', project_path(project, show: 'orders', st: true) %></td>
+        <td><%= link_to 'Vezi facturi', project_path(project, show: 'invoices', st: true) %></td>
+        <td><%= link_to 'Vezi stoc', project_path(project, st: true) %></td>
+        <td><%= link_to 'Modifica', edit_project_path(project, st: true) %></td>
+        <td><%= link_to 'Sterge', project_path(project, st: true), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -44,4 +32,4 @@
 
 <br>
 
-<%= link_to 'Adauga stoc', new_project_path %>
+<%= link_to 'Adauga stoc', new_project_path(st: true) %>

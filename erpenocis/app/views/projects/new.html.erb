@@ -1,4 +1,8 @@
-<h1>Proiect nou</h1>
+<% if params[:st] %>
+  <h1>Stoc nou</h1>
+<% else %>
+  <h1>Proiect nou</h1>
+<% end %>
 
 <%= render 'form', project: @project %>
 
