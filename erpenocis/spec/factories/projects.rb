@@ -8,7 +8,7 @@
 #  obs        :text
 #  start_date :date
 #  stoc       :boolean
-#  value      :decimal(15, 2)
+#  value      :decimal(15, 2)   default(0.0)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :string

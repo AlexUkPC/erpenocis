@@ -1,11 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy add_project_costs update_project_costs]
+  before_action :set_dates_params
 
   # GET /projects or /projects.json
   def index
-    @projects = Project.where(stoc: false)
+    @projects = Project.where(stoc: false).between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
     @users = User.all
-    
   end
 
   # GET /projects/1 or /projects/1.json
@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.new
+    @project = Project.new(start_date: Date.today())
   end
 
   # GET /projects/1/edit
@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
+        format.html { redirect_to project_url(@project), notice: "Proiectul a fost creeat." }
         format.json { render :show, status: :created, location: @project }
         project_situation = ProjectSituation.new(project_id: @project.id)
         project_situation.save
@@ -44,7 +44,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to project_url(@project), notice: "Project was successfully updated." }
+        format.html { redirect_to project_url(@project), notice: "Proiectul a fost modificat." }
         format.json { render :show, status: :ok, location: @project }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,7 +58,7 @@ class ProjectsController < ApplicationController
     @project.destroy
 
     respond_to do |format|
-      format.html { redirect_to projects_url, notice: "Project was successfully destroyed." }
+      format.html { redirect_to projects_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Proiectul a fost sters." }
       format.json { head :no_content }
     end
   end
