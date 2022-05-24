@@ -125,11 +125,13 @@ class OrdersController < ApplicationController
       if @existing_order_project1 && @existing_order_project1.id!=@order.id
         Order.find(@existing_order_project1.id).update(needed_quantity: @existing_order_project1.needed_quantity + order_params_move[:quantity].to_i)
       else
-        @new_order_project1 = Order.new(@order.attributes.reject{|k,_v| k.to_s == 'id' || k.to_s == 'ordered_quantity' || k.to_s == 'supplier_id' || k.to_s == 'supplier_contact' || k.to_s == 'order_date' || k.to_s == 'delivery_date' || k.to_s == 'obs' || k.to_s == 'created_at' || k.to_s == 'updated_at' })
+        if @order.ordered_quantity < @order.needed_quantity
+          @new_order_project1 = Order.new(@order.attributes.reject{|k,_v| k.to_s == 'id' || k.to_s == 'ordered_quantity' || k.to_s == 'supplier_id' || k.to_s == 'supplier_contact' || k.to_s == 'order_date' || k.to_s == 'delivery_date' || k.to_s == 'obs' || k.to_s == 'created_at' || k.to_s == 'updated_at' })
             @new_order_project1.status = 0
             @new_order_project1.brother_id = @order.brother_id
             @new_order_project1.needed_quantity = order_params_move[:quantity].to_i
             @new_order_project1.save
+        end
       end
     end
     if @order.ordered_quantity > 0 #Daca mai sunt produse in comanda din care se muta
