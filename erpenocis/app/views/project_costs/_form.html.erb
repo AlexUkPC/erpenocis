@@ -11,6 +11,11 @@
       <%= link_to_add_association "Adauga cost materiale", form, :project_costs %>
     </div>
   </div>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
+
   <div class="actions">
     <%= form.submit "Salveaza" %>
   </div>

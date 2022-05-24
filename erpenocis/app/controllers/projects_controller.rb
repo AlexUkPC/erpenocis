@@ -41,6 +41,8 @@ class ProjectsController < ApplicationController
         end
         project_situation = ProjectSituation.new(project_id: @project.id)
         project_situation.save
+        project_cost = ProjectCost.new(project_id: @project.id)
+        project_cost.save
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @project.errors, status: :unprocessable_entity }
