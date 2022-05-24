@@ -1,16 +1,13 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
+  before_action :set_current_tab
+  before_action :set_dates_params, :set_table_head
 
   # GET /employees or /employees.json
   def index
     employee_id = params[:employee_id]
     employee_salary_id = params[:employee_salary_id]
     employee_salary = params[:employee_salary]
-    @start_month = params[:start_month].to_i
-    @start_year = params[:start_year].to_i
-    @end_month = params[:end_month].to_i
-    @end_year = params[:end_year].to_i
-    @months = (@end_year - @start_year) * 12 + @end_month - @start_month + 1
     @employee_salariess = {}
     if employee_salary
       @employee_salary = EmployeeSalary.new(date: "01/"+params[:current_month]+"/"+params[:current_year])
@@ -48,7 +45,7 @@ class EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to employees_path(start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Employee was successfully created." }
+        format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully created." }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -61,7 +58,7 @@ class EmployeesController < ApplicationController
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to employees_path(start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Employee was successfully updated." }
+        format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully updated." }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -75,7 +72,7 @@ class EmployeesController < ApplicationController
     @employee.destroy
 
     respond_to do |format|
-      format.html { redirect_to employees_path(start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Employee was successfully destroyed." }
+      format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully destroyed." }
       format.json { head :no_content }
     end
   end

@@ -10,6 +10,15 @@
     <%= form.label :which_date, 'Data finalizare/rest de plata', value: 'closure' %>
     <br>
   <% end %>
+  <% if params[:expense_type] %>
+    <%= hidden_field_tag(:expense_type, params[:expense_type]) %>
+  <% end %>
+  <% if params[:current_tab] %>
+    <%= hidden_field_tag(:current_tab, params[:current_tab]) %>
+  <% end %>
+  <% if params[:jsid] %>
+    <%= hidden_field_tag(:jsid, params[:jsid]) %>
+  <% end %>
 
   De la: 
   <%= form.select :sm, options_for_select(months, @start_month) %>

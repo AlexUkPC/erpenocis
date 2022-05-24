@@ -23,9 +23,9 @@ class InvoicesController < ApplicationController
   # POST /invoices or /invoices.json
   def create
     @invoice = Invoice.new(invoice_params)
-    @invoice.code = generate_code(8)
+    @invoice.code = generate_code(3)
     while Invoice.find_by(code: @invoice.code) do
-      @invoice.code = generate_code(8) 
+      @invoice.code = generate_code(3) 
     end 
     respond_to do |format|
       if  @invoice.save
@@ -72,8 +72,10 @@ class InvoicesController < ApplicationController
       params.require(:invoice).permit(:description, :category, :supplier, :invoice_number, :invoice_date, :invoice_value_without_vat, :invoice_value_for_project_without_vat, :code, :obs, :project_id, :user_id)
     end
     def generate_code(number)
+      x = @invoice.project.name.gsub(/\W+/, '')[0,4]
       charset = Array('A'..'Z') 
-      Array.new(number) { charset.sample }.join
+      x + "_"+ Array.new(number) { charset.sample }.join
+      
     end
     # def check_sum(invoice)
     #   invoice.invoice_value_without_vat - Invoice.where(invoice_number: invoice.invoice_number, invoice_date: invoice.invoice_date, invoice_value_without_vat: invoice.invoice_value_without_vat).sum(:invoice_value_for_project_without_vat) - invoice.invoice_value_for_project_without_vat > 0

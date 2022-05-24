@@ -21,10 +21,10 @@
     <%= form.label :year, "Anul" %>
     <%= form.select :year, options_for_select(years, params[:year]) %>
   </div>
-  <%= hidden_field_tag(:start_month, @start_month) %>
-  <%= hidden_field_tag(:start_year, @start_year) %>
-  <%= hidden_field_tag(:end_month, @end_month) %>
-  <%= hidden_field_tag(:end_year, @end_year) %>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
     <%= form.submit %>
@@ -32,7 +32,7 @@
   
   
   <% if january_sold.id %>
-    <%= link_to 'Sterge sold ianuarie', january_sold_url(id: january_sold.id, jsid: "", year: Date.today().strftime("%Y"), start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>   
+    <%= link_to 'Sterge sold ianuarie', january_sold_url(id: january_sold.id, jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>   
   <% end %>
   
 <% end %>

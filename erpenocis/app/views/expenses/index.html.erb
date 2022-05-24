@@ -1,18 +1,15 @@
 <h1><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %></h1>
-<%= render 'date_form' %>
+<%= render 'layouts/date_form' %>
+<br>
 <table>
   <thead>
     <tr>
       <th>Id</th>
       <th>Denumire cheltuiala</th>
-      <% extra_years = 0 %>
       <%# List all months and years %>
-        <% @months.times do |month| %>
+        <% @table_head.each do |th| %>
           <th>
-            <% if @start_month + month - extra_years * 12 > 12 %> 
-              <% extra_years += 1 %>
-            <% end %>
-            <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+            <%= th %>
           </th>
         <% end %>
       <%# End List all months and years %>
@@ -33,7 +30,7 @@
 
         <%# Expense name with link %>
           <td>
-            <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
+            <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
           </td>
         <%# End Expense name with link %>
 
@@ -46,7 +43,7 @@
               <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
                 
                 <% if !expense_values.nil? && expense_index < expense_values.length && expense_values[expense_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && expense_values[expense_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
-                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense_values[expense_index].id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %>
+                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense_values[expense_index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                     <div>
                       <%= total = expense_values[expense_index].value %>
                       <% @total_per_months[month] += total %>
@@ -54,7 +51,7 @@
                   <% end %>
                   <% expense_index += 1 %>
                 <% else %>
-                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
                     <div>&nbsp</div>
                   <% end %>
                 <% end %>
@@ -76,7 +73,7 @@
         <%# Links %>
           <!-- <td><%= link_to 'Show', expense %></td>
           <td><%= link_to 'Edit', edit_expense_path(expense) %></td> -->
-          <td><%= link_to 'Sterge', expense_path(expense,start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %></td>
+          <td><%= link_to 'Sterge', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %></td>
         <%# End Links %> 
       </tr>
     <% end %>

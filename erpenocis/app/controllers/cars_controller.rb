@@ -4,7 +4,13 @@ class CarsController < ApplicationController
 
   # GET /cars or /cars.json
   def index
-    @cars = Car.between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
+    puts "============================"
+    puts @start_month
+    puts @start_year
+    puts @end_month
+    puts @end_year
+    puts "============================"
+    @cars = Car.between_dates(set_start_date(@start_month.to_s, @start_year.to_s),set_end_date(@end_month, @end_year))
     if params[:id]
       @car = @cars.find(params[:id])
     else
