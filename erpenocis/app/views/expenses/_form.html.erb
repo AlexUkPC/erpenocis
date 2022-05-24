@@ -64,10 +64,10 @@
       </div>
     <% end %>
   <% end %>
-  <%= hidden_field_tag(:start_month, @start_month) %>
-  <%= hidden_field_tag(:start_year, @start_year) %>
-  <%= hidden_field_tag(:end_month, @end_month) %>
-  <%= hidden_field_tag(:end_year, @end_year) %>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
   <div class="actions">
     <%= form.submit %>
   </div>

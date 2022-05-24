@@ -1,17 +1,12 @@
 class ExpensesController < ApplicationController
   before_action :set_expense, only: %i[ show edit update destroy ]
-
+  before_action :set_dates_params, :set_table_head
   # GET /expenses or /expenses.json
   def index
     expense_type = params[:expense_type]
     expense_id = params[:expense_id]
     expense_value_id = params[:expense_value_id]
     expense_value = params[:expense_value]
-    @start_month = params[:start_month].to_i
-    @start_year = params[:start_year].to_i
-    @end_month = params[:end_month].to_i
-    @end_year = params[:end_year].to_i
-    @months = (@end_year - @start_year) * 12 + @end_month - @start_month + 1
     if expense_value
       @expense_value = ExpenseValue.new(date: "01/"+params[:current_month]+"/"+params[:current_year])
     end
@@ -52,7 +47,7 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     respond_to do |format|
       if @expense.save
-        format.html { redirect_to expenses_path(expense_type: @expense.expense_type, start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Expense was successfully created." }
+        format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully created." }
         format.json { render :show, status: :created, location: @expense }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -65,7 +60,7 @@ class ExpensesController < ApplicationController
   def update
     respond_to do |format|
       if @expense.update(expense_params)
-        format.html { redirect_to expenses_path(expense_type: @expense.expense_type, start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Expense was successfully updated." }
+        format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully updated." }
         format.json { render :show, status: :ok, location: @expense }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -79,7 +74,7 @@ class ExpensesController < ApplicationController
     @expense.destroy
 
     respond_to do |format|
-      format.html { redirect_to expenses_path(expense_type: @expense.expense_type, start_month: params[:start_month], start_year: params[:start_year], end_month: params[:end_month], end_year: params[:end_year]), notice: "Expense was successfully destroyed." }
+      format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully destroyed." }
       format.json { head :no_content }
     end
   end
