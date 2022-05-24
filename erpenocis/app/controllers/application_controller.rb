@@ -26,4 +26,7 @@ class ApplicationController < ActionController::Base
       @table_head[month] = ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s
     end
   end
+  def set_current_tab
+    @current_tab = params[:current_tab]
+  end
 end

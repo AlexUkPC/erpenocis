@@ -21,13 +21,31 @@
       <% @months.times do |month| %>
         <% @total_per_months[month] = 0 %>
       <% end %>
+      <% case of_what
+      when "total"
+        @current_tab = "to"
+      when "net_salary"
+        @current_tab = "ns"
+      when "salary_tax"
+        @current_tab = "st"
+      when "meal_vouchers"
+        @current_tab = "mv"
+      when "gift_vouchers"
+        @current_tab = "gv"
+      when "overtime"
+        @current_tab = "ot"
+      when "extra_salary"
+        @current_tab = "es"
+      else
+        ""
+      end %>
         <% @employees.each do |employee| %>
           <tr>
             <td><%= employee.id %></td>
 
             <%# Employee name with link %>
               <td>
-                <%= link_to employees_path(employee_id: employee.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
+                <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
               </td>
             <%# End Employee name with link %>
 
@@ -44,7 +62,7 @@
                   
                   <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
                     <% if !employee_salaries.nil? && employee_index < employee_salaries.length && employee_salaries[employee_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && employee_salaries[employee_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee_salaries[employee_index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee_salaries[employee_index].id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                         <div>
                           <% if of_what=="total" %>
                             <%= total = employee_salaries[employee_index].net_salary + employee_salaries[employee_index].salary_tax + employee_salaries[employee_index].meal_vouchers + employee_salaries[employee_index].gift_vouchers + employee_salaries[employee_index].overtime + employee_salaries[employee_index].extra_salary %>&nbsp
@@ -57,7 +75,7 @@
                       <% end %>
                       <% employee_index += 1 %>
                     <% else %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
                         <div>&nbsp</div>
                       <% end %>
                     <% end %>
@@ -84,7 +102,7 @@
             <%# Links %>
             <!-- <td><%= link_to 'Show', employee %></td>
             <td><%= link_to 'Edit', edit_employee_path(employee) %></td> -->
-            <td><%= link_to 'Sterge', employee_path(employee.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
+            <td><%= link_to 'Sterge', employee_path(employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
             <%# End Links %> 
           </tr>
         <% end %>

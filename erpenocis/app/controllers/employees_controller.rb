@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
+  before_action :set_current_tab
   before_action :set_dates_params, :set_table_head
 
   # GET /employees or /employees.json
@@ -44,7 +45,7 @@ class EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to employees_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully created." }
+        format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully created." }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -57,7 +58,7 @@ class EmployeesController < ApplicationController
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to employees_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully updated." }
+        format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully updated." }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -71,7 +72,7 @@ class EmployeesController < ApplicationController
     @employee.destroy
 
     respond_to do |format|
-      format.html { redirect_to employees_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully destroyed." }
+      format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully destroyed." }
       format.json { head :no_content }
     end
   end

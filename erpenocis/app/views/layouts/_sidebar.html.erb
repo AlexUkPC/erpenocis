@@ -120,7 +120,7 @@
               <% end %>
               <div class="collapse <%= 'show' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>" id="indirect_expenses">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <%= link_to employees_path, class: "nav-link" do%>Salariale <% end %></li>
+                  <li class="nav-item"> <%= link_to employees_path(current_tab: "to"), class: "nav-link" do%>Salariale <% end %></li>
                   <li class="nav-item"> <%= link_to expenses_path(expense_type: :administrative), class: "nav-link" do%>Administrative <% end %></li>
                   <li class="nav-item"> <%= link_to expenses_path(expense_type: :financiare), class: "nav-link" do%>Financiare <% end %></li>
                   <li class="nav-item"> <%= link_to expenses_path(expense_type: :investitii), class: "nav-link" do%>Investitii <% end %></li>

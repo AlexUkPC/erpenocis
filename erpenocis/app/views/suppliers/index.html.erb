@@ -3,16 +3,16 @@
 <br>
 <ul class="nav nav-tabs" id="suppliers" role="tablist">
   <li class="nav-item" role="presentation">
-    <button class="nav-link <%= "active" if params[:current_tab]=="fe" %>" id="issued-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#issued-supplier-invoices" type="button" role="tab" aria-controls="issued-supplier-invoices" aria-selected="true">Facturi emise</button>
+    <button class="nav-link <%= "active" if @current_tab=="fe" %>" id="issued-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#issued-supplier-invoices" type="button" role="tab" aria-controls="issued-supplier-invoices" aria-selected="true">Facturi emise</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link <%= "active" if params[:current_tab]=="fp" %>" id="to-be-payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#to-be-payed-supplier-invoices" type="button" role="tab" aria-controls="to-be-payed-supplier-invoices" aria-selected="false">Facturi de plata</button>
+    <button class="nav-link <%= "active" if @current_tab=="fp" %>" id="to-be-payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#to-be-payed-supplier-invoices" type="button" role="tab" aria-controls="to-be-payed-supplier-invoices" aria-selected="false">Facturi de plata</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link <%= "active" if params[:current_tab]=="fa" %>" id="payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#payed-supplier-invoices" type="button" role="tab" aria-controls="payed-supplier-invoices" aria-selected="false">Facturi achitate</button>
+    <button class="nav-link <%= "active" if @current_tab=="fa" %>" id="payed-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#payed-supplier-invoices" type="button" role="tab" aria-controls="payed-supplier-invoices" aria-selected="false">Facturi achitate</button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link <%= "active" if params[:current_tab]=="fr" %>" id="unpaid-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#unpaid-supplier-invoices" type="button" role="tab" aria-controls="unpaid-supplier-invoices" aria-selected="false">Facturi restante</button>
+    <button class="nav-link <%= "active" if @current_tab=="fr" %>" id="unpaid-supplier-invoices-tab" data-bs-toggle="tab" data-bs-target="#unpaid-supplier-invoices" type="button" role="tab" aria-controls="unpaid-supplier-invoices" aria-selected="false">Facturi restante</button>
   </li>
 </ul>
 <div class="tab-content" id="employeesContent">

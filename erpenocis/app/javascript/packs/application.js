@@ -10,6 +10,7 @@ import "channels"
 import "users"
 import "orders"
 import "suppliers"
+import "employees"
 
 
 Rails.start()

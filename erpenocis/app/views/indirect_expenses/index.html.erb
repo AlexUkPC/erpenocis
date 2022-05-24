@@ -24,7 +24,7 @@
       <% @total_per_months[month] = 0 %> 
     <% end %>
     <tr>
-      <td><%= link_to employees_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do%>Salariale<% end %></td>
+      <td><%= link_to employees_path(current_tab: "to", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do%>Salariale<% end %></td>
       <% extra_years = 0 %>
       
       <% @months.times do |month| %>
