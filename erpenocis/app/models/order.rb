@@ -38,6 +38,18 @@ class Order < ApplicationRecord
   validates :ordered_quantity, presence: true
   enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
   before_save :check_quantity
+  scope :between_dates, lambda {|start_date, end_date| where("order_date IS null OR order_date >= ? AND order_date <= ?", start_date, end_date )}
+  validate :after_01_01_2020
+
+  def after_01_01_2020
+    if order_date.present? && order_date<Date.parse('2020.01.01')
+      errors.add(:order_date, "nu poate fi inainte de 01.01.2020")
+    end
+    if delivery_date.present? && delivery_date<Date.parse('2020.01.01')
+      errors.add(:delivery_date, "nu poate fi inainte de 01.01.2020")
+    end
+  end
+
   def full_description
   "Categorie:" +  self.category + " Denumire/Tip/Nuanta:" + self.name_type_color + " Cantitate necesara:" + self.needed_quantity.to_s + " UM:" + self.unit + " Cote:" + self.cote
   end

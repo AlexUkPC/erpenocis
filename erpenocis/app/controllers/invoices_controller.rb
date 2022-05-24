@@ -1,8 +1,9 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: %i[ show edit update destroy ]
+  before_action :set_dates_params
   # GET /invoices or /invoices.json
   def index
-    @invoices = Invoice.all
+    @invoices = Invoice.between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
     @users = User.all
   end
 
@@ -12,7 +13,7 @@ class InvoicesController < ApplicationController
 
   # GET /invoices/new
   def new
-    @invoice = Invoice.new
+    @invoice = Invoice.new(invoice_date: Date.today())
   end
 
   # GET /invoices/1/edit
@@ -28,7 +29,7 @@ class InvoicesController < ApplicationController
     end 
     respond_to do |format|
       if  @invoice.save
-        format.html { redirect_to invoices_url, notice: "Invoice was successfully created." }
+        format.html { redirect_to invoices_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Invoice was successfully created." }
         format.json { render :show, status: :created, location: @invoice }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,7 +42,7 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if @invoice.update(invoice_params)
-        format.html { redirect_to invoices_url, notice: "Invoice was successfully updated." }
+        format.html { redirect_to invoices_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Invoice was successfully updated." }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +56,7 @@ class InvoicesController < ApplicationController
     @invoice.destroy
 
     respond_to do |format|
-      format.html { redirect_to invoices_url, notice: "Invoice was successfully destroyed." }
+      format.html { redirect_to invoices_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Invoice was successfully destroyed." }
       format.json { head :no_content }
     end
   end

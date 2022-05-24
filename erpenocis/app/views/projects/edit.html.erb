@@ -1,5 +1,7 @@
-<h1>Editeaza proiect</h1>
-
+<% if params[:st] %>
+  <h1>Editeaza stoc</h1>
+<% else %>
+  <h1>Editeaza proiect</h1>
+<% end %>
 <%= render 'form', project: @project %>
 
-<%= link_to 'Renunta', projects_path %>

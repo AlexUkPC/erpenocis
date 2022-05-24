@@ -1,5 +1,6 @@
 <h1>Proiecte</h1>
-
+<%= render 'layouts/date_form' %>
+<br>
 <table>
   <thead>
     <tr>
@@ -33,8 +34,8 @@
         <td><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders') %></td>
         <td><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices') %></td>
         <td><%= link_to 'Vezi Proiect', project %></td>
-        <td><%= link_to 'Modifica', edit_project_path(project) %></td>
-        <td><%= link_to 'Sterge', project, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi proiectul?' } %></td>
+        <td><%= link_to 'Modifica', edit_project_path(project,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %></td>
+        <td><%= link_to 'Sterge', project_path(project, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi proiectul?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -42,4 +43,4 @@
 
 <br>
 
-<%= link_to 'Adauga Proiect', new_project_path %>
+<%= link_to 'Adauga Proiect', new_project_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>

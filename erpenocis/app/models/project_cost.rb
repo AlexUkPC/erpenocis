@@ -20,4 +20,5 @@
 #
 class ProjectCost < ApplicationRecord
   belongs_to :project
+  scope :between_dates, lambda {|start_month, end_month, start_year, end_year| where("month IS null OR year IS null OR month >= ? AND month <= ? AND year >= ? AND year <= ?", start_month, end_month, start_year, end_year )}
 end

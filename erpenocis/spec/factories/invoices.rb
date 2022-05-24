@@ -8,8 +8,8 @@
 #  description                           :string
 #  invoice_date                          :date
 #  invoice_number                        :string
-#  invoice_value_for_project_without_vat :decimal(15, 2)
-#  invoice_value_without_vat             :decimal(15, 2)
+#  invoice_value_for_project_without_vat :decimal(15, 2)   default(0.0)
+#  invoice_value_without_vat             :decimal(15, 2)   default(0.0)
 #  obs                                   :text
 #  supplier                              :string
 #  created_at                            :datetime         not null

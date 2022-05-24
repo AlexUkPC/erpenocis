@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_22_101111) do
+ActiveRecord::Schema.define(version: 2022_05_23_154842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 2022_05_22_101111) do
     t.string "supplier"
     t.string "invoice_number"
     t.date "invoice_date"
-    t.decimal "invoice_value_without_vat", precision: 15, scale: 2
-    t.decimal "invoice_value_for_project_without_vat", precision: 15, scale: 2
+    t.decimal "invoice_value_without_vat", precision: 15, scale: 2, default: "0.0"
+    t.decimal "invoice_value_for_project_without_vat", precision: 15, scale: 2, default: "0.0"
     t.string "code"
     t.text "obs"
     t.bigint "project_id", null: false
@@ -172,7 +172,7 @@ ActiveRecord::Schema.define(version: 2022_05_22_101111) do
     t.string "name"
     t.date "start_date"
     t.date "end_date"
-    t.decimal "value", precision: 15, scale: 2
+    t.decimal "value", precision: 15, scale: 2, default: "0.0"
     t.text "obs"
     t.boolean "stoc"
     t.datetime "created_at", precision: 6, null: false

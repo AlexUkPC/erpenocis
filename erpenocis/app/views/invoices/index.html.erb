@@ -1,5 +1,6 @@
 <h1>Facturi</h1>
-
+<%= render 'layouts/date_form' %>
+<br>
 <table>
   <thead>
     <tr>
@@ -38,8 +39,8 @@
         <td><%= @users.find(invoice.user_id).username %></td>
         <td><%= invoice.updated_at.strftime('%d/%m/%Y (ora: %H:%M)') %></td>
         <td><%= link_to 'Vezi proiect', project %></td>
-        <td><%= link_to 'Modifica', edit_invoice_path(invoice) %></td>
-        <td><%= link_to 'Sterge', invoice, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' } %></td>
+        <td><%= link_to 'Modifica', edit_invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %></td>
+        <td><%= link_to 'Sterge', invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -47,4 +48,4 @@
 
 <br>
 
-<%= link_to 'Adauga factura', new_invoice_path %>
+<%= link_to 'Adauga factura', new_invoice_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>

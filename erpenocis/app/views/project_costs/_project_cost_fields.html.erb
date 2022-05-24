@@ -1,4 +1,6 @@
 <div class="nested-fields ms-3 mb-3">
+  <% months = (1..12).to_a %>
+  <% years = (2020..Date.today().strftime("%Y").to_i+10).to_a %>
   <div class="field">
     <%= f.label :amount, "Suma" %>
     <%= f.number_field :amount, step: 0.01 %>
@@ -6,12 +8,12 @@
 
   <div class="field">
     <%= f.label :month, "Luna" %>
-    <%= f.number_field :month %>
+    <%= f.select :month, options_for_select(months, f.object.month), include_blank: true %>
   </div>
   
   <div class="field">
     <%= f.label :year, "An" %>
-    <%= f.number_field :year, placeholder: "an" %>
+    <%= f.select :year, options_for_select(years, f.object.year), include_blank: true %>
   </div>
 
   <div class="actions">

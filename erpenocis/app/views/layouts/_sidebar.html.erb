@@ -71,7 +71,7 @@
           </li> -->
           <% proj = Project.find_by(id: params[:id]) if Project.find_by(id: params[:id]) %>
           <% if current_user.admin? %>
-            <li class="nav-item <%= 'active' if controller_path=='projects' && (proj==nil || proj.stoc == false) %>">
+            <li class="nav-item <%= 'active' if controller_path=='projects' && (proj==nil || proj.stoc == false) && !params[:st] %>">
               <%= link_to projects_path, class: "nav-link" do%>
                 <i class="far fa-folder-tree menu-icon"></i>
                 <span class="menu-title">Proiecte</span>
@@ -92,7 +92,7 @@
               <% end %>
             </li>
 
-            <li class="nav-item <%= 'active' if controller_path=='stock' || (proj!=nil && proj.stoc == true) %>">
+            <li class="nav-item <%= 'active' if controller_path=='stock' || (proj!=nil && proj.stoc == true) || params[:st] %>">
               <%= link_to stock_path, class: "nav-link" do%>
                 <i class="far fa-layer-group menu-icon"></i>
                 <span class="menu-title">Stocuri</span>

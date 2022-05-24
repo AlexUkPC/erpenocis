@@ -1,12 +1,19 @@
 class ProjectSituationsController < ApplicationController
   before_action :set_project_situation, only: %i[ show edit update destroy ]
-
+  before_action :set_dates_params
+  before_action :set_which_date
+  
   # GET /project_situations or /project_situations.json
   def index
-    @project_situations = ProjectSituation.all
-    @projects = Project.where(stoc: false)
-    total_closure_payment = ProjectSituation.all.sum(:closure_payment)
-    @total_advance_payment = ProjectSituation.all.sum(:advance_payment)
+    if @which_date=="advance"
+      @project_situations = ProjectSituation.between_advance_dates(@start_month, @end_month, @start_year, @end_year)
+    elsif @which_date=="closure"
+      @project_situations = ProjectSituation.between_closure_dates(@start_month, @end_month, @start_year, @end_year)
+    end
+    @projects = Project.where(stoc: false).where(project_situation: @project_situations)
+    
+    total_closure_payment = @project_situations.sum(:closure_payment)
+    @total_advance_payment = @project_situations.sum(:advance_payment)
     @total_to_be_collected = Project.all.sum(:value) - @total_advance_payment - total_closure_payment
   end
 
@@ -42,7 +49,7 @@ class ProjectSituationsController < ApplicationController
   def update
     respond_to do |format|
       if @project_situation.update(project_situation_params)
-        format.html { redirect_to project_situations_path, notice: "Project situation was successfully updated." }
+        format.html { redirect_to project_situations_path(which_date: @which_date, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Project situation was successfully updated." }
         format.json { render :show, status: :ok, location: @project_situation }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -66,7 +73,14 @@ class ProjectSituationsController < ApplicationController
     def set_project_situation
       @project_situation = ProjectSituation.find(params[:id])
     end
-
+    def set_which_date
+      if params[:which_date]
+        @which_date = params[:which_date]
+      else
+        @which_date = 'advance'
+      end
+    end
+    
     # Only allow a list of trusted parameters through.
     def project_situation_params
       params.require(:project_situation).permit(:advance_invoice_date, :advance_invoice_number, :advance_payment_date, :advance_payment, :advance_month, :advance_year, :closure_invoice_date, :closure_invoice_number, :closure_payment_date, :closure_payment, :closure_month, :closure_year, :project_id)

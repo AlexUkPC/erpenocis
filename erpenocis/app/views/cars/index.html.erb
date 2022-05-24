@@ -1,5 +1,5 @@
 <h1>Flota auto</h1>
-
+<%= render 'layouts/date_form' %>
 <table>
   <thead>
     <tr>
@@ -17,7 +17,7 @@
       <tr>
           <td><%= car.id %></td>
           <td>
-            <%= link_to cars_path(id: car.id) do %> 
+            <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year) do %> 
               <div>
                 <%= car.number_plate %>&nbsp
               </div>

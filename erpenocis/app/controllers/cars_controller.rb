@@ -1,11 +1,12 @@
 class CarsController < ApplicationController
   before_action :set_car, only: %i[ show edit update destroy ]
+  before_action :set_dates_params
 
   # GET /cars or /cars.json
   def index
-    @cars = Car.all
+    @cars = Car.between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
     if params[:id]
-      @car = Car.find(params[:id])
+      @car = @cars.find(params[:id])
     else
       @car = Car.new(rca_expiry_date: Date.today, rov_expiry_date: Date.today, itp_expiry_date: Date.today)
     end
@@ -30,7 +31,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to cars_path, notice: "Car was successfully created." }
+        format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost adaugat." }
         format.json { render :show, status: :created, location: @car }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,12 +42,13 @@ class CarsController < ApplicationController
 
   # PATCH/PUT /cars/1 or /cars/1.json
   def update
+    @cars = Car.between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
     respond_to do |format|
       if @car.update(car_params)
-        format.html { redirect_to cars_path, notice: "Car was successfully updated." }
+        format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost modificat." }
         format.json { render :show, status: :ok, location: @car }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render 'index', cars: @cars, status: :unprocessable_entity}
         format.json { render json: @car.errors, status: :unprocessable_entity }
       end
     end
@@ -57,7 +59,7 @@ class CarsController < ApplicationController
     @car.destroy
 
     respond_to do |format|
-      format.html { redirect_to cars_path, notice: "Car was successfully destroyed." }
+      format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost sters." }
       format.json { head :no_content }
     end
   end

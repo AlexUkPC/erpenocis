@@ -2,49 +2,56 @@
   <strong>Nume:</strong>
   <%= @project.name %>
 </p>
+<% if params[:st] %>
+  <p>
+    <strong>Observatii:</strong>
+    <%= @project.obs %>
+  </p>
+  <%= link_to 'Modifica stoc', edit_project_path(@project, st: true) %>
+<% else %>
+  <p>
+    <strong>Data inceput:</strong>
+    <%= @project.start_date %>
+  </p>
 
-<p>
-  <strong>Data inceput:</strong>
-  <%= @project.start_date %>
-</p>
+  <p>
+    <strong>Data finalizare:</strong>
+    
+    <% if !@project.end_date %>
+      In derulare
+    <% else %>
+      <%= @project.end_date %>
+    <% end %>
 
-<p>
-  <strong>Data finalizare:</strong>
-  
-  <% if !@project.end_date %>
-    In derulare
-  <% else %>
-    <%= @project.end_date %>
-  <% end %>
+  </p>
 
-</p>
+  <p>
+    <strong>Valoare:</strong>
+    <%= @project.value %>
+  </p>
 
-<p>
-  <strong>Valoare:</strong>
-  <%= @project.value %>
-</p>
+  <p>
+    <strong>Observatii:</strong>
+    <%= @project.obs %>
+  </p>
 
-<p>
-  <strong>Observatii:</strong>
-  <%= @project.obs %>
-</p>
+  <p>
+    <strong>Suma cheltuita:</strong>
+    <%= expenses_amount(@project.id, @project.value) %>
+  </p>
+  <p>
+    <strong>Profit:</strong>
+    <%= profit(@project.id, @project.value) %>
+  </p>
+  <p>
+    <strong>Profit%:</strong>
+    <%= profit_proc(@project.id, @project.value) %>
+  </p>
 
-<p>
-  <strong>Suma cheltuita:</strong>
-  <%= expenses_amount(@project.id, @project.value) %>
-</p>
-<p>
-  <strong>Profit:</strong>
-  <%= profit(@project.id, @project.value) %>
-</p>
-<p>
-  <strong>Profit%:</strong>
-  <%= profit_proc(@project.id, @project.value) %>
-</p>
-
-<%= link_to 'Modifica proiect', edit_project_path(@project) %>
+  <%= link_to 'Modifica proiect', edit_project_path(@project) %>
+<% end %>
+<% if !(params[:show]=='invoices') %>
 <hr>
-<% if !current_page?(project_path(:show => 'invoices')) %>
   <h1>Comenzi</h1>
 
   <table>
@@ -97,8 +104,8 @@
 
   <%= link_to 'Adauga comanda', new_order_path %>
 <% end %>
+<% if !(params[:show]=='orders') %>
 <hr>
-<% if !current_page?(project_path(:show => 'orders')) %>
   <h1>Facturi</h1>
 
   <table>

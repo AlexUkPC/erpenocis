@@ -16,33 +16,44 @@
     <%= form.label :name, "Nume" %>
     <%= form.text_field :name %>
   </div>
+  <% if params[:st] %>
+    <%= form.hidden_field :start_date, value: Date.today() %>
+    <%= form.hidden_field :stoc, value: true %>
+    <%= hidden_field_tag(:st, true) %>
+  <% else %>
+    <div class="field">
+      <%= form.label :start_date, "Data inceput" %>
+      <%= form.date_field :start_date %>
+    </div>
 
-  <div class="field">
-    <%= form.label :start_date, "Data inceput" %>
-    <%= form.date_field :start_date %>
-  </div>
+    <div class="field">
+      <%= form.label :end_date, "Data finalizare" %>
+      <%= form.date_field :end_date %>
+    </div>
 
-  <div class="field">
-    <%= form.label :end_date, "Data finalizare" %>
-    <%= form.date_field :end_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :value, "Valoare" %>
-    <%= form.number_field :value, step: 0.01  %>
-  </div>
-
+    <div class="field">
+      <%= form.label :value, "Valoare" %>
+      <%= form.number_field :value, step: 0.01  %>
+    </div>
+    <%= form.hidden_field :stoc, value: false %>
+  <% end %>
   <div class="field">
     <%= form.label :obs, "Observatii" %>
     <%= form.text_area :obs %>
   </div>
 
-  <div class="field">
-    <%= form.label :stoc, "Este stoc?" %>
-    <%= form.check_box :stoc %>
-  </div>
+  <%= hidden_field_tag(:sm, @start_month) %>
+  <%= hidden_field_tag(:sy, @start_year) %>
+  <%= hidden_field_tag(:em, @end_month) %>
+  <%= hidden_field_tag(:ey, @end_year) %>
+  
 
   <div class="actions">
     <%= form.submit %>
+    <% if params[:st] %>
+      <%= link_to "Renunta", stock_path() %>
+    <% else %>
+      <%= link_to "Renunta", projects_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
+    <% end %>
   </div>
 <% end %>
