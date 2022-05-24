@@ -113,31 +113,31 @@
               <% end %>
             </li>
             <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>">
-              <%= link_to indirect_expenses_path(start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
+              <%= link_to indirect_expenses_path, class: "nav-link" do%>
                 <i class="far fa-file-contract menu-icon"></i>
                 <span class="menu-title">Cheltuieli indirecte</span>
                 <i class="menu-arrow"></i>
               <% end %>
               <div class="collapse <%= 'show' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>" id="indirect_expenses">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <%= link_to employees_path(start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Salariale <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :administrative, start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Administrative <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :financiare, start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Financiare <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :investitii, start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Investitii <% end %></li>
-                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :alte_cheltuieli, start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>Alte cheltuieli <% end %></li>
+                  <li class="nav-item"> <%= link_to employees_path, class: "nav-link" do%>Salariale <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :administrative), class: "nav-link" do%>Administrative <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :financiare), class: "nav-link" do%>Financiare <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :investitii), class: "nav-link" do%>Investitii <% end %></li>
+                  <li class="nav-item"> <%= link_to expenses_path(expense_type: :alte_cheltuieli), class: "nav-link" do%>Alte cheltuieli <% end %></li>
                 </ul>
               </div>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='suppliers' %>">
-              <%= link_to suppliers_path(current_tab: "fe", start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
+              <%= link_to suppliers_path(current_tab: "fe"), class: "nav-link" do%>
                 <i class="far fa-users-class menu-icon"></i>
                 <span class="menu-title">Situatie furnizori</span>
               <% end %>
             </li>
             
             <li class="nav-item <%= 'active' if controller_path=='financial_centralization' %>">
-              <%= link_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), start_month: 1, start_year: Date.today().strftime("%Y"), end_month: 12, end_year: Date.today().strftime("%Y")), class: "nav-link" do%>
+              <%= link_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y")), class: "nav-link" do%>
                 <i class="far fa-money-check-alt menu-icon"></i>
                 <span class="menu-title">Centralizare financiara</span>
               <% end %>
