@@ -1,5 +1,5 @@
 <h1>Centralizare financiara</h1>
-<%= render 'date_form' %>
+<%= render 'layouts/date_form' %>
 <br>
 <h2>Situatie financiara</h2>
 
@@ -7,14 +7,10 @@
   <thead>
     <tr>
       <th>Denumire</th>
-      <% extra_years = 0 %>
       <%# List all months and years %>
-        <% @months.times do |month| %>
+        <% @table_head.each do |th| %>
           <th>
-            <% if @start_month + month - extra_years * 12 > 12 %> 
-              <% extra_years += 1 %>
-            <% end %>
-            <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+           <%= th %>
           </th>
         <% end %>
       <%# End List all months and years %>
@@ -190,7 +186,7 @@
           <% @january_solds.find_by(year: current_year_now) ? @jsid = @january_solds.find_by(year: current_year_now).id : @jsid = ""  %>
           <% if month == 0 %>
             <% if @start_month==1 %>
-              <%= link_to financial_centralization_path(jsid: @jsid, year:  current_year_now, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year) do %>
+              <%= link_to financial_centralization_path(jsid: @jsid, year:  current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do %>
                 <%= sold %>
               <% end %>
             <% else %>
@@ -199,7 +195,7 @@
             <% @solds[month] = sold + project_situations_advance + project_situations_closure - @total_expenses_per_months[month] %>
           <% elsif @start_month + month - (extra_years * 12) == 1 %>
 
-            <%= link_to financial_centralization_path(jsid: @jsid, year: current_year_now, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year) do %>
+            <%= link_to financial_centralization_path(jsid: @jsid, year: current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do %>
               <%= @solds[month-1] %>
             <% end %>
             <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>

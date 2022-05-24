@@ -1,6 +1,6 @@
 class JanuarySoldsController < ApplicationController
   before_action :set_january_sold, only: %i[ show edit update destroy ]
-  before_action :set_date_params, only: %i[ create update destroy ]
+  before_action :set_dates_params
 
   # GET /january_solds or /january_solds.json
   def index
@@ -26,7 +26,7 @@ class JanuarySoldsController < ApplicationController
     
     respond_to do |format|
       if @january_sold.save
-        format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), notice: "January sold was successfully created." }
+        format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "January sold was successfully created." }
         format.json { render :show, status: :created, location: @january_sold }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class JanuarySoldsController < ApplicationController
   def update
     respond_to do |format|
       if @january_sold.update(january_sold_params)
-        format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), notice: "January sold was successfully updated." }
+        format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "January sold was successfully updated." }
         format.json { render :show, status: :ok, location: @january_sold }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class JanuarySoldsController < ApplicationController
     @january_sold.destroy
 
     respond_to do |format|
-      format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), notice: "January sold was successfully destroyed." }
+      format.html { redirect_to financial_centralization_path(jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "January sold was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -62,12 +62,6 @@ class JanuarySoldsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_january_sold
       @january_sold = JanuarySold.find(params[:id])
-    end
-    def set_date_params
-      @start_month = params[:start_month].to_i
-      @start_year = params[:start_year].to_i
-      @end_month = params[:end_month].to_i
-      @end_year = params[:end_year].to_i
     end
 
     # Only allow a list of trusted parameters through.
