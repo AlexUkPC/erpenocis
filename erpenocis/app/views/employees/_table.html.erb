@@ -3,14 +3,10 @@
         <tr>
           <th>Id</th>
           <th>Nume angajat</th>
-          <% extra_years = 0 %>
           <%# List all months and years %>
-            <% @months.times do |month| %>
+            <% @table_head.each do |th| %>
               <th>
-                <% if @start_month + month - extra_years * 12 > 12 %> 
-                  <% extra_years += 1 %>
-                <% end %>
-                <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
+                <%= th %>
               </th>
             <% end %>
           <%# End List all months and years %>
@@ -31,7 +27,7 @@
 
             <%# Employee name with link %>
               <td>
-                <%= link_to employees_path(employee_id: employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
+                <%= link_to employees_path(employee_id: employee.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
               </td>
             <%# End Employee name with link %>
 
@@ -48,7 +44,7 @@
                   
                   <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
                     <% if !employee_salaries.nil? && employee_index < employee_salaries.length && employee_salaries[employee_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && employee_salaries[employee_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee_salaries[employee_index].id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), {style: "text-decoration:none"} do %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee_salaries[employee_index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                         <div>
                           <% if of_what=="total" %>
                             <%= total = employee_salaries[employee_index].net_salary + employee_salaries[employee_index].salary_tax + employee_salaries[employee_index].meal_vouchers + employee_salaries[employee_index].gift_vouchers + employee_salaries[employee_index].overtime + employee_salaries[employee_index].extra_salary %>&nbsp
@@ -61,7 +57,7 @@
                       <% end %>
                       <% employee_index += 1 %>
                     <% else %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
                         <div>&nbsp</div>
                       <% end %>
                     <% end %>
@@ -88,7 +84,7 @@
             <%# Links %>
             <!-- <td><%= link_to 'Show', employee %></td>
             <td><%= link_to 'Edit', edit_employee_path(employee) %></td> -->
-            <td><%= link_to 'Sterge', employee_path(employee.id, start_month: @start_month, start_year: @start_year, end_month: @end_month, end_year: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
+            <td><%= link_to 'Sterge', employee_path(employee.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
             <%# End Links %> 
           </tr>
         <% end %>

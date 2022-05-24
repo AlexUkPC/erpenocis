@@ -1,5 +1,5 @@
 <h1>Cheltuieli salariale</h1>
-<%= render 'date_form' %>
+<%= render 'layouts/date_form' %>
 
 <br>
 <ul class="nav nav-tabs" id="employees" role="tablist">
@@ -53,4 +53,4 @@
 <%= render 'form', employee: @employee %>
 <br>
 
-<%= link_to 'Adauga angajat', new_employee_path %>
+<%= link_to 'Adauga angajat', employees_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
