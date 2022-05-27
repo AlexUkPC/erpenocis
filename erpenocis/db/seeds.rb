@@ -10,10 +10,17 @@ puts 'CREATED ADMIN USER: ' << user.username
 puts "Vrei sa adaugi angajati?(y)"
 a = gets.chomp
 if a=="y"
-  100.times do |j|
+  puts "Cati?(number)"
+  q = gets.chomp.to_i
+  puts "Cate luni?(number)"
+  qm = gets.chomp.to_i
+  q.times do |j|
     employee = Employee.create(name: SecureRandom.hex(4), hire_date: Date.today, dismiss_date: Date.today)
-    100.times do |i|
-      EmployeeSalary.create(employee_id: employee.id, net_salary: rand(100), salary_tax: rand(100), meal_vouchers: rand(100), gift_vouchers: rand(100), overtime: rand(100), extra_salary: rand(100), date: Date.today-4.months+i.months)
+    qm.times do |i|
+      r = rand(100)
+      if r<80
+        EmployeeSalary.create(employee_id: employee.id, net_salary: rand(100), salary_tax: rand(100), meal_vouchers: rand(100), gift_vouchers: rand(100), overtime: rand(100), extra_salary: rand(100), date: Date.today-4.months+i.months)
+      end
     end
     print j.to_s+'|' 
   end

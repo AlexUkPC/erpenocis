@@ -26,7 +26,6 @@
           <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
         </td>
         <% index = 0%>
-        <%#= index %>
         <% while expense.expense_values[index] && (expense.expense_values[index].date.strftime("%-m").to_i < @start_month || expense.expense_values[index].date.strftime("%Y").to_i < @start_year)  %>
           <% index +=1 %>
         <% end %>
