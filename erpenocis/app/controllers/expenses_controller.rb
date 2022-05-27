@@ -3,26 +3,32 @@ class ExpensesController < ApplicationController
   before_action :set_dates_params, :set_table_head
   # GET /expenses or /expenses.json
   def index
-    expense_type = params[:expense_type]
+    @expense_type = params[:expense_type]
     expense_id = params[:expense_id]
     expense_value_id = params[:expense_value_id]
     expense_value = params[:expense_value]
     if expense_value
       @expense_value = ExpenseValue.new(date: "01/"+params[:current_month]+"/"+params[:current_year])
     end
-    if !expense_type.nil?
-      @expenses = Expense.where(expense_type: expense_type)
+    if !@expense_type.nil?
+      @total_per_months = []
+      @months.times do |month|
+        @total_per_months[month]=0
+      end
+      @grand_total = 0
+      
+      @expenses = Expense.where(expense_type: @expense_type).eager_load(:expense_values).order("expenses.id ASC, expense_values.date ASC")
       if !expense_id.nil?
         @expense = Expense.find(expense_id)
         if !expense_value_id.nil?
           @expense_value = ExpenseValue.find(expense_value_id)
         end
       else
-        @expense = Expense.new(expense_type: expense_type)
+        @expense = Expense.new(expense_type: @expense_type)
       end
       
       @expense.expense_values.build
-      @expense_values = ExpenseValue.where(expense_id: @expenses.ids)
+      # @expense_values = ExpenseValue.where(expense_id: @expenses.ids)
     else
       @expenses = Expense.all
       @expense = Expense.new()

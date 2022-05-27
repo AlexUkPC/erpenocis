@@ -12,7 +12,9 @@ class EmployeesController < ApplicationController
     if employee_salary
       @employee_salary = EmployeeSalary.new(date: "01/"+params[:current_month]+"/"+params[:current_year])
     end
-    @employees = Employee.all.order("id ASC")
+    
+    @employees = Employee.eager_load(:employee_salaries).order("employees.id ASC, employee_salaries.date ASC")
+    
     if !employee_id.nil?
       @employee = Employee.find(employee_id)
       if !employee_salary_id.nil?
@@ -22,7 +24,7 @@ class EmployeesController < ApplicationController
       @employee = Employee.new()
     end
     @employee.employee_salaries.build
-    @employee_salaries = EmployeeSalary.where(employee_id: @employees.ids)
+    # @employee_salaries = EmployeeSalary.where(employee_id: @employees.ids)
 
   end
 

@@ -19,62 +19,46 @@
   </thead>
 
   <tbody>
-    <% total_expense_values = 0 %>
-    <% @total_per_months = [] %>
-    <% @months.times do |month| %>
-      <% @total_per_months[month] = 0 %>
-    <% end %>
     <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.id %></td>
-
-        <%# Expense name with link %>
+        <td>
+          <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
+        </td>
+        <% index = 0%>
+        <% while expense.expense_values[index] && (expense.expense_values[index].date.strftime("%-m").to_i < @start_month || expense.expense_values[index].date.strftime("%Y").to_i < @start_year)  %>
+          <% index +=1 %>
+        <% end %>
+        <% total = 0 %>
+        <% extra_years = 0 %>
+        <% @months.times do |month| %>
           <td>
-            <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
-          </td>
-        <%# End Expense name with link %>
-
-        <%# Expense values with links %>
-          <% expense_values = expense.expense_values.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
-          <% expense_index = 0 %>
-          <% extra_years = 0 %>
-          <% @months.times do |month| %>
-            <td>
-              <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-                
-                <% if !expense_values.nil? && expense_index < expense_values.length && expense_values[expense_index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && expense_values[expense_index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
-                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense_values[expense_index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
-                    <div>
-                      <%= total = expense_values[expense_index].value %>
-                      <% @total_per_months[month] += total %>
-                    </div>
-                  <% end %>
-                  <% expense_index += 1 %>
-                <% else %>
-                  <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
-                    <div>&nbsp</div>
-                  <% end %>
-                <% end %>
-            </td>
+          <% if expense.expense_values[index] %>
           <% end %>
-        <%# End Expense values with links %>
-
-        <%# Total per Expense %>
-          <td>
-            <% if expense_values.length > 0 %>
-              <%= expense_values_sum = expense_values.map(&:value).sum  %>
-              <% total_expense_values += expense_values_sum  %>
+            <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+            <% if expense.expense_values[index] && expense.expense_values[index].date.strftime("%-m").to_i == @start_month + month - extra_years * 12 && expense.expense_values[index].date.strftime("%Y").to_i == @start_year + extra_years %>
+              <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense.expense_values[index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                <div>
+                  <%= expense.expense_values[index].value %>
+                </div>
+              <% end %>
+              <% total += expense.expense_values[index].value %>
+              <% @total_per_months[month] += expense.expense_values[index].value %>
+              <% index += 1 %>
             <% else %>
-              <%= 0 %>
-            <% end %>    
+              <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                <div>&nbsp</div>
+              <% end %>
+            <% end %>
           </td>
-        <%# End Total per Expense %>
-
-        <%# Links %>
-          <!-- <td><%= link_to 'Show', expense %></td>
-          <td><%= link_to 'Edit', edit_expense_path(expense) %></td> -->
-          <td><%= link_to 'Sterge', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %></td>
-        <%# End Links %> 
+        <% end %>
+        <td>
+          <%= total %>
+          <% @grand_total += total %>
+        </td>
+        <td>
+          <%= link_to 'Sterge', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -83,18 +67,15 @@
       <th></th>
       <th>Total</th>
       <%# Total per month %>
-        <% extra_years = 0 %>
         <% @months.times do |month| %>
           <th>         
-            <%# @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-            <%#= sum = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).sum(:value) %>
-            <%= sum = @total_per_months[month] %>
+            <%= @total_per_months[month] %>
           </th>
         <% end %>
       <%# End Total per month %>
 
       <%# GrandTotal of totals %>
-        <th><%= total_expense_values %></th>
+        <th><%= @grand_total %></th>
       <%# End GrandTotal of totals %>
 
       <th colspan="3"></th>
