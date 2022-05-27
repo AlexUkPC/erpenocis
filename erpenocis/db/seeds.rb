@@ -30,7 +30,7 @@ if a=="y"
     qm.times do |i|
       r = rand(100)
       if r<50
-        ExpenseValue.create(expense_id: expense.id, value: rand(100), date: Date.today-4.months+i.months)
+        ExpenseValue.create(expense_id: expense.id, value: rand(100)+1, date: Date.today-4.months+i.months)
       end
     end
     print j.to_s+'|'
