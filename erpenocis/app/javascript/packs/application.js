@@ -11,11 +11,12 @@ import "users"
 import "orders"
 import "suppliers"
 import "employees"
+import "../src/jquery"
+
 
 
 Rails.start()
 // Turbolinks.start()
 ActiveStorage.start()
 
-require("jquery")
 require("@nathanvda/cocoon")

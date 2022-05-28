@@ -13,17 +13,19 @@
   }
   .dataTables_length {
     select {
-      min-width: 70px;
+      min-width: 50px;
       margin-left: .25rem;
       margin-right: .25rem;
       width: -webkit-fill-available;
       border-radius: 4px;
+      height: 10px;
+      text-align: center;
     }
   }
   .dataTable {
     .btn {
-      padding: 0.1rem 1rem;
-      vertical-align: top;
+      // padding: 0.1rem 1rem;
+      // vertical-align: top;
       i {
         font-size: .875rem;
         margin-right: .3rem;
@@ -137,6 +139,17 @@
           height: 34px;
           border-radius: 100%;
           background: $alpha-orange;
+          color: $white;
+          text-align: center;
+          padding-top: 7px;
+          font-size: 14px;
+          margin-right: 8px;
+        }
+        .highlighted-white {
+          width: 34px;
+          height: 34px;
+          border-radius: 100%;
+          background: #fafafa;
           color: $white;
           text-align: center;
           padding-top: 7px;

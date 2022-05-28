@@ -1,0 +1,126 @@
+<script>
+  $(document).ready(function(){
+    function format ( d,obs, user_pic, user, last_change, show_invoices_btn, show_orders_btn, show_project_btn, change_btn, delete_btn ) {
+      // `d` is the original data object for the row
+      return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">'+
+          '<tr class="expanded-row">'+
+              '<td colspan="8" class="row-bg">'+
+                '<div>'+
+                  '<div class="d-flex justify-content-between">'+
+                    '<div class="expanded-table-normal-cell">'+
+                      '<div class="me-2 mb-3 d-flex">'+
+                        user_pic+
+                        '<div>'+
+                          '<p>Ultima modificare</p>'+
+                          '<h6>'+user+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                      '<div class="me-2 d-flex">'+
+                        '<div class="highlighted-white"> </div>'+
+                        '<div>'+
+                          '<p>Data ultimei modificari</p>'+
+                          '<h6>'+last_change+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="cell-hilighted">'+
+                      '<div class="d-flex mb-2">'+
+                        '<div class="me-2 min-width-cell">'+
+                          '<p>Policy start date</p>'+
+                          '<h6>25/04/2020</h6>'+
+                        '</div>'+
+                        '<div class="min-width-cell">'+
+                          '<p>Policy end date</p>'+
+                          '<h6>24/04/2021</h6>'+
+                        '</div>'+
+                      '</div>'+
+                      '<div class="d-flex">'+
+                        '<div class="me-2 min-width-cell">'+
+                          '<p>Sum insured</p>'+
+                          '<h5>$26,000</h5>'+
+                        '</div>'+
+                        '<div class="min-width-cell">'+
+                          '<p>Premium</p>'+
+                          '<h5>$1200</h5>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Quote no.</p>'+
+                        '<h6>Incs234</h6>'+
+                      '</div>'+
+                      '<div class="me-2">'+
+                        '<p>Vehicle Reg. No.</p>'+
+                        '<h6>KL-65-A-7004</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Policy number</p>'+
+                        '<h6>Incsq123456</h6>'+
+                      '</div>'+
+                      '<div class="me-2">'+
+                        '<p>Policy number</p>'+
+                        '<h6>Incsq123456</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Branch</p>'+
+                        '<h6>'+last_change+'</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Channel</p>'+
+                        '<h6>Online</h6>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</td>'+
+          '</tr>'+
+      '</table>';
+    };
+    var table = $("#projectTable").DataTable({
+      "order": [[0, 'asc']],
+      "paging":   true,
+      "ordering": true,
+      "info":     false,
+      "filter": true,
+      stateSave: true,
+      dom: '<"top"if>rt<"bottom"lp><"clear">',
+      pagingType: 'full_numbers',
+      columnDefs: [{
+        orderable: true,
+        className: 'select-checkbox',
+        targets: 0
+      },
+      {
+        orderable: false,
+        targets: 7
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      }
+    });
+    $('#projectTable tbody').on('click', 'td.details-control', function () {
+      var tr = $(this).closest('tr');
+      var row = table.row( tr );
+      console.log(tr.find("td:eq(9)").html())
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format(row.data(),tr.find("td:eq(8)").text(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").html(),tr.find("td:eq(13)").html(),tr.find("td:eq(14)").html(),tr.find("td:eq(15)").html(),tr.find("td:eq(16)").html()) ).show();
+          tr.addClass('shown');
+      }
+    } );
+  });
+</script>
