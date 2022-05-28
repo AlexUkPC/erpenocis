@@ -8,7 +8,7 @@
       font-size: .875rem;
       @include transition-duration(0.3s);
       &:focus{
-        background: inherit;
+        // background: inherit;
       }
       i {
         &:before {

@@ -3,14 +3,14 @@
 <% end %>
 <br>
 <br>
-<%= render 'layouts/date_form' %>
 <br>
 <div class="row">
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
         <p class="card-title">Proiecte</p>
-        <div class="row">
+        <%= render 'layouts/date_form' %>
+        <div class="row mt-3">
           <div class="col-12">
             <div class="table-responsive">
               <table id="projectTable" class="display expandable-table" style="width:100%">
@@ -23,16 +23,16 @@
                     <th>Valoare</th>
                     <th>Profit</th>
                     <th>Profit %</th>
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
                     <th></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
                   </tr>
                 </thead>
                 <tbody>
@@ -45,7 +45,6 @@
                       <td><%= project.value %></td>
                       <td><%= profit(project.id, project.value) %></td>
                       <td><%= profit_proc(project.id, project.value) %> %</td>
-                      <td class="details-control"></td>
                       <td style="display: none"><%= excerpt(project.obs, "", radius: 200) %></td>
                       <td style="display: none"><%= image_tag user_profile_picture(@users.find(project.user_id), 100) , alt: "profile" %></td>
                       <td style="display: none"><%= @users.find(project.user_id).username %></td>
@@ -55,6 +54,7 @@
                       <td style="display: none"><%= link_to 'Vezi Proiect', project, class: "btn btn-primary" %></td>
                       <td style="display: none"><%= link_to 'Modifica', edit_project_path(project,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
                       <td style="display: none"><%= link_to 'Sterge', project_path(project, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi proiectul?' }, class: "btn btn-outline-danger btn-fw" %></td>
+                      <td class="details-control"></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -66,6 +66,7 @@
       </div>
     </div>
   </div>
+
 
 <script>
   $(document).ready(function(){
@@ -130,34 +131,57 @@
       '</table>';
     };
     var table = $("#projectTable").DataTable({
-      "order": [[0, 'asc']],
-      "paging":   true,
-      "ordering": true,
-      "info":     false,
-      "filter": true,
+      order: [[0, 'asc']],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
       stateSave: false,
-      dom: '<"top"f>rt<"bottom"lpi><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY:     350,
       scroller:    true,
+      colReorder: true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
       columnDefs: [{
         orderable: true,
         className: 'select-checkbox',
         targets: 0,
-        searchable: false
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
       },
       {
         searchable: true,
-        targets: [1, 2]
+        targets: 1,
+        searchPanes: {
+          show: true
+        },
       },
       {
         searchable: false,
-        targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+        searchPanes: {
+          show: false
+        },
+        targets: [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
       },
       {
         orderable: false,
-        targets: 7
+        targets: 16
       }
       ],
       select: {
@@ -190,9 +214,20 @@
             _: "Ai selectat %d proiecte",
             1: "Ai selectat 1 proiect"
           }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
         }
-    }
+      }
     });
+    $('.dt-buttons').removeClass('btn-group');
     $('#projectTable tbody').on('click', 'td.details-control', function () {
       var tr = $(this).closest('tr');
       var row = table.row( tr );
@@ -203,7 +238,7 @@
       }
       else {
           // Open this row
-          row.child( format(row.data(),tr.find("td:eq(8)").text(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").html(),tr.find("td:eq(13)").html(),tr.find("td:eq(14)").html(),tr.find("td:eq(15)").html(),tr.find("td:eq(16)").html()) ).show();
+          row.child( format(row.data(),tr.find("td:eq(7)").text(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").text(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").html(),tr.find("td:eq(12)").html(),tr.find("td:eq(13)").html(),tr.find("td:eq(14)").html(),tr.find("td:eq(15)").html()) ).show();
           tr.addClass('shown');
       }
     } );
