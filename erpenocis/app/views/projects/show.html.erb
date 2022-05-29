@@ -7,7 +7,9 @@
     <strong>Observatii:</strong>
     <%= @project.obs %>
   </p>
-  <%= link_to 'Modifica stoc', edit_project_path(@project, st: true) %>
+  <%= link_to edit_project_path(@project, st: true), class: "btn btn-sm btn-success btn-icon-text btn-rounded text-light" do %>
+    <i class="far fa-file btn-icon-prepend"></i>Modifica stoc
+  <% end %>
 <% else %>
   <p>
     <strong>Data inceput:</strong>
@@ -48,105 +50,506 @@
     <%= profit_proc(@project.id, @project.value) %>
   </p>
 
-  <%= link_to 'Modifica proiect', edit_project_path(@project) %>
+  <%= link_to edit_project_path(@project), class: "btn btn-sm btn-success btn-icon-text btn-rounded text-light" do %>
+    <i class="far fa-file btn-icon-prepend"></i>Modifica proiect
+  <% end %>
+
 <% end %>
-<% if !(params[:show]=='invoices') %>
-<hr>
-  <h1>Comenzi</h1>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Status</th>
-        <th>Categorie</th>
-        <th>Denumire/Tip/Nuanta</th>
-        <th>Cant. necesara</th>
-        <th>UM</th>
-        <th>Cote</th>
-        <th>brother_id</th>
-        <th>Cant. comandata</th>
-        <th>Furnizor</th>
-        <th>Contact furnizor</th>
-        <th>Data comanda</th>
-        <th>Data livrare</th>
-        <th>Observatii</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @orders.each do |order| %>
-        <tr>
-          <td><%= order.id %></td>
-          <td><%= order.status %></td>
-          <td><%= order.category %></td>
-          <td><%= order.name_type_color %></td>
-          <td><%= order.needed_quantity %></td>
-          <td><%= order.unit %></td>
-          <td><%= order.cote %></td>
-          <td><%= order.brother_id %></td>
-          <td><%= order.ordered_quantity %></td>
-          <td><%= order.supplier_id %></td>
-          <td><%= order.supplier_contact %></td>
-          <td><%= order.order_date %></td>
-          <td><%= order.delivery_date %></td>
-          <td><%= order.obs %></td>
-          <td><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order) end %></td>
-          <td><%= link_to 'Modifica', edit_order_path(order) %></td>
-          <td><%= link_to 'Sterge', order, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
+  <%= link_to new_order_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-sm btn-primary btn-icon-text btn-rounded" do %>
+    <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga Comanda
+  <% end %>
+  <%= link_to new_invoice_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-sm btn-primary btn-icon-text btn-rounded" do %>
+    <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga factura
+  <% end %>
   <br>
+  <br>
+<%= render 'layouts/date_form' %>
+<% if !(params[:show]=='invoices') %>
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title">Comenzi</p>
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table id="ordersTable" class="display expandable-table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Status</th>
+                      <th>Categorie</th>
+                      <th>Denumire/Tip/Nuanta</th>
+                      <th>Cant. necesara</th>
+                      <th>UM</th>
+                      <th>Furnizor</th>
+                      <th>Cant. comandata</th>
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th></th> 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @orders.each do |order| %>
+                      <tr>
+                        <td><%= order.id %></td>
+                        <td><%= order.status.titleize %></td>
+                        <td><%= order.category %></td>
+                        <td><%= order.name_type_color %></td>
+                        <td><%= order.needed_quantity %></td>
+                        <td><%= order.unit %></td>
+                        <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td>
+                        <td><%= order.ordered_quantity %></td>
 
-  <%= link_to 'Adauga comanda', new_order_path %>
+                        <td style="display: none"><%= image_tag user_profile_picture(@users.find(order.user_id), 100) , alt: "profile" %></td>
+                        <td style="display: none"><%= @users.find(order.user_id).username %></td>
+                        <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y <br> (ora: %H:%M)') %></td>
+                        <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td>
+                        <td style="display: none"><%= order.order_date %></td>
+                        <td style="display: none"><%= order.delivery_date %></td>
+                        <td style="display: none"><%= order.obs %></td>
+                        <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td>
+                        <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
+                        <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td>
+                        <td class="details-control"></td>
+                      </tr>
+                    <% end %>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 <% if !(params[:show]=='orders') %>
-<hr>
-  <h1>Facturi</h1>
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title">Facturi</p>
+          <%= render 'layouts/date_form' %>
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table id="invoicesTable" class="display expandable-table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Descriere</th>
+                      <th>Categorie</th>
+                      <th>Nume furnizor</th>
+                      <th>Nr. factura</th>
+                      <th>Data factura</th>
+                      <th>Cod factura</th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th style="display: none"></th> 
+                      <th></th> 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @invoices.each do |invoice| %>
+                      <tr>
+                        <td><%= invoice.id %></td>
+                        <td><%= invoice.description %></td>
+                        <td><%= invoice.category %></td>
+                        <td><%= invoice.supplier %></td>
+                        <td><%= invoice.invoice_number %></td>
+                        <td><%= invoice.invoice_date %></td>
+                        <td><%= invoice.code %></td>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Descriere</th>
-        <th>Categorie</th>
-        <th>Furnizor</th>
-        <th>Nr. factura</th>
-        <th>Data factura</th>
-        <th>Valoare factura fara TVA</th>
-        <th>Valoare factura pt proiect fara TVA</th>
-        <th>Cod</th>
-        <th>Observatii</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @invoices.each do |invoice| %>
-        <tr>
-          <td><%= invoice.id %></td>
-          <td><%= invoice.description %></td>
-          <td><%= invoice.category %></td>
-          <td><%= invoice.supplier %></td>
-          <td><%= invoice.invoice_number %></td>
-          <td><%= invoice.invoice_date %></td>
-          <td><%= invoice.invoice_value_without_vat %></td>
-          <td><%= invoice.invoice_value_for_project_without_vat %></td>
-          <td><%= invoice.code %></td>
-          <td><%= invoice.obs %></td>
-          <td><%= link_to 'Modifica', edit_invoice_path(invoice) %></td>
-          <td><%= link_to 'Sterge', invoice, method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <br>
-
-  <%= link_to 'Adauga factura', new_invoice_path %>
+                        <td style="display: none"><%= image_tag user_profile_picture(@users.find(invoice.user_id), 100) , alt: "profile" %></td>
+                        <td style="display: none"><%= @users.find(invoice.user_id).username %></td>
+                        <td style="display: none"><%= invoice.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
+                        <td style="display: none"><%= invoice.created_at.strftime('%d/%m/%Y') %></td>
+                        <td style="display: none"><%= invoice.invoice_value_without_vat %></td>
+                        <td style="display: none"><%= invoice.invoice_value_for_project_without_vat %></td>
+                        <td style="display: none"><%= invoice.obs %></td>
+                        <td style="display: none"><%= link_to 'Modifica', edit_invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
+                        <td style="display: none"><%= link_to 'Sterge', invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' }, class: "btn btn-outline-danger btn-fw" %></td>
+                        <td class="details-control"></td>
+                      </tr>
+                    <% end %>                 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
+<script>
+  $(document).ready(function(){
+    function format_invoices ( d, user_pic, user, last_change, created_at, invoice_value_without_vat, invoice_value_for_project_without_vat, obs, change_btn, delete_btn ) {
+      // `d` is the original data object for the row
+      return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">'+
+          '<tr class="expanded-row">'+
+              '<td colspan="8" class="row-bg">'+
+                '<div>'+
+                  '<div class="d-flex justify-content-between">'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-3 d-flex">'+
+                        user_pic+
+                        '<div>'+
+                          '<p>Ultima modificare</p>'+
+                          '<h6>'+user+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                      '<div class="me-2 d-flex">'+
+                        '<div class="highlighted-white"> </div>'+
+                        '<div>'+
+                          '<p>Data ultimei modificari</p>'+
+                          '<h6>'+last_change+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 text-center">'+
+                        '<p>Data inserarii</p>'+
+                        '<h6>'+created_at+'</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Valoare factura</p>'+
+                        '<h6>'+invoice_value_without_vat+'</h6>'+
+                      '</div>'+
+                      '<div class="me-2">'+
+                        '<p>Valoare pt proiect</p>'+
+                        '<h6>'+invoice_value_for_project_without_vat+'</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell" style="min-width: 15vw;max-width: 15vw">'+
+                      '<div class="me-2 mb-4">'+
+                        '<h6 class="text-center">Observatii</h6>'+
+                        obs+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        change_btn+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        delete_btn+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</td>'+
+          '</tr>'+
+      '</table>';
+    };
+    var table_invoices = $("#invoicesTable").DataTable({
+      order: [[0, 'asc']],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY:     250,
+      scroller:    true,
+      colReorder: true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [{
+        orderable: true,
+        className: 'select-checkbox',
+        targets: 0,
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+      },
+      {
+        searchable: true,
+        targets: [1,2,3,4,5,6],
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+        targets: [7,8,9,10,11,12,13,14,15,16]
+      },
+      {
+        orderable: false,
+        targets: 16
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ comenzi",
+        info:           "Se afiseaza comenzile de la _START_ pana la _END_ din _TOTAL_ comenzi",
+        infoEmpty:      "Se afiseaza comenzile de la 0 pana la 0 din 0 comenzi",
+        infoFiltered:   "(filtrate din _MAX_ comenzi in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici o comanda de afisat",
+        emptyTable:     "Nu exista comenzi in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d comenzi",
+            1: "Ai selectat o comanda"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    $('.dt-buttons').removeClass('btn-group');
+    $('#invoicesTable tbody').on('click', 'td.details-control', function () {
+      var tr = $(this).closest('tr');
+      var row = table_invoices.row( tr );
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format_invoices(row.data(),tr.find("td:eq(7)").html(),tr.find("td:eq(8)").text(),tr.find("td:eq(9)").text(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").html(),tr.find("td:eq(15)").html()) ).show();
+          tr.addClass('shown');
+      }
+    } );
+    function format_orders ( d, user_pic, user, last_change, created_at, order_date, order_delivery_date, obs, move_btn, change_btn, delete_btn ) {
+      // `d` is the original data object for the row
+      return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">'+
+          '<tr class="expanded-row">'+
+              '<td colspan="8" class="row-bg">'+
+                '<div>'+
+                  '<div class="d-flex justify-content-between">'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-3 d-flex">'+
+                        user_pic+
+                        '<div>'+
+                          '<p>Ultima modificare</p>'+
+                          '<h6>'+user+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                      '<div class="me-2 d-flex">'+
+                        '<div class="highlighted-white"> </div>'+
+                        '<div>'+
+                          '<p>Data ultimei modificari</p>'+
+                          '<h6>'+last_change+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 text-center">'+
+                        '<p>Data inserarii</p>'+
+                        '<h6>'+created_at+'</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        '<p>Data comanda</p>'+
+                        '<h6>'+order_date+'</h6>'+
+                      '</div>'+
+                      '<div class="me-2">'+
+                        '<p>Data livrare</p>'+
+                        '<h6>'+order_delivery_date+'</h6>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell" style="min-width: 15vw;max-width: 15vw">'+
+                      '<div class="me-2 mb-4">'+
+                        '<h6 class="text-center">Observatii</h6>'+
+                        obs+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      (move_btn!= "" ? '<div class="me-2 mb-4 text-center">' : '')+
+                        move_btn+
+                      (move_btn!= "" ? '</div>' : '')+ 
+                      '<div class="me-2 mb-4 text-center">'+
+                        change_btn+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        delete_btn+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</td>'+
+          '</tr>'+
+      '</table>';
+    };
+    var table_orders = $("#ordersTable").DataTable({
+      order: [[0, 'asc']],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY:     250,
+      scroller:    true,
+      colReorder: true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [{
+        orderable: true,
+        className: 'select-checkbox',
+        targets: 0,
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+      },
+      {
+        searchable: true,
+        targets: [1,2,3,6],
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+        targets: [4,5,7,8,9,10,11,12,13,14,15,16,17]
+      },
+      {
+        orderable: false,
+        targets: 18
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ comenzi",
+        info:           "Se afiseaza comenzile de la _START_ pana la _END_ din _TOTAL_ comenzi",
+        infoEmpty:      "Se afiseaza comenzile de la 0 pana la 0 din 0 comenzi",
+        infoFiltered:   "(filtrate din _MAX_ comenzi in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici o comanda de afisat",
+        emptyTable:     "Nu exista comenzi in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d comenzi",
+            1: "Ai selectat o comanda"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    $('.dt-buttons').removeClass('btn-group');
+    $('#ordersTable tbody').on('click', 'td.details-control', function () {
+      var tr = $(this).closest('tr');
+      var row = table_orders.row( tr );
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format_orders(row.data(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").text(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").html(),tr.find("td:eq(16)").html(),tr.find("td:eq(17)").html()) ).show();
+          tr.addClass('shown');
+      }
+    } );
+  });
+  
+</script>

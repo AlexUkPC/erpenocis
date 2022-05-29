@@ -1,31 +1,72 @@
-<%= form_with( method: "get" ) do |form| %>
-
-  <% months = (1..12).to_a %>
-  <% years = (2020..Date.today().strftime("%Y").to_i+10).to_a %>
-
-  <% if @which_date %>
-    <%= form.radio_button :which_date, 'advance', checked: (true if @which_date=='advance') %>
-    <%= form.label :which_date, 'Data comanda/avans', value: 'advance' %>
-    <%= form.radio_button :which_date, 'closure', checked: (true if @which_date=='closure') %>
-    <%= form.label :which_date, 'Data finalizare/rest de plata', value: 'closure' %>
-    <br>
-  <% end %>
-  <% if params[:expense_type] %>
-    <%= hidden_field_tag(:expense_type, params[:expense_type]) %>
-  <% end %>
-  <% if params[:current_tab] %>
-    <%= hidden_field_tag(:current_tab, params[:current_tab]) %>
-  <% end %>
-  <% if params[:jsid] %>
-    <%= hidden_field_tag(:jsid, params[:jsid]) %>
-  <% end %>
-
-  De la: 
-  <%= form.select :sm, options_for_select(months, @start_month) %>
-  <%= form.select :sy, options_for_select(years, @start_year ) %>
-  Pana la: 
-  <%= form.select :em, options_for_select(months, @end_month) %>
-  <%= form.select :ey, options_for_select(years, @end_year) %>
-
-  <%= form.submit "Afiseaza" %>
-<% end %>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <%= form_with( method: "get" ) do |form| %>
+        <div class="row align-items-center">  
+          <% months = (1..12).to_a %>
+          <% years = (2020..Date.today().strftime("%Y").to_i+10).to_a %>
+          <% if @which_date %>
+            <div class="col-sm-4">
+              <div class="row align-items-center">
+                <div class="col-sm-5">
+                  <%= form.radio_button :which_date, 'advance', checked: (true if @which_date=='advance') %>
+                  <%= form.label :which_date, 'Data comanda/avans', value: 'advance' %>
+                </div>
+                <div class="col-sm-6">
+                  <%= form.radio_button :which_date, 'closure', checked: (true if @which_date=='closure') %>
+                  <%= form.label :which_date, 'Data finalizare/rest de plata', value: 'closure' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% if params[:expense_type] %>
+            <%= hidden_field_tag(:expense_type, params[:expense_type]) %>
+          <% end %>
+          <% if params[:current_tab] %>
+            <%= hidden_field_tag(:current_tab, params[:current_tab]) %>
+          <% end %>
+          <% if params[:jsid] %>
+            <%= hidden_field_tag(:jsid, params[:jsid]) %>
+          <% end %>
+          
+          <div class="col-sm-5">
+            <div class="row align-items-center">
+              <div class="col-sm-5">
+                <div class="row align-items-center">
+                  <div class="col-sm-4 p-1 text-end">
+                    De la: 
+                  </div>
+                  <div class="col-sm-4 p-1">
+                    <%= form.select :sm, options_for_select(months, @start_month),{}, class: "form-control" %>
+                  </div>
+                  <div class="col-sm-4 p-1">
+                    <%= form.select :sy, options_for_select(years, @start_year ),{}, class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-sm-4 p-1 text-end">
+                    Pana la: 
+                  </div>
+                  <div class="col-sm-4 p-1">
+                    <%= form.select :em, options_for_select(months, @end_month),{}, class: "form-control" %>
+                  </div>
+                  <div class="col-sm-4 p-1">
+                    <%= form.select :ey, options_for_select(years, @end_year),{}, class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <%= form.submit "Afiseaza", class: "btn btn-outline-success btn-fw btn-sm" %>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3"></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

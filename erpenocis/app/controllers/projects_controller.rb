@@ -10,8 +10,10 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-    @invoices = Invoice.where(:project_id => @project.id)
-    @orders = Order.where(:project_id => @project.id)
+    @invoices = Invoice.where(:project_id => @project.id).between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year))
+    @orders = Order.where(:project_id => @project.id).between_dates(set_start_date(@start_month, @start_year),set_end_date(@end_month, @end_year)).order("id DESC")
+    @users = User.all
+    @suppliers = Supplier.all
   end
 
   # GET /projects/new
