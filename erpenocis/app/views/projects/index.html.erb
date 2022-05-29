@@ -3,13 +3,12 @@
 <% end %>
 <br>
 <br>
-<br>
+<%= render 'layouts/date_form' %>
 <div class="row">
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
         <p class="card-title">Proiecte</p>
-        <%= render 'layouts/date_form' %>
         <div class="row mt-3">
           <div class="col-12">
             <div class="table-responsive">
@@ -48,7 +47,7 @@
                       <td style="display: none"><%= excerpt(project.obs, "", radius: 200) %></td>
                       <td style="display: none"><%= image_tag user_profile_picture(@users.find(project.user_id), 100) , alt: "profile" %></td>
                       <td style="display: none"><%= @users.find(project.user_id).username %></td>
-                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y (ora: %H:%M)') %></td>
+                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
                       <td style="display: none"><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders'), class: "btn btn-primary" %></td>
                       <td style="display: none"><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices'), class: "btn btn-primary" %></td>
                       <td style="display: none"><%= link_to 'Vezi Proiect', project, class: "btn btn-primary" %></td>

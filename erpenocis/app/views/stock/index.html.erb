@@ -1,35 +1,234 @@
-<h1>Stocuri</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nume</th>
-      <th>Observatii</th>
-      <th>Ultima modificare</th>
-      <th>Data ultimei modificari</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @projects.each do |project| %>
-      <tr>
-        <td><%= project.id %></td>
-        <td><%= project.name %></td>
-        <td><%= project.obs %></td>
-        <td><%= @users.find(project.user_id).username %></td>
-        <td><%= project.updated_at.strftime('%d/%m/%Y (ora: %H:%M)') %></td>
-        <td><%= link_to 'Vezi comenzi', project_path(project, show: 'orders', st: true) %></td>
-        <td><%= link_to 'Vezi facturi', project_path(project, show: 'invoices', st: true) %></td>
-        <td><%= link_to 'Vezi stoc', project_path(project, st: true) %></td>
-        <td><%= link_to 'Modifica', edit_project_path(project, st: true) %></td>
-        <td><%= link_to 'Sterge', project_path(project, st: true), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<%= link_to new_project_path(st: true), class: "btn btn-sm btn-primary btn-icon-text btn-rounded" do %>
+  <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga stoc
+<% end %>
 <br>
+<br>
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Stocuri</p>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table id="stocksTable" class="display expandable-table" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nume</th>
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th style="display: none"></th> 
+                    <th></th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @projects.each do |project| %>
+                    <tr>
+                      <td><%= project.id %></td>
+                      <td><%= project.name %></td>
+                      <td style="display: none"><%= excerpt(project.obs, "", radius: 200) %></td>
+                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(project.user_id), 100) , alt: "profile" %></td>
+                      <td style="display: none"><%= @users.find(project.user_id).username %></td>
+                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
+                      <td style="display: none"><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders', st: true), class: "btn btn-primary" %></td>
+                      <td style="display: none"><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices', st: true), class: "btn btn-primary" %></td>
+                      <td style="display: none"><%= link_to 'Vezi stoc', project_path(project, st: true), class: "btn btn-primary" %></td>
+                      <td style="display: none"><%= link_to 'Modifica', edit_project_path(project, st: true), class: "btn btn-outline-primary btn-fw" %></td>
+                      <td style="display: none"><%= link_to 'Sterge', project_path(project, st: true), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' }, class: "btn btn-outline-danger btn-fw" %></td>
+                      <td class="details-control"></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<%= link_to 'Adauga stoc', new_project_path(st: true) %>
+
+<script>
+  $(document).ready(function(){
+    function format ( d,obs, user_pic, user, last_change, show_invoices_btn, show_orders_btn, show_stoc_btn, change_btn, delete_btn ) {
+      // `d` is the original data object for the row
+      return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">'+
+          '<tr class="expanded-row">'+
+              '<td colspan="8" class="row-bg">'+
+                '<div>'+
+                  '<div class="d-flex justify-content-between">'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-3 d-flex">'+
+                        user_pic+
+                        '<div>'+
+                          '<p>Ultima modificare</p>'+
+                          '<h6>'+user+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                      '<div class="me-2 d-flex">'+
+                        '<div class="highlighted-white"> </div>'+
+                        '<div>'+
+                          '<p>Data ultimei modificari</p>'+
+                          '<h6>'+last_change+'</h6>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="d-flex mb-2">'+
+                        '<div class="me-2 min-width-cell">'+
+                          show_stoc_btn+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4 text-center">'+
+                        show_invoices_btn+
+                      '</div>'+
+                      '<div class="me-2 text-center">'+
+                        show_orders_btn+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell" style="min-width: 15vw;max-width: 15vw">'+
+                      '<div class="me-2 mb-4">'+
+                        '<h6 class="text-center">Observatii</h6>'+
+                        obs+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        change_btn+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="expanded-table-normal-cell align-self-center">'+
+                      '<div class="me-2 mb-4">'+
+                        delete_btn+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</td>'+
+          '</tr>'+
+      '</table>';
+    };
+    var table = $("#stocksTable").DataTable({
+      order: [[0, 'asc']],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY:     350,
+      scroller:    true,
+      colReorder: true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [{
+        orderable: true,
+        className: 'select-checkbox',
+        targets: 0,
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+      },
+      {
+        searchable: true,
+        targets: 1,
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        searchPanes: {
+          show: false
+        },
+        targets: [2,3,4,5,6,7,8,9,10,11]
+      },
+      {
+        orderable: false,
+        targets: 11
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ stocuri",
+        info:           "Se afiseaza stocurile de la _START_ pana la _END_ din _TOTAL_ stocuri",
+        infoEmpty:      "Se afiseaza stocurile de la 0 pana la 0 din 0 stocuri",
+        infoFiltered:   "(filtrate din _MAX_ stocuri in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici un stoc de afisat",
+        emptyTable:     "Nu exista stocuri in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d stocuri",
+            1: "Ai selectat 1 stoc"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    $('.dt-buttons').removeClass('btn-group');
+    $('#stocksTable tbody').on('click', 'td.details-control', function () {
+      var tr = $(this).closest('tr');
+      var row = table.row( tr );
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format(row.data(),tr.find("td:eq(2)").text(),tr.find("td:eq(3)").html(),tr.find("td:eq(4)").text(),tr.find("td:eq(5)").text(),tr.find("td:eq(6)").html(),tr.find("td:eq(7)").html(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").html()) ).show();
+          tr.addClass('shown');
+      }
+    } );
+  });
+</script>
