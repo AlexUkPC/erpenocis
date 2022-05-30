@@ -1,5 +1,5 @@
 <%= link_to new_order_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-sm btn-primary btn-icon-text btn-rounded" do %>
-  <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga Comanda
+  <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga comanda
 <% end %>
 <br>
 <br>
@@ -59,7 +59,7 @@
                       <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td>
                       <td style="display: none"><%= order.order_date %></td>
                       <td style="display: none"><%= order.delivery_date %></td>
-                      <td style="display: none"><%= order.obs %></td>
+                      <td style="display: none"><%= excerpt(order.obs, "", radius: 200) %></td>
                       <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td>
                       <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
                       <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td>
