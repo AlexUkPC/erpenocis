@@ -1,79 +1,195 @@
-<h1>Cheltuieli indirecte</h1>
 <%= render 'layouts/date_form' %>
-<br>
-<table>
-  <thead>
-    <tr>
-      <th>Cheltuieli</th>
-      <%# List all months and years %>
-        <% @table_head.each do |th| %>
-          <th>
-            <%= th %>
-          </th>
-        <% end %>
-      <%# End List all months and years %>
-      <th>Total</th>
-    </tr>
-  </thead>
+<div class="card">
+  <div class="card-body">
+    <p class="card-title">Cheltuieli indirecte</p>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="indirectExpensesTable" class="table">
+            <thead>
+              <tr>
+                <th>Cheltuieli</th>
+                <%# List all months and years %>
+                  <% @table_head.each do |th| %>
+                    <th>
+                      <%= th %>
+                    </th>
+                  <% end %>
+                <%# End List all months and years %>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% salary_expenses = 0 %>
+              <tr>
+                <td><%= link_to employees_path(current_tab: "to", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do%>Salariale<% end %></td>
+                <% extra_years = 0 %>
+                
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                  <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+                  <td>
+                    <%= for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+                    <% salary_expenses += for_total_salary_expenses %>
+                  </td>
+                <% end %>
+                <td>
+                  <%= salary_expenses %>
+                </td>
+              </tr>
+              
+              <% @expense_types.each do |expense_type| %>
+                <% other_expenses = 0 %>
+                <tr>
+                  <td><%= link_to expenses_path(expense_type: expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do expense_type.titleize end %></td>
+                  <% extra_years = 0 %>
+                  <% @expense_values = ExpenseValue.where(expense_id: Expense.where(expense_type: expense_type)) %>
+                  <% @months.times do |month| %>
+                    <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                    <td>
+                      <%= for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+                      <% other_expenses += for_total_other_expenses %>
+                    </td>
+                  <% end %>
+                  <td>
+                    <%= other_expenses %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <%# Total per month %>
+                  <% @months.times do |month| %>
+                    <th>         
+                    </th>
+                  <% end %>
+                <%# End Total per month %>
 
-  <tbody>
-    <% total_values = 0 %>
-    <% salary_expenses = 0 %>
-    <tr>
-      <td><%= link_to employees_path(current_tab: "to", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do%>Salariale<% end %></td>
-      <% extra_years = 0 %>
-      
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-        <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
-        <td>
-          <%= for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
-          <% salary_expenses += for_total_salary_expenses %>
-          <% @total_per_months[month] += for_total_salary_expenses %>
-        </td>
-      <% end %>
-      <td>
-        <%= salary_expenses %>
-        <% total_values += salary_expenses %>
-      </td>
-    </tr>
-    
-    <% @expense_types.each do |expense_type| %>
-      <% other_expenses = 0 %>
-      <tr>
-        <td><%= link_to expenses_path(expense_type: expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do expense_type.titleize end %></td>
-        <% extra_years = 0 %>
-        <% @expense_values = ExpenseValue.where(expense_id: Expense.where(expense_type: expense_type)) %>
-        <% @months.times do |month| %>
-          <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-          <td>
-            <%= for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
-            <% other_expenses += for_total_other_expenses %>
-            <% @total_per_months[month] += for_total_other_expenses %>
-          </td>
-        <% end %>
-        <td>
-          <%= other_expenses %>
-          <% total_values += other_expenses %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>Total</th>
-      <%# Total per month %>
-        <% @months.times do |month| %>
-          <th>         
-            <%= @total_per_months[month] %>
-          </th>
-        <% end %>
-      <%# End Total per month %>
+                <%# GrandTotal of totals %>
+                  <th></th>
+                <%# End GrandTotal of totals %>
 
-      <%# GrandTotal of totals %>
-        <th><%= total_values %></th>
-      <%# End GrandTotal of totals %>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    </tr>
-  </tfoot>
-</table>
+<script>
+  $(document).ready(function(){
+    var table = $("#indirectExpensesTable").DataTable({
+      order: false,
+      paging:   false,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY: 280,
+      scrollX: true,
+      fixedColumns:   true,
+      scroller:    true,
+      colReorder: true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: 0,
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        targets: '_all',
+        searchPanes: {
+          show: false
+        },
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ proiecte",
+        info:           "Se afiseaza proiectele de la _START_ pana la _END_ din _TOTAL_ proiecte",
+        infoEmpty:      "Se afiseaza proiectele de la 0 pana la 0 din 0 proiecte",
+        infoFiltered:   "(filtrate din _MAX_ proiecte in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici un proiect de afisat",
+        emptyTable:     "Nu exista proiecte in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d proiecte",
+            1: "Ai selectat 1 proiect"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      },
+      footerCallback: function (row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+        };
+        for (let i = 1; i < api.columns().header().length; i++) {
+          pageTotal = api
+            .column(i, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+        
+        // Update footer
+        $(api.column(i).footer()).html(pageTotal);
+        } 
+        // Total over this page
+        
+      },
+    });
+    $('.dt-buttons').removeClass('btn-group');
+  });
+</script>

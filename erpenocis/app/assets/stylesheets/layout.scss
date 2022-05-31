@@ -35,3 +35,9 @@ select.form-control {
   background-color: $white;
   color: $darkslategray;
 }
+div.dataTables_scrollBody{
+  border-left: 0 !important;
+}
+tfoot{
+  border-bottom: 0 solid white;
+}

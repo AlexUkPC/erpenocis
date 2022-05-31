@@ -1,5 +1,4 @@
 
-<br>
 <%= render 'layouts/date_form' %>
 <div class="card">
   <div class="card-body">
@@ -49,7 +48,7 @@
                   <% end %>
                   <td><%= project.project_costs.map(&:amount).sum %></td>
                   <td><%= link_to 'Modifica', edit_project_cost_path(project, sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year
-                  ) %></td>
+                  ), class: "btn btn-outline-primary btn-fw btn-sm" %></td>
                 </tr>
               <% end %>
             </tbody>
