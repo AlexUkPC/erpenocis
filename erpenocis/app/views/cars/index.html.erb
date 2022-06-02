@@ -1,40 +1,149 @@
-<h1>Flota auto</h1>
 <%= render 'layouts/date_form' %>
-<br>
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Numar inmatriculare</th>
-      <th>Data expirare Rca</th>
-      <th>Data expirare Rovinieta</th>
-      <th>Data expirare Itp</th>
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Flota auto</p>
+        <div class="row">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table id="carsTable" class="table">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Nr inmatriculare</th>
+                    <th>Data expirare Rca</th>
+                    <th>Data expirare Rovinieta</th>
+                    <th>Data expirare Itp</th>
 
-    </tr>
-  </thead>
+                  </tr>
+                </thead>
 
-  <tbody>
-    <% @cars.each do |car| %> 
-      <tr>
-          <td><%= car.id %></td>
-          <td>
-            <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year) do %> 
-              <div>
-                <%= car.number_plate %>&nbsp
-              </div>
-            <% end %>
-          </td>
-          <td><%= car.rca_expiry_date %></td>
-          <td><%= car.rov_expiry_date %></td>
-          <td><%= car.itp_expiry_date %></td>
-          <!--<td><%= link_to 'Show', car %></td>
-          <td><%= link_to 'Edit', edit_car_path(car) %></td>-->
+                <tbody>
+                  <% @cars.each do |car| %> 
+                    <tr>
+                        <td><%= car.id %></td>
+                        <td>
+                          <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year) do %> 
+                            <div>
+                              <%= car.number_plate %>&nbsp
+                            </div>
+                          <% end %>
+                        </td>
+                        <td><%= car.rca_expiry_date %></td>
+                        <td><%= car.rov_expiry_date %></td>
+                        <td><%= car.itp_expiry_date %></td>
+                        <!--<td><%= link_to 'Show', car %></td>
+                        <td><%= link_to 'Edit', edit_car_path(car) %></td>-->
 
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', car: @car %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<br>
-
-<%= render 'form', car: @car %>
+<script>
+  $(document).ready(function(){
+    var table = $("#carsTable").DataTable({
+      order: [],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: true,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY: 370,
+      scrollX: true,
+      fixedColumns:   true,
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: 1,
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        targets: '_all',
+        searchPanes: {
+          show: false
+        },
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ auto",
+        info:           "Se afiseaza auto de la _START_ pana la _END_ din _TOTAL_ auto",
+        infoEmpty:      "Se afiseaza auto de la 0 pana la 0 din 0 auto",
+        infoFiltered:   "(filtrate din _MAX_ auto in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici un auto de afisat",
+        emptyTable:     "Nu exista auto in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "P. anterioara",
+            next:       "P. urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d auto",
+            1: "Ai selectat 1 auto"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    $('.dt-buttons').removeClass('btn-group');
+  });
+</script>

@@ -1,53 +1,158 @@
-<h1>Costuri proiecte</h1>
-<%= render 'layouts/date_form' %>
-<br>
-<table>
-  <% max = 0 %>
-  <% @projects.each do |project| %>
-    <% (max<project.project_costs.length) ? max=project.project_costs.length : max %>
-  <% end %>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nume</th>
-      <% max.times do |i| %>
-        <th>Cost <%= i+1 %> </th>
-        <th>Data cost <%= i+1 %> </th>
-      <% end %>
-      <th>Total</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  
-  <tbody>
-    <% @projects.each do |project| %>
-      <tr>
-        <td><%= project.id %></td>
-        <td><%= project.name %></td>
-        <% i=0 %>
-        <% project.project_costs.each do |cost| %>
-          <td>
-            <%= cost.amount %>
-          </td>
-          <td>
-            <% if cost.month&&cost.year %>
-              <%= cost.month.to_s + " / " %>
-              <%= cost.year %>
-            <% end %>
-          </td>
-          <% i+=1 %>
-        <% end %>
-        <% if i<max %>
-          <% (max*2-i*2).times do %>
-            <td></td>
-          <% end %>
-        <% end %>
-        <td><%= project.project_costs.map(&:amount).sum %></td>
-        <td><%= link_to 'Modifica', edit_project_cost_path(project, sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year
-        ) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>
+<%= render 'layouts/date_form' %>
+<div class="card">
+  <div class="card-body">
+    <p class="card-title">Costuri proiecte</p>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="projectTable" class="table">
+            <% max = 0 %>
+            <% @projects.each do |project| %>
+              <% (max<project.project_costs.length) ? max=project.project_costs.length : max %>
+            <% end %>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nume proiect</th>
+                <% max.times do |i| %>
+                  <th>Cost <%= i+1 %> </th>
+                  <th>Data cost <%= i+1 %> </th>
+                <% end %>
+                <th>Total</th>
+                <th></th> 
+              </tr>
+            </thead>
+            <tbody>
+              <% @projects.each do |project| %>
+                <tr>
+                  <td><%= project.id %></td>
+                  <td><%= project.name %></td>
+                  <% i=0 %>
+                  <% project.project_costs.each do |cost| %>
+                    <td>
+                      <%= cost.amount %>
+                    </td>
+                    <td>
+                      <% if cost.month&&cost.year %>
+                        <%= cost.month.to_s + " / " %>
+                        <%= cost.year %>
+                      <% end %>
+                    </td>
+                    <% i+=1 %>
+                  <% end %>
+                  <% if i<max %>
+                    <% (max*2-i*2).times do %>
+                      <td></td>
+                    <% end %>
+                  <% end %>
+                  <td><%= project.project_costs.map(&:amount).sum %></td>
+                  <td><%= link_to 'Modifica', edit_project_cost_path(project, sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year
+                  ), class: "btn btn-outline-primary btn-fw btn-sm" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(document).ready(function(){
+    var table = $("#projectTable").DataTable({
+      order: [[0, 'asc']],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY:     350,
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: 1,
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        targets: '_all',
+        searchPanes: {
+          show: false
+        },
+      },
+      {
+        orderable: false,
+        targets: -1
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ proiecte",
+        info:           "Se afiseaza proiectele de la _START_ pana la _END_ din _TOTAL_ proiecte",
+        infoEmpty:      "Se afiseaza proiectele de la 0 pana la 0 din 0 proiecte",
+        infoFiltered:   "(filtrate din _MAX_ proiecte in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici un proiect de afisat",
+        emptyTable:     "Nu exista proiecte in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d proiecte",
+            1: "Ai selectat 1 proiect"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    $('.dt-buttons').removeClass('btn-group');
+  });
+</script>

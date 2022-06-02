@@ -57,7 +57,7 @@
                       <td style="display: none"><%= invoice.created_at.strftime('%d/%m/%Y') %></td>
                       <td style="display: none"><%= invoice.invoice_value_without_vat %></td>
                       <td style="display: none"><%= invoice.invoice_value_for_project_without_vat %></td>
-                      <td style="display: none"><%= invoice.obs %></td>
+                      <td style="display: none"><%= excerpt(invoice.obs, "", radius: 200) %></td>
                       <td style="display: none"><%= link_to 'Modifica', edit_invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
                       <td style="display: none"><%= link_to 'Sterge', invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' }, class: "btn btn-outline-danger btn-fw" %></td>
                       <td class="details-control"></td>
@@ -152,7 +152,7 @@
       pagingType: 'full_numbers',
       scrollY:     350,
       scroller:    true,
-      colReorder: true,
+      colReorder: false,
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',

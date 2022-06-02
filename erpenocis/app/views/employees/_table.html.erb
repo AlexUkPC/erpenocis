@@ -1,122 +1,134 @@
-<table>
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nume angajat</th>
-          <%# List all months and years %>
-            <% @table_head.each do |th| %>
-              <th>
-                <%= th %>
-              </th>
-            <% end %>
-          <%# End List all months and years %>
-          <th>Total</th>
-          <th colspan="3"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-      <% grand_total = 0 %>
-      
+<div class="row">
+  <div class="col-12">
+    <div class="table-responsive">
       <% case of_what
-      when "total"
-        @current_tab = "to"
-      when "net_salary"
-        @current_tab = "ns"
-      when "salary_tax"
-        @current_tab = "st"
-      when "meal_vouchers"
-        @current_tab = "mv"
-      when "gift_vouchers"
-        @current_tab = "gv"
-      when "overtime"
-        @current_tab = "ot"
-      when "extra_salary"
-        @current_tab = "es"
-      else
-        ""
+        when "total"
+          @current_tab = "to"
+        when "net_salary"
+          @current_tab = "ns"
+        when "salary_tax"
+          @current_tab = "st"
+        when "meal_vouchers"
+          @current_tab = "mv"
+        when "gift_vouchers"
+          @current_tab = "gv"
+        when "overtime"
+          @current_tab = "ot"
+        when "extra_salary"
+          @current_tab = "es"
+        else
+          ""
       end %>
-      <% @total_per_months = [] %>
-      <% @months.times do |month| %>
-        <% @total_per_months[month] = 0 %>
-      <% end %>
-        <% @employees.each do |employee| %>
+      <table id="<%= @current_tab %>Table" class="table" style="width:100%">
+        <thead>
+          <% if @curr_year %>
+            <tr>
+              <th class="pt-0 pb-0"></th>
+              <th class="pt-0 pb-0"></th>
+              <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+              <th class="pt-0 pb-0"></th>
+            </tr>
+          <% end %>
           <tr>
-            <td><%= employee.id %></td>
-
-            <%# Employee name with link %>
-              <td>
-                <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
-              </td>
-            <%# End Employee name with link %>
-
-            <%# Employee salaries with links %>
-              <% index = 0 %>
-              <% while employee.employee_salaries[index] && (employee.employee_salaries[index].date.strftime("%-m").to_i < @start_month || employee.employee_salaries[index].date.strftime("%Y").to_i < @start_year)  %>
-                <% index +=1 %>
+            <th>Id</th>
+            <th>Nume angajat</th>
+            <th style="display: none">Nume angajat</th>
+            <%# List all months and years %>
+              <% @table_head.each do |th| %>
+                <th>
+                  <%= th %>
+                </th>
               <% end %>
-              <% total = 0 %>
-              <% extra_years = 0 %>
-              <% @months.times do |month| %>
-                <td>
-                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-                    <% if !employee.employee_salaries.nil? && index < employee.employee_salaries.length && employee.employee_salaries[index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && employee.employee_salaries[index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee.employee_salaries[index].id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
-                        <div>
-                          <% if of_what=="total" %>
-                            <%= t = employee.employee_salaries[index].net_salary + employee.employee_salaries[index].salary_tax + employee.employee_salaries[index].meal_vouchers + employee.employee_salaries[index].gift_vouchers + employee.employee_salaries[index].overtime + employee.employee_salaries[index].extra_salary %>&nbsp
-                            <% total += t %>
-                            <% @total_per_months[month] += t %>
-                          <% else %>
-                            <%= t = employee.employee_salaries[index].public_send(of_what.to_sym) %>&nbsp
-                            <% total += t %>
-                            <% @total_per_months[month] += t %>
-                          <% end %>
-                        </div>
-                      <% end %>
-                      <% index += 1 %>
-                    <% else %>
-                      <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
-                        <div>&nbsp</div>
-                      <% end %>
-                    <% end %>
-                </td>
-              <% end %>
-            <%# End Employee salaries with links %>
-
-            <%# Total per Employee %>
-              <td>
-                <%= total %>
-                <% grand_total += total  %>
-              </td>
-            <%# End Total per Employee %>
-
-            <%# Links %>
-            <!-- <td><%= link_to 'Show', employee %></td>
-            <td><%= link_to 'Edit', edit_employee_path(employee) %></td> -->
-            <td><%= link_to 'Sterge', employee_path(employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' } %></td>
-            <%# End Links %> 
+            <%# End List all months and years %>
+            <th>Total</th>
           </tr>
+        </thead>
+
+        <tbody>
+        <% grand_total = 0 %>
+        
+        
+        <% @total_per_months = [] %>
+        <% @months.times do |month| %>
+          <% @total_per_months[month] = 0 %>
         <% end %>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Total</th>
-          <%# Total per month %>
-            <%# extra_years = 0 %>
-            <% @months.times do |month| %>
-              <th>         
-                <%= sum = @total_per_months[month] %>
-              </th>
-            <% end %>
-          <%# End Total per month %>
+          <% @employees.each do |employee| %>
+            <tr>
+              <td data-order="<%= employee.id %>"><%= employee.id %></td>
+              <%# Employee name with link %>
+                <td data-order="<%=employee.name%>">
+                  <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
+                </td>
+                <td style="display: none">
+                  <%=employee.name%>
+                </td>
+              <%# End Employee name with link %>
 
-          <%# GrandTotal of totals %>
-            <th><%= grand_total %></th>
-          <%# End GrandTotal of totals %>
+              <%# Employee salaries with links %>
+                <% index = 0 %>
+                <% while employee.employee_salaries[index] && (employee.employee_salaries[index].date.strftime("%-m").to_i < @start_month || employee.employee_salaries[index].date.strftime("%Y").to_i < @start_year)  %>
+                  <% index +=1 %>
+                <% end %>
+                <% total = 0 %>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                    <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                      <% if !employee.employee_salaries.nil? && index < employee.employee_salaries.length && employee.employee_salaries[index].date.strftime('%-m').to_i==(@start_month + month) - (extra_years * 12) && employee.employee_salaries[index].date.strftime('%Y').to_i==(@start_year + extra_years) %>
+                        <% if of_what=="total" %>
+                          <td data-order="<%= t = employee.employee_salaries[index].net_salary + employee.employee_salaries[index].salary_tax + employee.employee_salaries[index].meal_vouchers + employee.employee_salaries[index].gift_vouchers + employee.employee_salaries[index].overtime + employee.employee_salaries[index].extra_salary %>">
+                        <% else %>
+                          <td data-order="<%= t = employee.employee_salaries[index].public_send(of_what.to_sym) %>">
+                        <% end %>
+                          <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee.employee_salaries[index].id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                            <div>
+                              <%= t %>&nbsp
+                              <% total += t %>
+                              <% @total_per_months[month] += t %>
+                            </div>
+                          <% end %>
+                          <% index += 1 %>
+                        </td>
+                      <% else %>
+                        <td data-order="0">
+                          <%= link_to employees_path(employee_id: employee.id, employee_salary: 0, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                            <div>&nbsp</div>
+                          <% end %>
+                        </td>
+                      <% end %>
+                <% end %>
+              <%# End Employee salaries with links %>
 
-          <th colspan="3"></th>
-        </tr>
-      </tfoot>
-    </table>
+              <%# Total per Employee %>
+                <td style="font-weight: 600" data-order="<%= total %>">
+                  <%= total %>
+                  <% grand_total += total  %>
+                </td>
+              <%# End Total per Employee %>
+
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Total</th>
+            <th style="display: none"></th>
+            <%# Total per month %>
+              <%# extra_years = 0 %>
+              <% @months.times do |month| %>
+                <th>         
+                  <%= sum = @total_per_months[month] %>
+                </th>
+              <% end %>
+            <%# End Total per month %>
+
+            <%# GrandTotal of totals %>
+              <th><%= grand_total %></th>
+            <%# End GrandTotal of totals %>
+
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

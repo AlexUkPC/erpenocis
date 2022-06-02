@@ -1,286 +1,451 @@
 <h1>Centralizare financiara</h1>
 <%= render 'layouts/date_form' %>
-<br>
-<h2>Situatie financiara</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Denumire</th>
-      <%# List all months and years %>
-        <% @table_head.each do |th| %>
-          <th>
-           <%= th %>
-          </th>
-        <% end %>
-      <%# End List all months and years %>
-      <th>Total</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% total_values = 0 %>
-    <% total_sum = 0 %>
-    <% @total_expenses_per_months = [] %>
-    <% @months.times do |month| %>
-      <% @total_expenses_per_months[month] = 0 %> 
-    <% end %>
-    <% @total_per_months = [] %>
-    <% @months.times do |month| %>
-      <% @total_per_months[month] = 0 %> 
-    <% end %>
-    <tr>
-      <td>Valoare proiecte</td>
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-        <% projects = @projects.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
-        <td>
-          <%= total = projects.map(&:value).sum %>
-          <% total_values += total %>
-          <% @total_per_months[month] += total %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_values %>
-      </td>
-    </tr>
-    <% total_values = 0 %>
-    <tr>
-      <td>Cheltuieli materiale proiecte</td>
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-        <% project_costs = @project_costs.where(month: @start_month + month - extra_years * 12 , year: @start_year + extra_years) %>
-        <td>
-          <%= total = project_costs.map(&:amount).sum %>
-          <% total_values += total %>
-          <% @total_per_months[month] -= total %>
-          <% @total_expenses_per_months[month] += total %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_values %>
-      </td>
-    </tr>
-    <% total_values = 0 %>
-    <tr>
-      <td>Cheltuieli indirecte</td>
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-        <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
-        <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
-        <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
-        <td>
-          <%= total = for_total_salary_expenses + for_total_other_expenses %>
-          <% total_values += total %>
-          <% @total_per_months[month] -= total %>
-          <% @total_expenses_per_months[month] += total %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_values %>
-      </td>
-    </tr>
-    
-    
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>Total</th>
-      <%# Total per month %>
-        
-        <% @months.times do |month| %>
-          <th>         
-             <%= sum = @total_per_months[month] %>
-             <% total_sum += sum %>
-          </th>
-        <% end %>
-      <%# End Total per month %>
-
-      <%# GrandTotal of totals %>
-        <th><%= total_sum %></th>
-      <%# End GrandTotal of totals %>
-
-    </tr>
-  </tfoot>
-</table>
-
-<br>
-<h2>Cash flow</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Cash flow</th>
-      <% extra_years = 0 %>
-      <%# List all months and years %>
-        <% @months.times do |month| %>
-          <th>
-            <% if @start_month + month - extra_years * 12 > 12 %> 
-              <% extra_years += 1 %>
-            <% end %>
-            <%= ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s %>
-          </th>
-        <% end %>
-      <%# End List all months and years %>
-      <th>Total</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% total_values = 0 %>
-    <% total_expenses = 0 %>
-    <% salary_expenses = 0 %>
-    <% @old_solds = [] %>
-    <% @total_per_months = [] %>
-    <% @solds = [] %>
-    <% @months.times do |month| %>
-      <% @total_per_months[month] = 0 %> 
-      <% @solds[month] = 0 %> 
-    <% end %>
-    <tr>
-      <td>Sold to</td>
-      <!-- afla care e soldul la prima luna afisata  -->
-      <% extra_years_before = 0 %>
-      <% sold = @last_january_sold.value %>  
-      <% @months_before.times do |month_before| %>
-        <% 1 + month_before - extra_years_before * 12 > 12 ? extra_years_before += 1 : extra_years_before %>
-        <% project_situations_advance = @project_situations.where(advance_month: 1 + month_before, advance_year: @last_january_sold.year + extra_years_before).map(&:advance_payment).sum %>
-        <% project_situations_closure = @project_situations.where(closure_month: 1 + month_before, closure_year: @last_january_sold.year + extra_years_before).map(&:closure_payment).sum %>
-
-        <% employee_salaries = @employee_salaries.created_between(Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01'),Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01').next_month-1.day) %>
-        <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
-
-        <% for_total_other_expenses = @expense_values.created_between(Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01'),Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
-
-        <% project_costs = @project_costs.where(month: 1 + month_before, year: @last_january_sold.year + extra_years_before).map(&:amount).sum %>
-
-        <% sold = sold + project_situations_advance + project_situations_closure - for_total_salary_expenses - for_total_other_expenses - project_costs %>
-      <% end %>
-
-      <% project_situations_advance = 0 %>
-      <% project_situations_closure = 0 %>
-      <% for_total_salary_expenses = 0 %>
-      <% for_total_other_expenses = 0 %>
-      <!-- pornind de la soldul calculat anterior calculeaza si afiseaza soldul pe perioada de afisat + 1 luna extra-->
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-        <td>
-          <% project_situations_advance = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years).map(&:advance_payment).sum %>
-          <% project_situations_closure = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years).map(&:closure_payment).sum %>
-
-          <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
-          <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
-
-          <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
-
-          
-          <% if @start_month + month - (extra_years * 12) == 1 %>
-            <% @old_solds[@start_year + extra_years - 1] = @solds[month-1] %>
-            <% current_year_now = @start_year + extra_years %>
-            <% @solds[month-1] = @january_solds.find_by(year: current_year_now).value if @january_solds.find_by(year: current_year_now) %>
-          <% end %>
-          <% @january_solds.find_by(year: current_year_now) ? @jsid = @january_solds.find_by(year: current_year_now).id : @jsid = ""  %>
-          <% if month == 0 %>
-            <% if @start_month==1 %>
-              <%= link_to financial_centralization_path(jsid: @jsid, year:  current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do %>
-                <%= sold %>
+<div class="card">
+  <div class="card-body">
+    <p class="card-title">Situatie financiara</p>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="financialSituationTable" class="table" style="width:100%">
+            <thead>
+              <% if @curr_year %>
+                <tr>
+                  <th class="pt-0 pb-0"></th>
+                  <th class="pt-0 pb-0"></th>
+                  <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+                  <th class="pt-0 pb-0"></th>
+                </tr>
               <% end %>
-            <% else %>
-              <%= sold %>
-            <% end %>
-            <% @solds[month] = sold + project_situations_advance + project_situations_closure - @total_expenses_per_months[month] %>
-          <% elsif @start_month + month - (extra_years * 12) == 1 %>
+              <tr>
+                <th>Denumire</th>
+                <%# List all months and years %>
+                  <% @table_head.each do |th| %>
+                    <th>
+                    <%= th %>
+                    </th>
+                  <% end %>
+                <%# End List all months and years %>
+                <th>Total</th>
+              </tr>
+            </thead>
 
-            <%= link_to financial_centralization_path(jsid: @jsid, year: current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do %>
-              <%= @solds[month-1] %>
-            <% end %>
-            <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
-          <% else %>
-            <%= @solds[month-1] %>
-            <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
-          <% end %>
-        </td>
-      <% end %>
-      <td>
-        
-      </td>
-    </tr>
-    <tr>
-      <td>Sume incasate avans</td>
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-        <% project_situations = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years) %>
-        <td>
-          <%= total = project_situations.map(&:advance_payment).sum %>
-          <% total_values += total %>
-          <% @total_per_months[month] += total %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_values %>
-      </td>
-    </tr>
-    <% total_values = 0 %>
-    <tr>
-      <td>Sume incasate final</td>
-      <% extra_years = 0 %>
-      <% @months.times do |month| %>
-        <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-        <% project_situations = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years) %>
-        <td>
-          <%= total = project_situations.map(&:closure_payment).sum %>
-          <% total_values += total %>
-          <% @total_per_months[month] += total %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_values %>
-      </td>
-    </tr>
-    <tr>
-      <td>Cheltuieli mat proiect + ch indirecte</td>
+            <tbody>
+              <% total_values = 0 %>
+              <% total_sum = 0 %>
+              <% @total_expenses_per_months = [] %>
+              <% @months.times do |month| %>
+                <% @total_expenses_per_months[month] = 0 %> 
+              <% end %>
+              <% @total_per_months = [] %>
+              <% @months.times do |month| %>
+                <% @total_per_months[month] = 0 %> 
+              <% end %>
+              <tr>
+                <td>Valoare proiecte</td>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                  <% projects = @projects.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+                  <td>
+                    <%= total = projects.map(&:value).sum %>
+                    <% total_values += total %>
+                    <% @total_per_months[month] += total %>
+                  </td>
+                <% end %>
+                <td style="font-weight: 600">
+                  <%= total_values %>
+                </td>
+              </tr>
+              <% total_values = 0 %>
+              <tr>
+                <td>Cheltuieli materiale proiecte</td>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                  <% project_costs = @project_costs.where(month: @start_month + month - extra_years * 12 , year: @start_year + extra_years) %>
+                  <td>
+                    <%= total = project_costs.map(&:amount).sum %>
+                    <% total_values += total %>
+                    <% @total_per_months[month] -= total %>
+                    <% @total_expenses_per_months[month] += total %>
+                  </td>
+                <% end %>
+                <td>
+                  <%= total_values %>
+                </td>
+              </tr>
+              <% total_values = 0 %>
+              <tr>
+                <td>Cheltuieli indirecte</td>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
+                  <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+                  <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+                  <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+                  <td>
+                    <%= total = for_total_salary_expenses + for_total_other_expenses %>
+                    <% total_values += total %>
+                    <% @total_per_months[month] -= total %>
+                    <% @total_expenses_per_months[month] += total %>
+                  </td>
+                <% end %>
+                <td>
+                  <%= total_values %>
+                </td>
+              </tr>
+              
+              
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <%# Total per month %>
+                  
+                  <% @months.times do |month| %>
+                    <th>         
+                      <%= sum = @total_per_months[month] %>
+                      <% total_sum += sum %>
+                    </th>
+                  <% end %>
+                <%# End Total per month %>
 
-      <% @months.times do |month| %>
-        <td>
-          <%= sum = @total_expenses_per_months[month] %>
-          <% @total_per_months[month] -=sum %>
-          <% total_expenses += sum %>
-        </td>
-      <% end %>
-      <td>
-        <%= total_expenses %>
-      </td>
-    </tr>
-    
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>Disponibil cash</th>
-      <%# Total per month %>
-        <% extra_years = 0 %>
-        <% @months.times do |month| %>
-          <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-          <th>         
-            <% if @start_month + month - extra_years * 12 == 12 && @months-1 != month %>
-              <%= @old_solds[@start_year + extra_years] %>
-            <% else %>
-              <%= @solds[month] %>
-            <% end %>
-          </th>
-        <% end %>
-      <%# End Total per month %>
+                <%# GrandTotal of totals %>
+                  <th><%= total_sum %></th>
+                <%# End GrandTotal of totals %>
 
-      <%# GrandTotal of totals %>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <%# End GrandTotal of totals %>
+<div class="card mt-3">
+  <div class="card-body">
+    <p class="card-title">Cash flow</p>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="cashFlowTable" class="table" style="width:100%">
+            <thead>
+              <% if @curr_year %>
+                <tr>
+                  <th class="pt-0 pb-0"></th>
+                  <th class="pt-0 pb-0"></th>
+                  <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+                  <th class="pt-0 pb-0"></th>
+                </tr>
+              <% end %>
+              <tr>
+                <th>Cash flow</th>
+                <%# List all months and years %>
+                  <% @table_head.each do |th| %>
+                    <th>
+                      <%= th %>
+                    </th>
+                  <% end %>
+                <%# End List all months and years %>
+                <th>Total</th>
+              </tr>
+            </thead>
 
-    </tr>
-  </tfoot>
-</table>
+            <tbody>
+              <% total_values = 0 %>
+              <% total_expenses = 0 %>
+              <% salary_expenses = 0 %>
+              <% @old_solds = [] %>
+              <% @total_per_months = [] %>
+              <% @solds = [] %>
+              <% @months.times do |month| %>
+                <% @total_per_months[month] = 0 %> 
+                <% @solds[month] = 0 %> 
+              <% end %>
+              <tr>
+                <td>Sold to</td>
+                <!-- afla care e soldul la prima luna afisata  -->
+                <% extra_years_before = 0 %>
+                <% sold = @last_january_sold.value %>  
+                <% @months_before.times do |month_before| %>
+                  <% 1 + month_before - extra_years_before * 12 > 12 ? extra_years_before += 1 : extra_years_before %>
+                  <% project_situations_advance = @project_situations.where(advance_month: 1 + month_before, advance_year: @last_january_sold.year + extra_years_before).map(&:advance_payment).sum %>
+                  <% project_situations_closure = @project_situations.where(closure_month: 1 + month_before, closure_year: @last_january_sold.year + extra_years_before).map(&:closure_payment).sum %>
+
+                  <% employee_salaries = @employee_salaries.created_between(Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01'),Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01').next_month-1.day) %>
+                  <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+
+                  <% for_total_other_expenses = @expense_values.created_between(Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01'),Date.parse((@last_january_sold.year + extra_years_before).to_s+'-'+((1 + month_before) - (extra_years_before * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+
+                  <% project_costs = @project_costs.where(month: 1 + month_before, year: @last_january_sold.year + extra_years_before).map(&:amount).sum %>
+
+                  <% sold = sold + project_situations_advance + project_situations_closure - for_total_salary_expenses - for_total_other_expenses - project_costs %>
+                <% end %>
+
+                <% project_situations_advance = 0 %>
+                <% project_situations_closure = 0 %>
+                <% for_total_salary_expenses = 0 %>
+                <% for_total_other_expenses = 0 %>
+                <!-- pornind de la soldul calculat anterior calculeaza si afiseaza soldul pe perioada de afisat + 1 luna extra-->
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
+                  <td>
+                    <% project_situations_advance = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years).map(&:advance_payment).sum %>
+                    <% project_situations_closure = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years).map(&:closure_payment).sum %>
+
+                    <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+                    <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+
+                    <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+
+                    
+                    <% if @start_month + month - (extra_years * 12) == 1 %>
+                      <% @old_solds[@start_year + extra_years - 1] = @solds[month-1] %>
+                      <% current_year_now = @start_year + extra_years %>
+                      <% @solds[month-1] = @january_solds.find_by(year: current_year_now).value if @january_solds.find_by(year: current_year_now) %>
+                    <% end %>
+                    <% @january_solds.find_by(year: current_year_now) ? @jsid = @january_solds.find_by(year: current_year_now).id : @jsid = ""  %>
+                    <% if month == 0 %>
+                      <% if @start_month==1 %>
+                        <%= link_to financial_centralization_path(jsid: @jsid, year:  current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                          <%= sold %>
+                        <% end %>
+                      <% else %>
+                        <%= sold %>
+                      <% end %>
+                      <% @solds[month] = sold + project_situations_advance + project_situations_closure - @total_expenses_per_months[month] %>
+                    <% elsif @start_month + month - (extra_years * 12) == 1 %>
+
+                      <%= link_to financial_centralization_path(jsid: @jsid, year: current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                        <%= @solds[month-1] %>
+                      <% end %>
+                      <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
+                    <% else %>
+                      <%= @solds[month-1] %>
+                      <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td> 
+                </td>
+              </tr>
+              <tr>
+                <td>Sume incasate avans</td>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
+                  <% project_situations = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years) %>
+                  <td>
+                    <%= total = project_situations.map(&:advance_payment).sum %>
+                    <% total_values += total %>
+                    <% @total_per_months[month] += total %>
+                  </td>
+                <% end %>
+                <td style="font-weight: 600">
+                  <%= total_values %>
+                </td>
+              </tr>
+              <% total_values = 0 %>
+              <tr>
+                <td>Sume incasate final</td>
+                <% extra_years = 0 %>
+                <% @months.times do |month| %>
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
+                  <% project_situations = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years) %>
+                  <td>
+                    <%= total = project_situations.map(&:closure_payment).sum %>
+                    <% total_values += total %>
+                    <% @total_per_months[month] += total %>
+                  </td>
+                <% end %>
+                <td style="font-weight: 600">
+                  <%= total_values %>
+                </td>
+              </tr>
+              <tr>
+                <td>Cheltuieli materiale <br>proiect + ch indirecte</td>
+
+                <% @months.times do |month| %>
+                  <td>
+                    <%= sum = @total_expenses_per_months[month] %>
+                    <% @total_per_months[month] -=sum %>
+                    <% total_expenses += sum %>
+                  </td>
+                <% end %>
+                <td style="font-weight: 600">
+                  <%= total_expenses %>
+                </td>
+              </tr>
+              
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Disponibil cash</th>
+                <%# Total per month %>
+                  <% extra_years = 0 %>
+                  <% @months.times do |month| %>
+                    <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
+                    <th>         
+                      <% if @start_month + month - extra_years * 12 == 12 && @months-1 != month %>
+                        <%= @old_solds[@start_year + extra_years] %>
+                      <% else %>
+                        <%= @solds[month] %>
+                      <% end %>
+                    </th>
+                  <% end %>
+                <%# End Total per month %>
+
+                <%# GrandTotal of totals %>
+
+                <%# End GrandTotal of totals %>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <br>
 <%= render 'january_solds/form', january_sold: @january_sold %>
+<script>
+  $(document).ready(function(){
+    var table = $("#financialSituationTable").DataTable({
+      order: [],
+      paging:   false,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: true,
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollX: true,
+      fixedColumns:   true,
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: 0,
+        searchPanes: {
+          show: true
+        },
+      },
+      {
+        searchable: false,
+        targets: '_all',
+        searchPanes: {
+          show: false
+        },
+      }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ inregistrari",
+        info:           "Se afiseaza inregistrarile de la _START_ pana la _END_ din _TOTAL_ inregistrari",
+        infoEmpty:      "Se afiseaza inregistrarile de la 0 pana la 0 din 0 inregistrari",
+        infoFiltered:   "(filtrate din _MAX_ inregistrari in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici o inregistrare de afisat",
+        emptyTable:     "Nu exista inregistrari in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d inregistrari",
+            1: "Ai selectat 1 inregistrare"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      },
+      footerCallback: function (row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+        };
+        for (let i = 1; i < api.columns().header().length; i++) {
+          pageTotal = api
+            .column(i, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+        
+        // Update footer
+        $(api.column(i).footer()).html(pageTotal);
+        } 
+        // Total over this page
+        
+      },
+    });
+    $('.dt-buttons').removeClass('btn-group');
+    var table2 = $("#cashFlowTable").DataTable({
+      order: [],
+      paging:   false,
+      ordering: false,
+      info:     false,
+      filter: false,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"B>>t<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollX: true,
+      fixedColumns: true,
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      }
+    });
+  });
+</script>

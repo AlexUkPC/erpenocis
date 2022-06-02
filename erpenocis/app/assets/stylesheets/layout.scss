@@ -31,3 +31,22 @@ td{
   color: white;
   background-color: #4B49AC;
 }
+select.form-control {
+  background-color: $white;
+  color: $darkslategray;
+}
+div.dataTables_scrollBody{
+  border-left: 0 !important;
+}
+tfoot{
+  border-bottom: 0 solid white;
+}
+.table > :not(caption) > * > th{
+  background-color: white;
+}
+// .table > :not(caption) > * > td{
+//   border-left: 1px solid lightgray;
+// }
+// .table > :not(caption) > * > td:last-child{
+//   border-right: 1px solid lightgray;
+// }

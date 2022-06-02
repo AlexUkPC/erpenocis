@@ -120,7 +120,7 @@
         font-size: 11px;
         h5 {
           font-size: 20px;
-          color: $color-light-blue;
+          color: $white;
         }
         p {
           opacity: .6;
@@ -128,7 +128,26 @@
         }
         h6 {
           font-size: 14px;
-          color: $color-light-blue;
+          color: $white;
+        }
+      }
+      .cell-hilighted-danger {
+        background-color: $card-light-danger;
+        border-radius: 10px;
+        padding: 18px;
+        color: #fff;
+        font-size: 11px;
+        h5 {
+          font-size: 20px;
+          color: $white;
+        }
+        p {
+          opacity: .6;
+          margin-bottom: 0;
+        }
+        h6 {
+          font-size: 14px;
+          color: $white;
         }
       }
       .expanded-table-normal-cell {

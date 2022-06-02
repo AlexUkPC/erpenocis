@@ -19,11 +19,17 @@ class ApplicationController < ActionController::Base
     Date.parse(end_year.to_s+'-'+end_month.to_s+'-01').next_month-1.day
   end
   def set_table_head
+    m = ["", "Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     extra_years = 0
     @table_head = []
+    @start_year == @end_year ? @curr_year = @start_year : ""
     @months.times do |month|
       @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years
-      @table_head[month] = ((@start_month + month) - (extra_years * 12)).to_s + " / " + (@start_year + extra_years).to_s
+      if !@curr_year
+        @table_head[month] = m[((@start_month + month) - (extra_years * 12))]  + " " + (@start_year + extra_years).to_s
+      else
+        @table_head[month] = m[((@start_month + month) - (extra_years * 12))] 
+      end
     end
   end
   def set_current_tab

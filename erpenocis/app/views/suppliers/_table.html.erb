@@ -1,109 +1,122 @@
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Nume furnizor</th>
-      <%# List all months and years %>
-        <% @table_head.each do |th| %>
-          <th>
-            <%= th %>
-          </th>
-        <% end %>
-      <%# End List all months and years %>
-      <th>Total</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% total_supplier_invoce_payments = 0 %>
-    <% @total_per_months = [] %>
-    <% @months.times do |month| %>
-      <% @total_per_months[month] = 0 %>
-    <% end %>
-    <% case of_what
-    when "issued_supplier_invoices"
-      @current_tab = "fe"
-    when "to_be_payed_supplier_invoices"
-      @current_tab = "fp"
-    when "payed_supplier_invoices"
-      @current_tab = "fa"
-    when "unpaid_supplier_invoices"
-      @current_tab = "fr"
-    else
-      ""
-    end %>
-    <% @suppliers.each do |supplier| %>
-      <tr>
-        <td><%= supplier.id %></td>
-        <td><%= link_to edit_supplier_path(supplier, current_tab: @current_tab,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %><div><%= supplier.name %>&nbsp</div><% end %></td>
-
-        <% if of_what=="issued_supplier_invoices" %>
-          <% @supplier_invoices[supplier.id] = supplier.supplier_invoices.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
-        <% end %>
-        <% supplier_invoices = @supplier_invoices[supplier.id] %>
-        <% extra_years = 0 %>
-        <% @total_per_supplier = 0 %>
-        <% @months.times do |month| %>
-          <td>
-            <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-            <% total = 0 %>
-              <% supplier_invoices.each do |supplier_invoice| %>
-                <% if of_what == "issued_supplier_invoices" %>
-                  <% if !supplier_invoice.nil? && supplier_invoice.date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.date.strftime('%Y').to_i == (@start_year + extra_years) %>
-                    <% total += supplier_invoice.value %>
-                  <% end %>
-                <% elsif of_what == "to_be_payed_supplier_invoices" %>
-                  <% if !supplier_invoice.nil? && supplier_invoice.due_date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.due_date.strftime('%Y').to_i == (@start_year + extra_years) %>
-                    <% total += supplier_invoice.value %>
-                  <% end %>
-                <% elsif of_what == "payed_supplier_invoices" %>
-                  <% supplier_invoice.supplier_invoice_payments.each do |supplier_invoice_payment| %>
-                    <% if !supplier_invoice_payment.nil? && supplier_invoice_payment.date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice_payment.date.strftime('%Y').to_i == (@start_year + extra_years) %>
-                      <% total += supplier_invoice_payment.paid_amount %>
-                    <% end %>
-                  <% end %> 
-                <% elsif of_what == "unpaid_supplier_invoices" %>
-                  <% if !supplier_invoice.nil? && supplier_invoice.due_date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.due_date.strftime('%Y').to_i == (@start_year + extra_years) %>
-                    <% if supplier_invoice.due_date < Date.today() %>
-                      <% total += supplier_invoice.value - supplier_invoice.supplier_invoice_payments.map(&:paid_amount).sum %>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              <% end %> 
-              <%= link_to edit_supplier_path(supplier, current_tab: @current_tab, from_where: of_what,current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years) ,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> 
-                <div><%= total>0 ? total : "" %>&nbsp</div>
-                <% @total_per_supplier += total %>
-                <% @total_per_months[month] += total %>
+<div class="row">
+  <div class="col-12">
+    <div class="table-responsive">
+      <% case of_what
+        when "issued_supplier_invoices"
+          @current_tab = "fe"
+        when "to_be_payed_supplier_invoices"
+          @current_tab = "fp"
+        when "payed_supplier_invoices"
+          @current_tab = "fa"
+        when "unpaid_supplier_invoices"
+          @current_tab = "fr"
+        else
+          ""
+      end %>
+      <table id="<%= @current_tab %>Table" class="table" style="width:100%">
+        <thead>
+          <% if @curr_year %>
+            <tr>
+              <th class="pt-0 pb-0"></th>
+              <th class="pt-0 pb-0"></th>
+              <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+              <th class="pt-0 pb-0"></th>
+            </tr>
+          <% end %>
+          <tr>
+            <th>Id</th>
+            <th>Nume furnizor</th>
+            <th style="display: none">Nume furnizor</th>
+            <%# List all months and years %>
+              <% @table_head.each do |th| %>
+                <th>
+                  <%= th %>
+                </th>
               <% end %>
-          </td>
-        <% end %>
-        <td>
-          <%= @total_per_supplier %>
-        </td>
-        <!-- <td><%= link_to 'Show', supplier %></td>
-        <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>-->
-        <td><%= link_to 'Sterge', supplier_url(supplier, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-  <tfoot>
-        <tr>
-          <th></th>
-          <th>Total</th>
-          <%# Total per month %>
-            <% @months.times do |month| %>
-              <th>         
-                  <%= @total_per_months[month] %>
-              </th>
-            <% end %>
-          <%# End Total per month %>
+            <%# End List all months and years %>
+            <th>Total</th>
+          </tr>
+        </thead>
 
-          <%# GrandTotal of totals %>
-            <th><%= total_supplier_invoce_payments %></th>
-          <%# End GrandTotal of totals %>
+        <tbody>
+          <% total_supplier_invoce_payments = 0 %>
+          <% @total_per_months = [] %>
+          <% @months.times do |month| %>
+            <% @total_per_months[month] = 0 %>
+          <% end %>
+          
+          <% @suppliers.each do |supplier| %>
+            <tr>
+              <td data-order="<%= supplier.id %>"><%= supplier.id %></td>
+              <td data-order="<%= supplier.name %>"><%= link_to edit_supplier_path(supplier, current_tab: @current_tab,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %><div><%= supplier.name %>&nbsp</div><% end %></td>
+              <td style="display: none"><%= supplier.name %></td>
 
-          <th colspan="3"></th>
-        </tr>
-      </tfoot>
-</table>
+              <% if of_what=="issued_supplier_invoices" %>
+                <% @supplier_invoices[supplier.id] = supplier.supplier_invoices.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
+              <% end %>
+              <% supplier_invoices = @supplier_invoices[supplier.id] %>
+              <% extra_years = 0 %>
+              <% @total_per_supplier = 0 %>
+              <% @months.times do |month| %>
+                
+                  <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                  <% total = 0 %>
+                    <% supplier_invoices.each do |supplier_invoice| %>
+                      <% if of_what == "issued_supplier_invoices" %>
+                        <% if !supplier_invoice.nil? && supplier_invoice.date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.date.strftime('%Y').to_i == (@start_year + extra_years) %>
+                          <% total += supplier_invoice.value %>
+                        <% end %>
+                      <% elsif of_what == "to_be_payed_supplier_invoices" %>
+                        <% if !supplier_invoice.nil? && supplier_invoice.due_date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.due_date.strftime('%Y').to_i == (@start_year + extra_years) %>
+                          <% total += supplier_invoice.value %>
+                        <% end %>
+                      <% elsif of_what == "payed_supplier_invoices" %>
+                        <% supplier_invoice.supplier_invoice_payments.each do |supplier_invoice_payment| %>
+                          <% if !supplier_invoice_payment.nil? && supplier_invoice_payment.date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice_payment.date.strftime('%Y').to_i == (@start_year + extra_years) %>
+                            <% total += supplier_invoice_payment.paid_amount %>
+                          <% end %>
+                        <% end %> 
+                      <% elsif of_what == "unpaid_supplier_invoices" %>
+                        <% if !supplier_invoice.nil? && supplier_invoice.due_date.strftime('%-m').to_i == (@start_month + month) - (extra_years * 12) && supplier_invoice.due_date.strftime('%Y').to_i == (@start_year + extra_years) %>
+                          <% if supplier_invoice.due_date < Date.today() %>
+                            <% total += supplier_invoice.value - supplier_invoice.supplier_invoice_payments.map(&:paid_amount).sum %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %> 
+                    <td data-order="<%= total %>">
+                      <%= link_to edit_supplier_path(supplier, current_tab: @current_tab, from_where: of_what,current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years) ,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> 
+                        <div><%= total>0 ? total : "" %>&nbsp</div>
+                        <% @total_per_supplier += total %>
+                        <% @total_per_months[month] += total %>
+                      <% end %>
+                    </td>
+              <% end %>
+              <td style="font-weight: 600">
+                <%= @total_per_supplier %>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th style="display: none"></th>
+                <%# Total per month %>
+                  <% @months.times do |month| %>
+                    <th>         
+                        <%= @total_per_months[month] %>
+                    </th>
+                  <% end %>
+                <%# End Total per month %>
+
+                <%# GrandTotal of totals %>
+                  <th><%= total_supplier_invoce_payments %></th>
+                <%# End GrandTotal of totals %>
+
+              </tr>
+            </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
