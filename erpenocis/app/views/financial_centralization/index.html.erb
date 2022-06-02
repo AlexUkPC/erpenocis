@@ -11,7 +11,6 @@
               <% if @curr_year %>
                 <tr>
                   <th class="pt-0 pb-0"></th>
-                  <th class="pt-0 pb-0"></th>
                   <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
                   <th class="pt-0 pb-0"></th>
                 </tr>
@@ -133,7 +132,6 @@
             <thead>
               <% if @curr_year %>
                 <tr>
-                  <th class="pt-0 pb-0"></th>
                   <th class="pt-0 pb-0"></th>
                   <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
                   <th class="pt-0 pb-0"></th>
@@ -404,7 +402,7 @@
 
         // Remove the formatting to get integer data for summation
         var intVal = function (i) {
-            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+            return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };
         for (let i = 1; i < api.columns().header().length; i++) {
           pageTotal = api
@@ -415,7 +413,7 @@
             }, 0);
         
         // Update footer
-        $(api.column(i).footer()).html(pageTotal);
+        $(api.column(i).footer()).html(pageTotal/100);
         } 
         // Total over this page
         

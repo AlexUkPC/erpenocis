@@ -336,7 +336,7 @@
         // Remove the formatting to get integer data for summation
         var intVal = function (i) {
           i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
-            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+            return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };
         for (let i = 3; i < api.columns().header().length; i++) {
           pageTotal = api
@@ -347,7 +347,7 @@
             }, 0);
         
         // Update footer
-        $(api.column(i).footer()).html(pageTotal);
+        $(api.column(i).footer()).html(pageTotal/100);
         } 
         // Total over this page
         
@@ -455,7 +455,7 @@
             // Remove the formatting to get integer data for summation
             var intVal = function (i) {
               i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
-                return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+                return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
             };
             for (let i = 3; i < api.columns().header().length; i++) {
               pageTotal = api
@@ -466,7 +466,7 @@
                 }, 0);
             
             // Update footer
-            $(api.column(i).footer()).html(pageTotal);
+            $(api.column(i).footer()).html(pageTotal/100);
             } 
             // Total over this page
             

@@ -218,8 +218,10 @@
 
         // Remove the formatting to get integer data for summation
         var intVal = function (i) {
+          console.log(i)
+
           i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
-            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+            return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };
         for (let i = 3; i < api.columns().header().length; i++) {
           pageTotal = api
@@ -228,14 +230,16 @@
             .reduce(function (a, b) {
               return intVal(a) + intVal(b);
             }, 0);
-        
+
         // Update footer
-        $(api.column(i).footer()).html(pageTotal);
+        $(api.column(i).footer()).html(pageTotal/100);
         } 
         // Total over this page
         
       },
     });
+        console.log("126.45"*1+"6545"*1+"119"*1+"488.99"*1+"384.12"*1)
+        console.log(parseFloat("126.45")+parseFloat("6545")+parseFloat("119")+parseFloat("488.99")+parseFloat("384.12"))
 
     $('.dt-buttons').removeClass('btn-group');
 
