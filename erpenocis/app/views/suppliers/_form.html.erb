@@ -35,6 +35,7 @@
       <%= form.label :name, "Nume furnizor" %>
       <%= form.text_field :name %>
     </div>
+    <%= link_to 'Sterge furnizor', supplier_url(supplier, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi acest furnizor?' }, class: "btn btn-outline-danger btn-fw btn-sm" %>
   <% end %>
   <%= hidden_field_tag(:sm, @start_month) %>
   <%= hidden_field_tag(:sy, @start_year) %>

@@ -1,88 +1,244 @@
-<h1><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %></h1>
 <%= render 'layouts/date_form' %>
-<br>
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Denumire cheltuiala</th>
-      <%# List all months and years %>
-        <% @table_head.each do |th| %>
-          <th>
-            <%= th %>
-          </th>
-        <% end %>
-      <%# End List all months and years %>
-      <th>Total</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @expenses.each do |expense| %>
-      <tr>
-        <td><%= expense.id %></td>
-        <td>
-          <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
-        </td>
-        <% index = 0%>
-        <% while expense.expense_values[index] && (expense.expense_values[index].date.strftime("%-m").to_i < @start_month || expense.expense_values[index].date.strftime("%Y").to_i < @start_year)  %>
-          <% index +=1 %>
-        <% end %>
-        <% total = 0 %>
-        <% extra_years = 0 %>
-        <% @months.times do |month| %>
-          <td>
-          <% if expense.expense_values[index] %>
-          <% end %>
-            <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
-            <% if expense.expense_values[index] && expense.expense_values[index].date.strftime("%-m").to_i == @start_month + month - extra_years * 12 && expense.expense_values[index].date.strftime("%Y").to_i == @start_year + extra_years %>
-              <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense.expense_values[index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
-                <div>
-                  <%= expense.expense_values[index].value %>
-                </div>
+<div class="card">
+  <div class="card-body">
+    <p class="card-title"><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %></p>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table id="expensesTable" class="table" style="width:100%">
+            <thead>
+              <% if @curr_year %>
+                <tr>
+                  <th class="pt-0 pb-0"></th>
+                  <th class="pt-0 pb-0"></th>
+                  <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+                  <th class="pt-0 pb-0"></th>
+                </tr>
               <% end %>
-              <% total += expense.expense_values[index].value %>
-              <% @total_per_months[month] += expense.expense_values[index].value %>
-              <% index += 1 %>
-            <% else %>
-              <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
-                <div>&nbsp</div>
+              <tr>
+                <th>Id</th>
+                <th>Denumire cheltuiala</th>
+                <th style="display: none">Denumire cheltuiala</th>
+                <%# List all months and years %>
+                  <% @table_head.each do |th| %>
+                    <th>
+                      <%= th %>
+                    </th>
+                  <% end %>
+                <%# End List all months and years %>
+                <th>Total</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @expenses.each do |expense| %>
+                <tr>
+                  <td><%= expense.id %></td>
+                  <td>
+                    <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=expense.name%></div><% end %>
+                  </td>
+                  <td style="display: none"><%=expense.name%></td>
+                  <% index = 0%>
+                  <% while expense.expense_values[index] && (expense.expense_values[index].date.strftime("%-m").to_i < @start_month || expense.expense_values[index].date.strftime("%Y").to_i < @start_year)  %>
+                    <% index +=1 %>
+                  <% end %>
+                  <% total = 0 %>
+                  <% extra_years = 0 %>
+                  <% @months.times do |month| %>
+                    <% if expense.expense_values[index] %>
+                    <% end %>
+                      <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %> 
+                      <% if expense.expense_values[index] && expense.expense_values[index].date.strftime("%-m").to_i == @start_month + month - extra_years * 12 && expense.expense_values[index].date.strftime("%Y").to_i == @start_year + extra_years %>
+                        <td data-order="<%= expense.expense_values[index].value %>">
+                          <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value_id: expense.expense_values[index].id, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
+                            <div>
+                              <%= expense.expense_values[index].value %>
+                            </div>
+                          <% end %>
+                          <% total += expense.expense_values[index].value %>
+                          <% @total_per_months[month] += expense.expense_values[index].value %>
+                          <% index += 1 %>
+                        </td>
+                      <% else %>
+                        <td data-order="0">
+                          <%= link_to expenses_path(expense_type: expense.expense_type, expense_id: expense.id, expense_value: 0, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year, current_month: (@start_month + month) - (extra_years * 12), current_year: (@start_year + extra_years)), {style: "text-decoration:none"} do %>
+                            <div>&nbsp</div>
+                          <% end %>
+                        </td>
+                      <% end %>
+                    
+                  <% end %>
+                  <td style="font-weight: 600">
+                    <%= total %>
+                    <% @grand_total += total %>
+                  </td>
+                </tr>
               <% end %>
-            <% end %>
-          </td>
-        <% end %>
-        <td>
-          <%= total %>
-          <% @grand_total += total %>
-        </td>
-        <td>
-          <%= link_to 'Sterge', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th></th>
-      <th>Total</th>
-      <%# Total per month %>
-        <% @months.times do |month| %>
-          <th>         
-            <%= @total_per_months[month] %>
-          </th>
-        <% end %>
-      <%# End Total per month %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th style="display: none"></th>
+                <%# Total per month %>
+                  <% @months.times do |month| %>
+                    <th>         
+                      <%= @total_per_months[month] %>
+                    </th>
+                  <% end %>
+                <%# End Total per month %>
 
-      <%# GrandTotal of totals %>
-        <th><%= @grand_total %></th>
-      <%# End GrandTotal of totals %>
+                <%# GrandTotal of totals %>
+                  <th><%= @grand_total %></th>
+                <%# End GrandTotal of totals %>
 
-      <th colspan="3"></th>
-    </tr>
-  </tfoot>
-</table>
+              </tr>
+            </tfoot>
+          </table>
 
-<br>
-<%= render 'form', expense: @expense %>
-<br>
+          <br>
+          <%= render 'form', expense: @expense %>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+ 
+  $(document).ready(function(){
+    var table = $("#expensesTable").DataTable({
+      order: [],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      stateSave: true,
+      "stateSaveCallback": function (settings, data) {
+
+        // var that = this;
+        // $tables.each(function(index){    
+        //   // If table is other than the initial table
+        //   if(this.id !== that.id){
+        //     // Set page length, save state and redraw the table
+        //     $(this).DataTable()
+        //         .page.len(data.length)
+        //         .state.save();
+        //   }         
+        // });
+      },
+      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY: 280,
+      scrollX: true,
+      fixedColumns:   true,
+      fixedColumns: {
+        left: 3
+      },
+      scroller:    true,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm'
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: [0,2],
+        searchPanes: {
+          show: true
+        },
+        },
+        {
+          orderable: false,
+          targets: [2,-1]
+        },
+        {
+          searchable: false,
+          targets: '_all',
+          searchPanes: {
+            show: false
+          }
+        }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ cheltuieli",
+        info:           "Se afiseaza cheltuielile de la _START_ pana la _END_ din _TOTAL_ cheltuieli",
+        infoEmpty:      "Se afiseaza cheltuielile de la 0 pana la 0 din 0 cheltuieli",
+        infoFiltered:   "(filtrate din _MAX_ cheltuieli in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici o cheltuiala de afisat",
+        emptyTable:     "Nu exista cheltuieli in baza de date",
+        paginate: {
+            first:      "Prima pagina",
+            previous:   "Pagina anterioara",
+            next:       "Pagina urmatoare",
+            last:       "Ultima pagina"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d cheltuieli",
+            1: "Ai selectat 1 cheltuiala"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showAll: 'Arata',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      },
+      footerCallback: function (row, data, start, end, display) {
+        var api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+          i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
+            return typeof i === 'string' ? i * 1 : typeof i === 'number' ? i : 0;
+        };
+        for (let i = 3; i < api.columns().header().length; i++) {
+          pageTotal = api
+            .column(i, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+        
+        // Update footer
+        $(api.column(i).footer()).html(pageTotal);
+        } 
+        // Total over this page
+        
+      },
+    });
+
+    $('.dt-buttons').removeClass('btn-group');
+
+  });
+  
+</script>

@@ -41,3 +41,12 @@ div.dataTables_scrollBody{
 tfoot{
   border-bottom: 0 solid white;
 }
+.table > :not(caption) > * > th{
+  background-color: white;
+}
+// .table > :not(caption) > * > td{
+//   border-left: 1px solid lightgray;
+// }
+// .table > :not(caption) > * > td:last-child{
+//   border-right: 1px solid lightgray;
+// }

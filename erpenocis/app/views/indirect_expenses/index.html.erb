@@ -5,8 +5,16 @@
     <div class="row">
       <div class="col-12">
         <div class="table-responsive">
-          <table id="indirectExpensesTable" class="table">
+          <table id="indirectExpensesTable" class="table" style="width:100%">
             <thead>
+              <% if @curr_year %>
+                <tr>
+                  <th class="pt-0 pb-0"></th>
+                  <th class="pt-0 pb-0"></th>
+                  <th colspan="<%= @months %>" class="pt-0 pb-0 text-center">Anul: <%= @curr_year %></th>
+                  <th class="pt-0 pb-0"></th>
+                </tr>
+              <% end %>
               <tr>
                 <th>Cheltuieli</th>
                 <%# List all months and years %>
@@ -22,7 +30,7 @@
             <tbody>
               <% salary_expenses = 0 %>
               <tr>
-                <td><%= link_to employees_path(current_tab: "to", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do%>Salariale<% end %></td>
+                <td><%= link_to employees_path(current_tab: "to", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do%>Salariale<% end %></td>
                 <% extra_years = 0 %>
                 
                 <% @months.times do |month| %>
@@ -33,7 +41,7 @@
                     <% salary_expenses += for_total_salary_expenses %>
                   </td>
                 <% end %>
-                <td>
+                <td style="font-weight: 600">
                   <%= salary_expenses %>
                 </td>
               </tr>
@@ -41,7 +49,7 @@
               <% @expense_types.each do |expense_type| %>
                 <% other_expenses = 0 %>
                 <tr>
-                  <td><%= link_to expenses_path(expense_type: expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) do expense_type.titleize end %></td>
+                  <td><%= link_to expenses_path(expense_type: expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do expense_type.titleize end %></td>
                   <% extra_years = 0 %>
                   <% @expense_values = ExpenseValue.where(expense_id: Expense.where(expense_type: expense_type)) %>
                   <% @months.times do |month| %>
@@ -51,7 +59,7 @@
                       <% other_expenses += for_total_other_expenses %>
                     </td>
                   <% end %>
-                  <td>
+                  <td style="font-weight: 600">
                     <%= other_expenses %>
                   </td>
                 </tr>
@@ -83,7 +91,7 @@
 <script>
   $(document).ready(function(){
     var table = $("#indirectExpensesTable").DataTable({
-      order: false,
+      order: [],
       paging:   false,
       ordering: true,
       info:     false,
@@ -96,7 +104,7 @@
       scrollX: true,
       fixedColumns:   true,
       scroller:    true,
-      colReorder: true,
+      colReorder: false,
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
