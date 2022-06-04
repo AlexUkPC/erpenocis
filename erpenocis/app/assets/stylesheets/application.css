@@ -15,6 +15,7 @@
  *= require users
  *= require dashboard
  *= require layout
+ *= require project_situations
  *= require_self
  */
 

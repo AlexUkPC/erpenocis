@@ -1,76 +1,120 @@
-<%= form_with(model: expense) do |form| %>
-  <% if expense.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+    <div class="card">
+      <div class="card-body">
+        <%= form_with(model: expense) do |form| %>
+          <% if expense.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
 
-      <ul>
-        <% expense.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+              <ul>
+                <% expense.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <%= form.hidden_field :expense_type, value: @expense.expense_type %>
+
+          <div class="form-group row">
+            <%= form.label :name, "Denumire cheltuiala", class: "col-sm-3 col-form-label" %>
+            <div class="col-sm-9">
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+          </div>
+          <% if !@expense.name %>
+            <%= form.fields_for :expense_values do |f| %>
+
+              <div class="form-group row">
+                <%= f.label :value, "Suma", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :value, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row mb-0">
+                <%= f.label :date, "Data cheltuiala", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :date, class: "form-control" %>
+                </div>
+              </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+                <div class="card">
+                  <div class="card-body">
+
+
+              <div class="form-group row">
+                <%= f.label :due_date, "Data scadenta", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :due_date, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :vat_taxes, "Taxe stat/TVA?", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9 form-check form-check-flat form-check-primary">
+                  <%= f.check_box :vat_taxes, class: "form-check-input" %>
+                </div>
+              </div>
+            <% end %>
+          <% elsif @expense_value %>
+            <%= form.fields_for :expense_values, @expense_value do |f| %>
+
+              <div class="form-group row">
+                <%= f.label :value, "Suma", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :value, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row mb-0">
+                <%= f.label :date, "Data cheltuiala", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :date, class: "form-control" %>
+                </div>
+              </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+                <div class="card">
+                  <div class="card-body">
+
+              <div class="form-group row">
+                <%= f.label :due_date, "Data scadenta", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :due_date, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :vat_taxes, "Taxe stat/TVA?", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9 form-check form-check-flat form-check-primary">
+                  <%= f.check_box :vat_taxes, class: "form-check-input" %>
+                </div>
+              </div>
+            <% end %>
+            <% else %>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <%= link_to 'Sterge cheltuiala', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' }, class: "btn btn-outline-danger btn-fw btn-sm mb-3" %>
+              </div>
+          <% end %>
+          <%= hidden_field_tag(:sm, @start_month) %>
+          <%= hidden_field_tag(:sy, @start_year) %>
+          <%= hidden_field_tag(:em, @end_month) %>
+          <%= hidden_field_tag(:ey, @end_year) %>
+          <div class="actions">
+            <%= form.submit class: "btn btn-primary" %>
+            <%= link_to "Renunta", expenses_path(expense_type: @expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-
-  <%= form.hidden_field :expense_type, value: @expense.expense_type %>
-
-  <div class="field">
-    <%= form.label :name, "Denumire cheltuiala" %>
-    <%= form.text_field :name %>
   </div>
-  <% if !@expense.name %>
-    <%= form.fields_for :expense_values do |f| %>
-
-      <div class="field">
-        <%= f.label :value, "Suma" %>
-        <%= f.number_field :value, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :date, "Data cheltuiala" %>
-        <%= f.date_field :date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :due_date, "Data scadenta" %>
-        <%= f.date_field :due_date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :vat_taxes, "Taxe stat/TVA?" %>
-        <%= f.check_box :vat_taxes %>
-      </div>
-    <% end %>
-  <% elsif @expense_value %>
-    <%= form.fields_for :expense_values, @expense_value do |f| %>
-
-      <div class="field">
-        <%= f.label :value, "Suma" %>
-        <%= f.number_field :value, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :date, "Data cheltuiala" %>
-        <%= f.date_field :date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :due_date, "Data scadenta" %>
-        <%= f.date_field :due_date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :vat_taxes %>
-        <%= f.check_box :vat_taxes %>
-      </div>
-    <% end %>
-    <% else %>
-      <%= link_to 'Sterge cheltuiala', expense_path(expense,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi cheltuiala?' }, class: "btn btn-outline-danger btn-fw btn-sm" %>
-  <% end %>
-  <%= hidden_field_tag(:sm, @start_month) %>
-  <%= hidden_field_tag(:sy, @start_year) %>
-  <%= hidden_field_tag(:em, @end_month) %>
-  <%= hidden_field_tag(:ey, @end_year) %>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

@@ -1,3 +1,11 @@
 // Place all the styles related to the ProjectSituations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "/common/light/variables";
+#rest_de_plata{
+  font-size: 2em;
+  color: $primary;
+  font-weight: 600;
+}

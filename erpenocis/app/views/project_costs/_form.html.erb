@@ -1,14 +1,30 @@
 <%= form_with(model: project, url: edit_project_cost_path(project), method: "patch") do |form| %>
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card-title mb-0">
+                <h1 class="mb-0"><%= project.name %></h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <%= form.hidden_field :project, value: project %>
-  <h1>Editeaza costuri pt proiectul <%= project.name %></h1>
-  <div class="field mt-3">
+
+  <div class="field row">
     <%= form.fields_for :project_costs do |project_cost| %>
       <%= render 'project_cost_fields', f: project_cost %>
     <% end %>
-  </div>
-  <div class="field mb-3">
-    <div class="">
-      <%= link_to_add_association "Adauga cost materiale", form, :project_costs %>
+    <div class="field mb-3">
+      <%= link_to_add_association form, :project_costs, class:"text-dark text-decoration-none fs-4" do %>
+        <i class="fas fa-plus"></i>
+        Cost materiale
+      <% end %>
     </div>
   </div>
   <%= hidden_field_tag(:sm, @start_month) %>
@@ -17,6 +33,7 @@
   <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
-    <%= form.submit "Salveaza" %>
+    <%= form.submit "Salveaza", class: "btn btn-primary" %>
+    <%= link_to "Renunta", project_costs_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
   </div>
 <% end %>

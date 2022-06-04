@@ -12,69 +12,102 @@
   <% end %>
   <%= form.hidden_field :user_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :project_id, "Proiect" %>
-    <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]} %>
+  <div class="form-group row">
+    <%= form.label :project_id, "Proiect", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]},{}, class: "form-control form-control-lg" %>    
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select(:status, Order.statuses.keys.map {|status| [status.titleize, status]}) %>
+  <div class="form-group row">
+    <%= form.label :status, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.select(:status, Order.statuses.keys.map {|status| [status.titleize, status]},{}, class: "form-control form-control-lg") %>    
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :category, "Categorie" %>
-    <%= form.text_field :category %>
+  <div class="form-group row">
+    <%= form.label :category, "Categorie", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :category, class: "form-control" %>    
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :name_type_color, "Denumire/Tip/Nuanta" %>
-    <%= form.text_field :name_type_color %>
+  <div class="form-group row">
+    <%= form.label :name_type_color, "Denumire/Tip/Nuanta", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name_type_color, class: "form-control" %>    
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :needed_quantity, "Cant. necesara" %>
-    <%= form.number_field :needed_quantity %>
+  <div class="form-group row">
+    <%= form.label :needed_quantity, "Cant. necesara", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :needed_quantity, class: "form-control" %>    
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :unit, "UM" %>
-    <%= form.text_field :unit %>
+  <div class="form-group row">
+    <%= form.label :unit, "UM", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :unit, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :cote %>
-    <%= form.text_field :cote %>
+  <div class="form-group row">
+    <%= form.label :cote, class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :cote, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :ordered_quantity, "Cant. comandata" %>
-    <%= form.number_field :ordered_quantity, required: true %>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 grid-margin stretch-card mb-0">
+  <div class="card">
+    <div class="card-body">
+
+  <div class="form-group row">
+    <%= form.label :ordered_quantity, "Cant. comandata", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.number_field :ordered_quantity, required: true, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :supplier_id, "Furnizor" %>
-    <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]}, { include_blank: true } %>
+  <div class="form-group row">
+    <%= form.label :supplier_id, "Furnizor", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.select :supplier_id, Supplier.all.map {|c| [c.name, c.id]}, { include_blank: true }, class: "form-control form-control-lg" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :supplier_contact, "Contact furnizor" %>
-    <%= form.text_field :supplier_contact %>
+  <div class="form-group row">
+    <%= form.label :supplier_contact, "Contact furnizor", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :supplier_contact, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :order_date, "Data comanda" %>
-    <%= form.date_field :order_date %>
+  <div class="form-group row">
+    <%= form.label :order_date, "Data comanda", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.date_field :order_date, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :delivery_date, "Data livrare" %>
-    <%= form.date_field :delivery_date %>
+  <div class="form-group row">
+    <%= form.label :delivery_date, "Data livrare", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.date_field :delivery_date, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :obs, "Observatii" %>
-    <%= form.text_area :obs %>
+  <div class="form-group row">
+    <%= form.label :obs, "Observatii", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_area :obs, class: "form-control", rows: "8" %>
+    </div>
   </div>
   <%= hidden_field_tag(:sm, @start_month) %>
   <%= hidden_field_tag(:sy, @start_year) %>
@@ -82,7 +115,7 @@
   <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
-    <%= form.submit %>
-    <%= link_to "Renunta", orders_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Renunta", orders_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
   </div>
 <% end %>

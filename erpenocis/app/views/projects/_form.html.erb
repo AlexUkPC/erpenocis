@@ -1,4 +1,4 @@
-<%= form_with(model: project) do |form| %>
+<%= form_with(model: project, class: "forms-sample") do |form| %>
   <% if project.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
@@ -12,34 +12,44 @@
   <% end %>
   <%= form.hidden_field :user_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :name, "Nume" %>
-    <%= form.text_field :name %>
+  <div class="form-group row">
+    <%= form.label :name, "Nume", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
   </div>
   <% if params[:st] %>
     <%= form.hidden_field :start_date, value: Date.today() %>
     <%= form.hidden_field :stoc, value: true %>
     <%= hidden_field_tag(:st, true) %>
   <% else %>
-    <div class="field">
-      <%= form.label :start_date, "Data inceput" %>
-      <%= form.date_field :start_date %>
+    <div class="form-group row">
+      <%= form.label :start_date, "Data inceput", class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.date_field :start_date, class: "form-control" %>
+      </div>
     </div>
 
-    <div class="field">
-      <%= form.label :end_date, "Data finalizare" %>
-      <%= form.date_field :end_date %>
+    <div class="form-group row">
+      <%= form.label :end_date, "Data finalizare", class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.date_field :end_date, class: "form-control" %>
+      </div>
     </div>
 
-    <div class="field">
-      <%= form.label :value, "Valoare" %>
-      <%= form.number_field :value, step: 0.01  %>
+    <div class="form-group row">
+      <%= form.label :value, "Valoare", class: "col-sm-3 col-form-label" %>
+      <div class="col-sm-9">
+        <%= form.number_field :value, step: 0.01, class: "form-control"  %>
+      </div>
     </div>
     <%= form.hidden_field :stoc, value: false %>
   <% end %>
-  <div class="field">
-    <%= form.label :obs, "Observatii" %>
-    <%= form.text_area :obs %>
+  <div class="form-group row">
+    <%= form.label :obs, "Observatii", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_area :obs, class: "form-control",rows: "4" %>
+    </div>
   </div>
 
   <%= hidden_field_tag(:sm, @start_month) %>
@@ -49,11 +59,11 @@
   
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary" %>
     <% if params[:st] %>
-      <%= link_to "Renunta", stock_path() %>
+      <%= link_to "Renunta", stock_path(), class: "btn btn-outline-light" %>
     <% else %>
-      <%= link_to "Renunta", projects_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
+      <%= link_to "Renunta", projects_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
     <% end %>
   </div>
 <% end %>

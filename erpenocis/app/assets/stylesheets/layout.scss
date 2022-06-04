@@ -35,6 +35,9 @@ select.form-control {
   background-color: $white;
   color: $darkslategray;
 }
+select.form-control-lg {
+  padding-top: 18px;
+}
 div.dataTables_scrollBody{
   border-left: 0 !important;
 }
@@ -50,3 +53,7 @@ tfoot{
 // .table > :not(caption) > * > td:last-child{
 //   border-right: 1px solid lightgray;
 // }
+.form-check .form-check-input{
+  margin-left: 1em;
+  margin-top: 0.75em;
+}
