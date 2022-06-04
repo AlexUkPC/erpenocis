@@ -1,38 +1,54 @@
-<%= form_with(model: january_sold) do |form| %>
-  <% years = (2022..Date.today().strftime("%Y").to_i+10).to_a %>
-  <% if january_sold.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(january_sold.errors.count, "error") %> prohibited this january_sold from being saved:</h2>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <%= form_with(model: january_sold) do |form| %>
+          <% years = (2022..Date.today().strftime("%Y").to_i+10).to_a %>
+          <% if january_sold.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(january_sold.errors.count, "error") %> prohibited this january_sold from being saved:</h2>
 
-      <ul>
-        <% january_sold.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+              <ul>
+                <% january_sold.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="<%= january_sold.id ? "col-sm-3" : "col-sm-4" %>">
+              <div class="form-group row mb-0">
+                <%= form.label :value, "Sold Ianuarie", class: "col-sm-4 col-form-label" %>
+                <div class="col-sm-8">
+                  <%= form.number_field :value, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+            </div>
+            <div class="<%= january_sold.id ? "col-sm-3" : "col-sm-4" %>">
+              <div class="form-group row mb-0 text-end">
+                <%= form.label :year, "Anul", class: "col-sm-4 col-form-label" %>
+                <div class="col-sm-8">
+                  <%= form.select :year, options_for_select(years, params[:year]), {}, class: "form-control form-control-lg" %>
+                </div>
+              </div>
+            </div>
+            <%= hidden_field_tag(:sm, @start_month) %>
+            <%= hidden_field_tag(:sy, @start_year) %>
+            <%= hidden_field_tag(:em, @end_month) %>
+            <%= hidden_field_tag(:ey, @end_year) %>
+            <div class="<%= january_sold.id ? "col-sm-3" : "col-sm-4" %>">
+              <div class="actions text-center">
+                <%= form.submit class: "btn btn-primary" %>
+              </div>
+            </div>
+            <% if january_sold.id %>
+              <div class="col-sm-3 text-center">
+                <%= link_to 'Sterge sold ianuarie', january_sold_url(id: january_sold.id, jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-fw" %>   
+              </div>
+            <% end %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :value, "Sold Ianuarie" %>
-    <%= form.number_field :value, step: 0.01 %>
   </div>
-
-  <div class="field">
-    <%= form.label :year, "Anul" %>
-    <%= form.select :year, options_for_select(years, params[:year]) %>
-  </div>
-  <%= hidden_field_tag(:sm, @start_month) %>
-  <%= hidden_field_tag(:sy, @start_year) %>
-  <%= hidden_field_tag(:em, @end_month) %>
-  <%= hidden_field_tag(:ey, @end_year) %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-  
-  
-  <% if january_sold.id %>
-    <%= link_to 'Sterge sold ianuarie', january_sold_url(id: january_sold.id, jsid: "", year: Date.today().strftime("%Y"), sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>   
-  <% end %>
-  
-<% end %>
+</div>

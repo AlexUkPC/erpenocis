@@ -48,14 +48,9 @@
         <%= render 'table', of_what: "extra_salary" %>
       </div>
     </div>
-
-    <br>
-    <%= render 'form', employee: @employee %>
-    <br>
-
-    <%= link_to 'Adauga angajat', employees_path(current_tab: params[:current_tab], sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
   </div>
 </div>
+<%= render 'form', employee: @employee %>
 
 <script>
  

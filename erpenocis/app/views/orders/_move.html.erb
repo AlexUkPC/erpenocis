@@ -1,43 +1,69 @@
-<%= form_with(action: "move", method: "patch") do |form| %>
-  <% if order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <%= form_with(action: "move", method: "patch") do |form| %>
+          <% if order.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
 
-      <ul>
-        <% order.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+              <ul>
+                <% order.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Muta comanda de</label>
+            <div class="col-sm-10">
+              <span style="display: none" id="order_description" class="form-control"><%= "Categorie:" + order.category + " | Denumire/Tip/Nuanta:" + order.name_type_color + " | Cantitate comandata:" + order.ordered_quantity.to_s + " | UM:" + order.unit + " | Cote:" + order.cote %></span>
+              <span class="form-control">Categorie: <b><%= order.category %></b><br><br>Denumire/Tip/Nuanta: <b><%= order.name_type_color %></b><br><br>Cantitate comandata: <b><%= order.ordered_quantity.to_s %></b><br><br>UM: <b><%= order.unit %></b><br><br>Cote: <b><%= order.cote %></b></span>
+            </div>
+          </div>
+
+
+          <% project = order.project %>
+          <%= form.hidden_field :user_id, value: current_user.id %>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">De la proiectul</label>
+            <div class="col-sm-10">
+              <div class="form-control"><%= project.name %></div>
+            </div>
+          </div>
+
+           
+          <div class="form-group row">
+            <%= form.label :to_project_id, "La ce proiect muti:", class: "col-sm-2 col-form-label" %>
+            <div class="col-sm-10">
+              <%= form.collection_select :to_project_id, Project.where.not(id: project.id).order("id ASC"), :id, :name , { include_blank:  'Selecteaza proiectul' }, class: "form-control form-control-lg", required: true  %>
+            </div>
+          </div>
+          
+          <% projects = Project.where.not(id: project.id).order("id ASC") %>
+          <div class="form-group row">
+              <%= form.label :to_order_id,"La ce comanda muti:", class: "col-sm-2 col-form-label" %>
+              <div class="col-sm-10">
+                <%= form.grouped_collection_select(:to_order_id, Project.where.not(id: project.id).order("id ASC"), :ord, :name, :id, :full_description, { prompt: 'Selecteaza comada'}, {class: "form-control form-control-lg"} ) %>
+              </div>
+          </div>
+          <div class="form-group row">
+            <%= form.label :quantity, "Ce cantitate muti?", class: "col-sm-2 col-form-label" %>
+            <div class="col-sm-10">
+              <%= form.number_field :quantity, min: 0, max: order.ordered_quantity, class: "form-control" %>
+            </div>
+          </div>
+          <%= hidden_field_tag(:sm, @start_month) %>
+          <%= hidden_field_tag(:sy, @start_year) %>
+          <%= hidden_field_tag(:em, @end_month) %>
+          <%= hidden_field_tag(:ey, @end_year) %>
+
+          <div class="actions">
+            <%= form.submit "Salveaza", class: "btn btn-primary" %>
+            <%= link_to "Renunta", orders_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-  Muta comanda de
-  <br>
-  <span id="order_description"><%= "Categorie:" + order.category + " Denumire/Tip/Nuanta:" + order.name_type_color + " Cantitate comandata:" + order.ordered_quantity.to_s + " UM:" + order.unit + " Cote:" + order.cote %></span>
-  <br>
-  <% project = order.project %>
-  <%= form.hidden_field :user_id, value: current_user.id %>
-  De la proiectul: <%= project.name %>
-  <div class="field">
-    <%= form.label :to_project_id, "La ce proiect muti:" %>
-    <%= form.collection_select :to_project_id, Project.where.not(id: project.id).order("id ASC"), :id, :name , { prompt: 'Selecteaza proiectul' }  %>
   </div>
-  
-  <% projects = Project.where.not(id: project.id).order("id ASC") %>
-  <div class="field">
-      <%= form.label :to_order_id,"La ce comanda muti:" %>
-      <%= form.grouped_collection_select(:to_order_id, Project.where.not(id: project.id).order("id ASC"), :ord, :name, :id, :full_description, { prompt: 'Selecteaza comada'}) %>
-  </div>
-  <div class="field">
-    <%= form.label :quantity, "Ce cantitate muti?"%>
-    <%= form.number_field :quantity, min: 0, max: order.ordered_quantity %>
-  </div>
-  <%= hidden_field_tag(:sm, @start_month) %>
-  <%= hidden_field_tag(:sy, @start_year) %>
-  <%= hidden_field_tag(:em, @end_month) %>
-  <%= hidden_field_tag(:ey, @end_year) %>
-
-  <div class="actions">
-    <%= form.submit "Salveaza" %>
-    <%= link_to "Renunta", orders_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
-  </div>
-<% end %>
+</div>

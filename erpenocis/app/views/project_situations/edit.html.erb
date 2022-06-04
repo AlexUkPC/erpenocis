@@ -1,20 +1,46 @@
-<h1><%= @project_situation.project.name %></h1>
 <% project_situation = ProjectSituation.where(project_id: @project_situation.project.id).first %>
-
 <% sum = ProjectCost.where(project_id: @project_situation.project.id).sum(:amount) %>
-<br>
-Valoare proiect:<%= @project_situation.project.value %>
-<br>
-Cost materiale :<%= sum %>
-<br>
-Profitabilitate:<%= @project_situation.project.value - sum %>
-<br>
-Profitabilitate %:<%= sprintf('%.2f', (@project_situation.project.value - sum) * 100/  @project_situation.project.value) %>
-<br>
-Rest de plata: <%= @project_situation.project.value - @project_situation.advance_payment - @project_situation.closure_payment %>
-<br>
-<br>
-<%= render 'form', project_situation: @project_situation %>
 
-<%= link_to 'Show', @project_situation %> |
-<%= link_to 'Back', project_situations_path %>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card-title">
+              <h1><%= @project_situation.project.name %></h1>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                Valoare proiect: <span class="text-primary fw-bold"><%= @project_situation.project.value %></span>
+              </div>
+              <div class="col-sm-3">
+                Cost materiale: <span class="text-primary fw-bold"><%= sum %></span>
+              </div>
+              <div class="col-sm-3">
+                Profitabilitate: <span class="text-primary fw-bold"><%= @project_situation.project.value - sum %></span>
+              </div>
+              <div class="col-sm-3">
+                Profitabilitate %: <span class="text-primary fw-bold"><%= sprintf('%.2f', (@project_situation.project.value - sum) * 100/  @project_situation.project.value) %></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 text-end">
+            Rest de plata
+            <div id="rest_de_plata"><%= @project_situation.project.value - @project_situation.advance_payment - @project_situation.closure_payment %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', project_situation: @project_situation %>
+      </div>
+    </div>
+  </div>
+</div>
+

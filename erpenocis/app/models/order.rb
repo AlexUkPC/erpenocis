@@ -51,7 +51,7 @@ class Order < ApplicationRecord
   end
 
   def full_description
-  "Categorie:" +  self.category + " Denumire/Tip/Nuanta:" + self.name_type_color + " Cantitate necesara:" + self.needed_quantity.to_s + " UM:" + self.unit + " Cote:" + self.cote
+  "Categorie:" +  self.category + " | Denumire/Tip/Nuanta:" + self.name_type_color + " | Cantitate necesara:" + self.needed_quantity.to_s + " | UM:" + self.unit + " | Cote:" + self.cote
   end
   private
   def check_quantity

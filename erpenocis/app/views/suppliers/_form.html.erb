@@ -1,49 +1,74 @@
-<%= form_with(model: supplier) do |form| %>
-  <% if params[:from_where] %>
-    <h1><%= form.object.name %> - facturi <%= params[:from_where]=="issued_supplier_invoices" ? "emise" : params[:from_where]=="to_be_payed_supplier_invoices" ? "de plata" : params[:from_where]=="payed_supplier_invoices" ? "achitate" : params[:from_where]=="unpaid_supplier_invoices" ? "restante" : "" %> in luna <%= params[:current_month] %> an <%= params[:current_year] %></h1>
-  <% elsif params[:new] %>
-    <h1>Furnizor nou</h1>
-  <% else %>
-    <h1>Editare furnizor</h1>
-  <% end %>
-  <% if supplier.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(supplier.errors.count, "error") %> prohibited this supplier from being saved:</h2>
+<div class="row">
+  
+        <%= form_with(model: supplier) do |form| %>
+          <% if params[:from_where] %>
+            <div class="col-md-12 grid-margin stretch-card mb-0">
+              <div class="card">
+                <div class="card-body">
+                  <h1><%= form.object.name %> - facturi <%= params[:from_where]=="issued_supplier_invoices" ? "emise" : params[:from_where]=="to_be_payed_supplier_invoices" ? "de plata" : params[:from_where]=="payed_supplier_invoices" ? "achitate" : params[:from_where]=="unpaid_supplier_invoices" ? "restante" : "" %> in luna <%= params[:current_month] %> anul <%= params[:current_year] %></h1>
+          <% elsif params[:new] %>
+            <div class="col-md-6 grid-margin stretch-card mb-0">
+              <div class="card">
+                <div class="card-body">
+                  <h1>Furnizor nou</h1>
+          <% else %>
+            <div class="col-md-6 grid-margin stretch-card mb-0">
+                <div class="card">
+                  <div class="card-body">
+                    <h1>Editare furnizor</h1>
+          <% end %>
+          <% if supplier.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(supplier.errors.count, "error") %> prohibited this supplier from being saved:</h2>
 
-      <ul>
-        <% supplier.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+              <ul>
+                <% supplier.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-  <% if params[:from_where] %>
-    <div class="field row">
-      <%= form.fields_for :supplier_invoices, @supplier_invoices do |supplier_invoice| %>
-        <% if params[:from_where]!="unpaid_supplier_invoices" || supplier_invoice.object.supplier_invoice_payments.map(&:paid_amount).sum!=supplier_invoice.object.value %>
-          <%= render 'supplier_invoice_fields', f: supplier_invoice %>
+          <% if params[:from_where] %>
+            <div class="field row">
+              <%= form.fields_for :supplier_invoices, @supplier_invoices do |supplier_invoice| %>
+                <% if params[:from_where]!="unpaid_supplier_invoices" || supplier_invoice.object.supplier_invoice_payments.map(&:paid_amount).sum!=supplier_invoice.object.value %>
+                  <%= render 'supplier_invoice_fields', f: supplier_invoice %>
+                <% end %>
+              <% end %>
+              <div class="mb-3">
+                <%= link_to_add_association form, :supplier_invoices, class:"text-dark text-decoration-none fs-5" do %>
+                  <i class="fas fa-plus"></i>
+                  Adauga factura
+                <% end %>
+              </div>
+            </div>
+            <%= form.hidden_field :name %>
+          <% else %>
+            <div class="form-group row">
+              <%= form.label :name, "Nume furnizor", class: "col-sm-3 col-form-label" %>
+              <div class="col-sm-9">
+                <%= form.text_field :name, class: "form-control" %>
+              </div>
+            </div>
+            <% if !params[:new] %>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <%= link_to 'Sterge furnizor', supplier_url(supplier, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi acest furnizor?' }, class: "btn btn-outline-danger btn-fw btn-sm mb-3" %>
+              </div>
+            <% end %>
+          <% end %>
+          <%= hidden_field_tag(:sm, @start_month) %>
+          <%= hidden_field_tag(:sy, @start_year) %>
+          <%= hidden_field_tag(:em, @end_month) %>
+          <%= hidden_field_tag(:ey, @end_year) %>
+          <%= hidden_field_tag(:current_tab, @current_tab) %>
+
+          <div class="actions">
+            <%= form.submit class: "btn btn-primary" %>
+            <%= link_to 'Renunta', suppliers_path(current_tab: params[:current_tab], sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
+          </div>
         <% end %>
-      <% end %>
-      <div class="mb-3">
-        <%= link_to_add_association "Adauga factura", form, :supplier_invoices %>
       </div>
     </div>
-    <%= form.hidden_field :name %>
-  <% else %>
-    <div class="field">
-      <%= form.label :name, "Nume furnizor" %>
-      <%= form.text_field :name %>
-    </div>
-    <%= link_to 'Sterge furnizor', supplier_url(supplier, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi acest furnizor?' }, class: "btn btn-outline-danger btn-fw btn-sm" %>
-  <% end %>
-  <%= hidden_field_tag(:sm, @start_month) %>
-  <%= hidden_field_tag(:sy, @start_year) %>
-  <%= hidden_field_tag(:em, @end_month) %>
-  <%= hidden_field_tag(:ey, @end_year) %>
-  <%= hidden_field_tag(:current_tab, @current_tab) %>
-
-  <div class="actions">
-    <%= form.submit %>
   </div>
-<% end %>
+</div>

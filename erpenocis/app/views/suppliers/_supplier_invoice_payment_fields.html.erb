@@ -1,18 +1,24 @@
 <div class="nested-fields col-lg-12 grid-margin stretch-card mb-3">
-  <div class="card bg-info">
-    <div class="card-body text-light">
-      <div class="field ms-2 mb-1">
-        <%= f.label :paid_amount, "Suma platita" %>
-        <%= f.number_field :paid_amount, step: 0.01 %>
+  <div class="card card-tale">
+    <div class="card-body text-light pt-0 pb-2">
+      <div class="actions text-end">
+        <%= link_to_remove_association f, {title: "Sterge plata"} do %>
+          <i class="fas fa-times text-danger mb-2 mt-2"></i>
+        <% end %>
       </div>
 
-      <div class="field ms-2 mb-1">
-        <%= f.label :date, "Data platii" %>
-        <%= f.date_field :date, value: (f.object.date || Date.today) %>
+      <div class="form-group row mb-1">
+        <%= f.label :paid_amount, "Suma platita", class: "col-sm-4 col-form-label pt-2" %>
+        <div class="col-sm-8">
+          <%= f.number_field :paid_amount, step: 0.01, class: "form-control form-control-sm" %>
+        </div>
       </div>
 
-      <div class="actions">
-        <%= link_to_remove_association "Sterge plata", f %>
+      <div class="form-group row mb-0">
+        <%= f.label :date, "Data platii", class: "col-sm-4 col-form-label pt-2" %>
+        <div class="col-sm-8">
+          <%= f.date_field :date, value: (f.object.date || Date.today), class: "form-control form-control-sm" %>
+        </div>
       </div>
     </div>
   </div>

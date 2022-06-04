@@ -1,7 +1,18 @@
-<% if params[:st] %>
-  <h1>Editeaza stoc</h1>
-<% else %>
-  <h1>Editeaza proiect</h1>
-<% end %>
-<%= render 'form', project: @project %>
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <% if params[:st] %>
+            <h1>Editeaza stoc</h1>
+          <% else %>
+            <h1>Editeaza proiect</h1>
+          <% end %>
+        </div>
+        <%= render 'form', project: @project %>
+      </div>
+    </div>
+  </div>
+</div>
+
 

@@ -1,129 +1,192 @@
-<%= form_with(model: employee) do |form| %>
-  <% if employee.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+    <div class="card">
+      <div class="card-body">
+        <%= form_with(model: employee) do |form| %>
+          <% if employee.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
 
-      <ul>
-        <% employee.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+              <ul>
+                <% employee.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="form-group row">
+            <%= form.label :name, "Nume", class: "col-sm-3 col-form-label" %>
+            <div class="col-sm-9">
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <%= form.label :hire_date, "Data angajarii", class: "col-sm-3 col-form-label" %>
+            <div class="col-sm-9">
+              <%= form.date_field :hire_date, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <%= form.label :dismiss_date, "Data incheierii", class: "col-sm-3 col-form-label" %>
+            <div class="col-sm-9">
+              <%= form.date_field :dismiss_date, class: "form-control" %>
+            </div>
+          </div>
+
+          <% if !@employee.name %>
+            <%= form.fields_for :employee_salaries do |f| %>
+
+              <div class="form-group row">
+                <%= f.label :net_salary, "Salariu net", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :net_salary, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :salary_tax, "Taxe de achitat", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :salary_tax, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :salary_tax_due_date, "Data scadenta taxe", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :salary_tax_due_date, class: "form-control" %>
+                </div>
+              </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+                <div class="card">
+                  <div class="card-body">
+
+              <div class="form-group row">
+                <%= f.label :meal_vouchers, "Bonuri de masa", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :meal_vouchers, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :gift_vouchers, "Bonuri cadou", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :gift_vouchers, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :overtime, "Ore suplimentare", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :overtime, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :extra_salary, "Salariu extra", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :extra_salary, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :date, "Data", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :date, class: "form-control" %>
+                </div>
+              </div>
+
+            <% end %>
+          <% elsif @employee_salary %>
+            <%= form.fields_for :employee_salaries, @employee_salary do |f| %>
+
+              <div class="form-group row">
+                <%= f.label :net_salary, "Salariu net", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :net_salary, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :salary_tax, "Taxe de achitat", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :salary_tax, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :salary_tax_due_date, "Data scadenta taxe", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :salary_tax_due_date, class: "form-control" %>
+                </div>
+              </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card mb-0 mt-3">
+                <div class="card">
+                  <div class="card-body">
+
+              <div class="form-group row">
+                <%= f.label :meal_vouchers, "Bonuri de masa", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :meal_vouchers, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :gift_vouchers, "Bonuri cadou", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :gift_vouchers, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :overtime, "Ore suplimentare", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :overtime, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :extra_salary, "Salariu extra", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.number_field :extra_salary, step: 0.01, class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <%= f.label :date, "Data", class: "col-sm-3 col-form-label" %>
+                <div class="col-sm-9">
+                  <%= f.date_field :date, class: "form-control" %>
+                </div>
+              </div>
+            <% end %>
+
+            <% else %>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <%= link_to 'Sterge angajat', employee_path(employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' }, class: "btn btn-outline-danger btn-fw btn-sm mb-3" %>
+              </div>
+          <% end %>
+          <%= hidden_field_tag(:sm, @start_month) %>
+          <%= hidden_field_tag(:sy, @start_year) %>
+          <%= hidden_field_tag(:em, @end_month) %>
+          <%= hidden_field_tag(:ey, @end_year) %>
+          <%= hidden_field_tag(:current_tab, params[:current_tab]) %>
+
+          <div class="actions">
+            <%= form.submit class: "btn btn-primary" %>
+            <%= link_to "Renunta", employees_path(current_tab: params[:current_tab],sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name, "Nume" %>
-    <%= form.text_field :name %>
   </div>
-
-  <div class="field">
-    <%= form.label :hire_date, "Data angajarii" %>
-    <%= form.date_field :hire_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :dismiss_date, "Data incheierii" %>
-    <%= form.date_field :dismiss_date %>
-  </div>
-
-  <% if !@employee.name %>
-    <%= form.fields_for :employee_salaries do |f| %>
-
-      <div class="field">
-        <%= f.label :net_salary, "Salariu net" %>
-        <%= f.number_field :net_salary, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :salary_tax, "Taxe de achitat" %>
-        <%= f.number_field :salary_tax, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :salary_tax_due_date, "Data scadenta taxe" %>
-        <%= f.date_field :salary_tax_due_date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :meal_vouchers, "Bonuri de masa" %>
-        <%= f.number_field :meal_vouchers, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :gift_vouchers, "Bonuri cadou" %>
-        <%= f.number_field :gift_vouchers, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :overtime, "Ore suplimentare" %>
-        <%= f.number_field :overtime, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :extra_salary, "Salariu extra" %>
-        <%= f.number_field :extra_salary, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :date, "Data" %>
-        <%= f.date_field :date %>
-      </div>
-
-    <% end %>
-  <% elsif @employee_salary %>
-    <%= form.fields_for :employee_salaries, @employee_salary do |f| %>
-
-      <div class="field">
-        <%= f.label :net_salary, "Salariu net" %>
-        <%= f.number_field :net_salary, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :salary_tax, "Taxe de achitat" %>
-        <%= f.number_field :salary_tax, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :salary_tax_due_date, "Data scadenta taxe" %>
-        <%= f.date_field :salary_tax_due_date %>
-      </div>
-
-      <div class="field">
-        <%= f.label :meal_vouchers, "Bonuri de masa" %>
-        <%= f.number_field :meal_vouchers, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :gift_vouchers, "Bonuri cadou" %>
-        <%= f.number_field :gift_vouchers, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :overtime, "Ore suplimentare" %>
-        <%= f.number_field :overtime, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :extra_salary, "Salariu extra" %>
-        <%= f.number_field :extra_salary, step: 0.01 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :date, "Data" %>
-        <%= f.date_field :date %>
-      </div>
-    <% end %>
-
-    <% else %>
-      <%= link_to 'Sterge angajat', employee_path(employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi anagajatul?' }, class: "btn btn-outline-danger btn-fw btn-sm" %>
-  <% end %>
-  <%= hidden_field_tag(:sm, @start_month) %>
-  <%= hidden_field_tag(:sy, @start_year) %>
-  <%= hidden_field_tag(:em, @end_month) %>
-  <%= hidden_field_tag(:ey, @end_year) %>
-  <%= hidden_field_tag(:current_tab, params[:current_tab]) %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>
