@@ -11,24 +11,32 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :number_plate, "Numar inmatriculare" %>
-    <%= form.text_field :number_plate %>
+  <div class="form-group row">
+    <%= form.label :number_plate, "Numar inmatriculare", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.text_field :number_plate, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :rca_expiry_date, "Data expirare Rca" %>
-    <%= form.date_field :rca_expiry_date %>
+  <div class="form-group row">
+    <%= form.label :rca_expiry_date, "Data expirare Rca", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.date_field :rca_expiry_date, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :rov_expiry_date, "Data expirare Rovinieta" %>
-    <%= form.date_field :rov_expiry_date %>
+  <div class="form-group row">
+    <%= form.label :rov_expiry_date, "Data expirare Rovinieta", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.date_field :rov_expiry_date, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :itp_expiry_date, "Data expirare Itp" %>
-    <%= form.date_field :itp_expiry_date %>
+  <div class="form-group row">
+    <%= form.label :itp_expiry_date, "Data expirare Itp", class: "col-sm-3 col-form-label" %>
+    <div class="col-sm-9">
+      <%= form.date_field :itp_expiry_date, class: "form-control" %>
+    </div>
   </div>
   <%= hidden_field_tag(:sm, @start_month) %>
   <%= hidden_field_tag(:sy, @start_year) %>
@@ -36,10 +44,10 @@
   <%= hidden_field_tag(:ey, @end_year) %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary" %>
     <% if car.id %>
-      <%= link_to "Renunta", cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year) %>
-      <%= link_to 'Sterge masina', car_path(car, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Renunta", cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
+      <%= link_to 'Sterge masina', car_path(car, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %>
     <% end %>
   </div>
 <% end %>

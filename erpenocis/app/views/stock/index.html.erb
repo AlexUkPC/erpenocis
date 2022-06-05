@@ -1,8 +1,6 @@
-<%= link_to new_project_path(st: true), class: "btn btn-sm btn-primary btn-icon-text btn-rounded" do %>
+<%= link_to new_project_path(st: true), class: "btn btn-sm btn-primary btn-icon-text btn-rounded mb-3" do %>
   <i class="far fa-plus-circle btn-icon-prepend"></i>Adauga stoc
 <% end %>
-<br>
-<br>
 <div class="row">
   <div class="col-md-12 stretch-card">
     <div class="card">
@@ -128,7 +126,7 @@
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
-      scrollY:     350,
+      scrollY:     460,
       scroller:    true,
       colReorder: false,
       buttons: [
@@ -155,6 +153,7 @@
       },
       {
         searchable: true,
+        class: 'details-control',
         targets: 1,
         searchPanes: {
           show: true

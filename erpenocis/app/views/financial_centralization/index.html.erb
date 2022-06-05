@@ -1,8 +1,13 @@
-<h1>Centralizare financiara</h1>
-<%= render 'layouts/date_form' %>
 <div class="card">
   <div class="card-body">
-    <p class="card-title">Situatie financiara</p>
+    <div class="row mb-2">
+      <div class="col-md-6">
+        <p class="card-title">Situatie financiara</p>
+      </div>
+      <div class="col-md-6">
+        <%= render 'layouts/date_form2' %>
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <div class="table-responsive">
@@ -124,7 +129,7 @@
 
 <div class="card mt-3">
   <div class="card-body">
-    <p class="card-title">Cash flow</p>
+    <p class="card-title mb-0">Cash flow</p>
     <div class="row">
       <div class="col-12">
         <div class="table-responsive">
@@ -324,6 +329,10 @@
       pagingType: 'full_numbers',
       scrollX: true,
       fixedColumns:   true,
+      fixedColumns: {
+        left: 1,
+        right: 1
+      },
       scroller:    true,
       colReorder: false,
       buttons: [
@@ -427,11 +436,15 @@
       info:     false,
       filter: false,
       stateSave: false,
-      dom: '<"top"<"d-flex justify-content-between"B>>t<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between">>t<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollX: true,
       fixedColumns: true,
+      fixedColumns: {
+        left: 1,
+        right: 1
+      },
       scroller:    true,
       colReorder: false,
       buttons: [

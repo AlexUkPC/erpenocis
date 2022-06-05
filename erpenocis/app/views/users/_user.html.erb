@@ -10,45 +10,50 @@
 <td>
   <%= user.email %>
 </td>
-<td>
+<td style="display: none">
+  <%= user.role.titleize %>
+</td>
+<td data-order="<%= user.role %>">
   <%= form_for(user) do |f| %>
     <div class="row">
       <div class="col">
-        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control form-control-sm', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") }) %>
+        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]},{}, { :class => 'form-control', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") }) %>
       </div>
       <div class="col">
-        <%= f.submit 'Modifica Rol', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") , class: "btn btn-outline-info" %>
+        <%= f.submit 'Modifica Rol', disabled: (user != current_user ? false : true), title: (user == current_user ? "Nu iti poti modifica rolul propriu" : "") , class: "btn btn-outline-info btn-fw btn-sm" %>
       </div>
     </div>
   <% end %>
 </td>
 <td>
   <% if user.current_sign_in_at %>
-    <%= user.current_sign_in_at.strftime("%d-%h-%Y") %>
-    <br>
-    <br>
-    <%= user.current_sign_in_at.strftime("%H:%M:%S") %>
+    <div class="mb-1"><%= user.current_sign_in_at.strftime("%d-%h-%Y") %></div>
+    <div><%= user.current_sign_in_at.strftime("%H:%M:%S") %></div>
   <% else %>
     Nu exista
   <% end %>
 </td>
-<td>
+<td style="display: none">
   <%if user.active? %>
-    <%= link_to users_path(status: "activ"), class: "badge badge-success" do %>
-      activ
+    activ
+  <% else %>
+    inactiv
+  <% end %>
+</td>
+<td data-order="<%= user.active %>" data-search="<%= user.active ? "activ" : "inactiv" %>">
+  <%if user.active? %>
+    <%= link_to users_path(status: "activ") do %>
+      <i class="fas fa-circle text-success"></i>
     <% end %>
   <% else %>
-    <%= link_to users_path(status: "inactiv"), class: "badge badge-danger" do %>
-      inactiv
+    <%= link_to users_path(status: "inactiv") do %>
+      <i class="fas fa-circle text-danger"></i>
     <% end %>
   <% end %>
 </td>
 <td>
-  <%= link_to edit_user_path(user), class: "btn btn-success btn-icon-text" do %>
+  <%= link_to edit_user_path(user), class: "btn btn-outline-primary btn-fw btn-sm" do %>
     <i class="ti-pencil-alt btn-icon-prepend"></i>
     Modifica
   <% end %>
-</td>
-<td>
-  
 </td>
