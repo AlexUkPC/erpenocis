@@ -1,10 +1,15 @@
-
-<%= render 'layouts/date_form' %>
 <div class="row">
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
-        <p class="card-title">Situatie proiecte</p>
+        <div class="row">
+          <div class="col-md-3">
+            <p class="card-title">Situatie proiecte</p>
+          </div>
+          <div class="col-md-9">
+            <%= render 'layouts/date_form2' %>
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col-12">
             <div class="table-responsive">
@@ -167,7 +172,7 @@
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
-      scrollY:     350,
+      scrollY:     500,
       scroller:    true,
       colReorder: false,
       buttons: [
@@ -194,6 +199,7 @@
       },
       {
         searchable: true,
+        class: 'details-control',
         targets: [1,2,3,4,8,14],
         searchPanes: {
           show: true
@@ -204,6 +210,7 @@
         searchPanes: {
           show: false
         },
+        class: 'details-control',
         targets: [5,6,7,9,10,11,12,13,15,16,17,18,19]
       },
       {

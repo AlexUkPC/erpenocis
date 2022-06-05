@@ -189,7 +189,7 @@
           margin-right: 8px;
         }
       }
-      &.details-control {
+      &.details-control:last-child {
         &:before {
           content: '\e64b';
           font-family: "themify";
@@ -201,7 +201,7 @@
     }
     &.shown {
       td {
-        &.details-control {
+        &.details-control:last-child {
           &:before {
             content: '\e648';
           }
