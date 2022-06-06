@@ -5,7 +5,7 @@
         <p class="card-title"><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %></p>
       </div>
       <div class="col-md-6">
-        <%= render 'layouts/date_form2' %>
+        <%= render 'layouts/date_form' %>
       </div>
     </div>
     <div class="row">
@@ -111,26 +111,32 @@
 <script>
  
   $(document).ready(function(){
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
+    let exp_type=''
+    switch(params.get('expense_type')) {
+      case 'administrative':
+        exp_type = 'Cheltuieli administrative'
+        break;
+      case 'financiare':
+        exp_type = 'Cheltuieli financiare'
+        break;
+      case 'investitii':
+        exp_type = 'Investitii'
+        break;
+      case 'alte_cheltuieli':
+        exp_type = 'Alte cheltuieli'
+        break; 
+      default:
+    } 
     var table = $("#expensesTable").DataTable({
       order: [],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
+      deferRender: true,
       stateSave: true,
-      "stateSaveCallback": function (settings, data) {
-
-        // var that = this;
-        // $tables.each(function(index){    
-        //   // If table is other than the initial table
-        //   if(this.id !== that.id){
-        //     // Set page length, save state and redraw the table
-        //     $(this).DataTable()
-        //         .page.len(data.length)
-        //         .state.save();
-        //   }         
-        // });
-      },
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -145,7 +151,15 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm'
+          className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: ':not(:nth-child(3))'
+          },
+          sheetName: exp_type,
+          title: exp_type + " din perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: exp_type + " - " + date.slice(0, 10),
+          autoFilter: true,
+          footer: true
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -165,7 +179,7 @@
         },
         {
           orderable: false,
-          targets: [2,-1]
+          targets: [2]
         },
         {
           searchable: false,
@@ -222,8 +236,6 @@
 
         // Remove the formatting to get integer data for summation
         var intVal = function (i) {
-          console.log(i)
-
           i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
             return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };

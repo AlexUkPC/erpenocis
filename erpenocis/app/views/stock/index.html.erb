@@ -12,35 +12,39 @@
               <table id="stocksTable" class="display expandable-table" style="width:100%">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Nume</th>
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th></th> 
+                    <th>ID</th><%# 0 %>
+                    <th>Nume</th><%# 1 %>
+                    <th style="display: none">Observatii</th><%# 2 %> 
+                    <th style="display: none">Observatii short</th><%# 3 %> 
+                    <th style="display: none">User pic</th><%# 4 %> 
+                    <th style="display: none">Utilizator ultima modificare</th><%# 5 %> 
+                    <th style="display: none">Data ultima modificare</th><%# 6 %> 
+                    <th style="display: none">Data si ora ultima modificare</th><%# 7 %> 
+                    <th style="display: none">Vezi comenzi</th><%# 8 %> 
+                    <th style="display: none">Vezi facturi</th><%# 9 %> 
+                    <th style="display: none">Vezi Proiect</th><%# 10 %> 
+                    <th style="display: none">Modifica</th><%# 11 %> 
+                    <th style="display: none">Sterge</th><%# 12 %> 
+                    <th></th><%# 13 %>
                   </tr>
                 </thead>
                 <tbody>
                   <% @projects.each do |project| %>
                     <tr>
-                      <td><%= project.id %></td>
-                      <td><%= project.name %></td>
-                      <td style="display: none"><%= excerpt(project.obs, "", radius: 200) %></td>
-                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(project.user_id), 100) , alt: "profile" %></td>
-                      <td style="display: none"><%= @users.find(project.user_id).username %></td>
-                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
-                      <td style="display: none"><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders', st: true), class: "btn btn-primary" %></td>
-                      <td style="display: none"><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices', st: true), class: "btn btn-primary" %></td>
-                      <td style="display: none"><%= link_to 'Vezi stoc', project_path(project, st: true), class: "btn btn-primary" %></td>
-                      <td style="display: none"><%= link_to 'Modifica', edit_project_path(project, st: true), class: "btn btn-outline-primary btn-fw" %></td>
-                      <td style="display: none"><%= link_to 'Sterge', project_path(project, st: true), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' }, class: "btn btn-outline-danger btn-fw" %></td>
-                      <td class="details-control"></td>
+                      <td><%= project.id %></td><%# 0 %>
+                      <td><%= project.name %></td><%# 1 %>
+                      <td style="display: none"><%= project.obs %></td><%# 2 %>
+                      <td style="display: none"><%= excerpt(project.obs, "", radius: 200) %></td><%# 3 %>
+                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(project.user_id), 100) , alt: "profile" %></td><%# 4 %>
+                      <td style="display: none"><%= @users.find(project.user_id).username %></td><%# 5 %>
+                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y') %></td><%# 6 %>
+                      <td style="display: none"><%= project.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td><%# 7 %>
+                      <td style="display: none"><%= link_to 'Vezi comenzi', project_path(project, :show => 'orders', st: true), class: "btn btn-primary" %></td><%# 8 %>
+                      <td style="display: none"><%= link_to 'Vezi facturi', project_path(project, :show => 'invoices', st: true), class: "btn btn-primary" %></td><%# 9 %>
+                      <td style="display: none"><%= link_to 'Vezi stoc', project_path(project, st: true), class: "btn btn-primary" %></td><%# 10 %>
+                      <td style="display: none"><%= link_to 'Modifica', edit_project_path(project, st: true), class: "btn btn-outline-primary btn-fw" %></td><%# 11 %>
+                      <td style="display: none"><%= link_to 'Sterge', project_path(project, st: true), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi stocul?' }, class: "btn btn-outline-danger btn-fw" %></td><%# 12 %>
+                      <td class="details-control"></td><%# 13 %>
                     </tr>
                   <% end %>
                 </tbody>
@@ -116,13 +120,15 @@
           '</tr>'+
       '</table>';
     };
+    let date = new Date().toISOString()
     var table = $("#stocksTable").DataTable({
       order: [[0, 'asc']],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
-      stateSave: false,
+      deferRender: true,
+      stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -132,7 +138,14 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: [ 0, 1, 2, 5, 6 ]
+          },
+          sheetName: "Stocuri",
+          title: "Stocuri",
+          filename: "Stocuri - " + date.slice(0, 10),
+          autoFilter: true
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -164,11 +177,11 @@
         searchPanes: {
           show: false
         },
-        targets: [2,3,4,5,6,7,8,9,10,11]
+        targets: '_all'
       },
       {
         orderable: false,
-        targets: 11
+        targets: -1
       }
       ],
       select: {
@@ -225,7 +238,7 @@
       }
       else {
           // Open this row
-          row.child( format(row.data(),tr.find("td:eq(2)").text(),tr.find("td:eq(3)").html(),tr.find("td:eq(4)").text(),tr.find("td:eq(5)").text(),tr.find("td:eq(6)").html(),tr.find("td:eq(7)").html(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").html()) ).show();
+          row.child( format(row.data(),tr.find("td:eq(2)").text(),tr.find("td:eq(4)").html(),tr.find("td:eq(5)").text(),tr.find("td:eq(7)").text(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").html(),tr.find("td:eq(11)").html(),tr.find("td:eq(12)").html()) ).show();
           tr.addClass('shown');
       }
     } );

@@ -5,7 +5,7 @@
         <p class="card-title">Furnizori</p>
       </div>
       <div class="col-md-6">
-        <%= render 'layouts/date_form2' %>
+        <%= render 'layouts/date_form' %>
       </div>
     </div>
     <ul class="nav nav-tabs" id="suppliers" role="tablist">
@@ -56,7 +56,27 @@
 
       var names = [];
       header.forEach(function(th) {
-      names.push($(th).html());
+        if(th!=header[header.length - 1]){
+          names.push($(th).html());
+        }
+      });
+          
+      return names;
+    }
+    function getFooterNames(table) {
+      // Gets footer names.
+      //params:
+      //  table: table ID.
+      //Returns:
+      //  Array of column footer names.
+      
+      var footer = $(table).DataTable().columns().footer().toArray();
+
+      var names = [];
+      footer.forEach(function(th) {
+        if(th!=footer[footer.length - 1]){
+          names.push($(th).html());
+        }
       });
           
       return names;
@@ -74,7 +94,7 @@
       
       for (i=0; i<data.length; i++) {
         colNum = i + 1;
-        cols += '<col min="' + colNum + '" max="' + colNum + '" width="20" customWidth="1"/>';
+        cols += '<col min="' + colNum + '" max="' + colNum + '" width="12" customWidth="1"/>';
       }
       
       cols += '</cols>';
@@ -118,6 +138,7 @@
       //  String of XML formatted worksheet.
       
       var header = getHeaderNames(table);
+      var footer = getFooterNames(table);
       var table = $(table).DataTable();
       var rowNum = 1;
       var mergeCells = '';
@@ -141,7 +162,7 @@
       rowNum++;
       
       // Loop through each row to append to sheet.    
-      table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+      table.rows( {order:'applied', search:'applied'} ).every( function ( rowIdx, tableLoop, rowLoop ) {
         var data = this.data();
         
         // If data is object based then it needs to be converted 
@@ -154,7 +175,7 @@
         
         rowNum++;
       } );
-      
+      ws += buildRow(footer, rowNum, 2);
       ws += '</sheetData>' + mergeCells;
           
       return ws;
@@ -223,14 +244,17 @@
         $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
     });
     // var $tables = $('#toTable, #nsTable');
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#feTable").DataTable({
       order: [],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
+      deferRender: true,
       stateSave: true,
-      "stateSaveCallback": function (settings, data) {
+      // "stateSaveCallback": function (settings, data) {
 
         // var that = this;
         // $tables.each(function(index){    
@@ -242,7 +266,7 @@
         //         .state.save();
         //   }         
         // });
-      },
+      // },
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -258,11 +282,23 @@
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
           className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: ':not(:last-child)'
+          },
+          sheetName: "Facturi furnziori emise",
+          title: "Facturi furnziori emise in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Facturi furnziori - " + date.slice(0, 10),
+          footer: true,
+          autoFilter: true,
           customize: function( xlsx ) {
-            setSheetName(xlsx, 'Facturi emise');
-            addSheet(xlsx, '#fpTable', 'Facturi de plata', 'Facturi de plata', '2');
-            addSheet(xlsx, '#faTable', 'Facturi achitate', 'Facturi achitate', '3');
-            addSheet(xlsx, '#frTable', 'Facturi restante', 'Facturi restante', '4');
+            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+            var col = $('col', sheet);
+            col.each(function () {
+              $(this).attr('width', 12);
+            });
+            addSheet(xlsx, '#fpTable', 'Facturi furnziori de plata in perioada: ' + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)), 'Facturi de plata', '2');
+            addSheet(xlsx, '#faTable', 'Facturi furnziori achitate in perioada: ' + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)), 'Facturi achitate', '3');
+            addSheet(xlsx, '#frTable', 'Facturi furnziori restante in perioada: '+  (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)), 'Facturi restante', '4');
           }
         }, 'spacer',
         {
@@ -276,14 +312,14 @@
       columnDefs: [
         {
         searchable: true,
-        targets: [0,2],
+        targets: [0,-1],
         searchPanes: {
           show: true
         },
         },
         {
           orderable: false,
-          targets: [2,-1]
+          targets: [-1]
         },
         {
           searchable: false,
@@ -343,7 +379,7 @@
           i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
             return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };
-        for (let i = 3; i < api.columns().header().length; i++) {
+        for (let i = 2; i < api.columns().header().length-1; i++) {
           pageTotal = api
             .column(i, { page: 'current' })
             .data()
@@ -368,6 +404,7 @@
           ordering: true,
           info:     false,
           filter: true,
+          deferRender: true,
           stateSave: true,
           dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
           "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
@@ -381,10 +418,6 @@
           },
           scroller:    true,
           buttons: [
-            { extend: 'excelHtml5', 
-              text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-              className: 'btn-success text-light btn-sm' 
-            }, 'spacer',
             {
               extend: 'searchPanes',
               config: {
@@ -396,14 +429,14 @@
           columnDefs: [
             {
             searchable: true,
-            targets: [0,2],
+            targets: [0,-1],
             searchPanes: {
               show: true
             },
             },
             {
               orderable: false,
-              targets: [2,-1]
+              targets: [-1]
             },
             {
               searchable: false,
@@ -463,7 +496,7 @@
               i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
                 return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
             };
-            for (let i = 3; i < api.columns().header().length; i++) {
+            for (let i = 2; i < api.columns().header().length-1; i++) {
               pageTotal = api
                 .column(i, { page: 'current' })
                 .data()

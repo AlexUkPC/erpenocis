@@ -1,9 +1,15 @@
-<%= render 'layouts/date_form' %>
 <div class="row">
   <div class="col-lg-6 grid-margin stretch-card mb-0">
     <div class="card">
       <div class="card-body">
-        <p class="card-title">Flota auto</p>
+        <div class="row mb-2">
+          <div class="col-md-3">
+            <p class="card-title">Flota auto</p>
+          </div>
+          <div class="col-md-9">
+            <%= render 'layouts/date_form' %>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12">
             <div class="table-responsive">
@@ -15,6 +21,7 @@
                     <th>Data expirare Rca</th>
                     <th>Data expirare Rovinieta</th>
                     <th>Data expirare Itp</th>
+                    <th style="display: none"></th>
 
                   </tr>
                 </thead>
@@ -24,7 +31,7 @@
                     <tr>
                         <td><%= car.id %></td>
                         <td>
-                          <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year) do %> 
+                          <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year), {style: "text-decoration:none"} do %> 
                             <div>
                               <%= car.number_plate %>&nbsp
                             </div>
@@ -33,6 +40,8 @@
                         <td><%= car.rca_expiry_date %></td>
                         <td><%= car.rov_expiry_date %></td>
                         <td><%= car.itp_expiry_date %></td>
+                        <td style="display: none"><%= car.number_plate %></td>
+
                         <!--<td><%= link_to 'Show', car %></td>
                         <td><%= link_to 'Edit', edit_car_path(car) %></td>-->
 
@@ -57,17 +66,20 @@
 
 <script>
   $(document).ready(function(){
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#carsTable").DataTable({
       order: [],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
+      deferRender: true,
       stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
-      scrollY: 420,
+      scrollY: 500,
       scrollX: true,
       fixedColumns:   true,
       scroller:    true,
@@ -75,7 +87,14 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: ':not(:last-child)'
+          },
+          sheetName: "Flota auto",
+          title: "Auto cu ceva care expira in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Flota auto - " + date.slice(0, 10),
+          autoFilter: true 
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -88,7 +107,7 @@
       columnDefs: [
         {
         searchable: true,
-        targets: 1,
+        targets: -1,
         searchPanes: {
           show: true
         },
@@ -117,10 +136,10 @@
         zeroRecords:    "Nici un auto de afisat",
         emptyTable:     "Nu exista auto in baza de date",
         paginate: {
-            first:      "Prima pagina",
-            previous:   "P. anterioara",
-            next:       "P. urmatoare",
-            last:       "Ultima pagina"
+            first:      "<<",
+            previous:   "<",
+            next:       ">",
+            last:       ">>"
         },
         aria: {
             sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",

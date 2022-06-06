@@ -1,18 +1,18 @@
 <td>
   <%= user.id %>
-</td>
+</td><%# 0 %>
 <td>
   <%= image_tag user_profile_picture(user, 100) %>
-</td>
+</td><%# 1 %>
 <td>
   <%= user.username %>
-</td>
+</td><%# 2 %>
 <td>
   <%= user.email %>
-</td>
+</td><%# 3 %>
 <td style="display: none">
   <%= user.role.titleize %>
-</td>
+</td><%# 4 %>
 <td data-order="<%= user.role %>">
   <%= form_for(user) do |f| %>
     <div class="row">
@@ -24,7 +24,7 @@
       </div>
     </div>
   <% end %>
-</td>
+</td><%# 5 %>
 <td>
   <% if user.current_sign_in_at %>
     <div class="mb-1"><%= user.current_sign_in_at.strftime("%d-%h-%Y") %></div>
@@ -32,14 +32,14 @@
   <% else %>
     Nu exista
   <% end %>
-</td>
+</td><%# 6 %>
 <td style="display: none">
   <%if user.active? %>
     activ
   <% else %>
     inactiv
   <% end %>
-</td>
+</td><%# 7 %>
 <td data-order="<%= user.active %>" data-search="<%= user.active ? "activ" : "inactiv" %>">
   <%if user.active? %>
     <%= link_to users_path(status: "activ") do %>
@@ -50,10 +50,10 @@
       <i class="fas fa-circle text-danger"></i>
     <% end %>
   <% end %>
-</td>
+</td><%# 8 %>
 <td>
   <%= link_to edit_user_path(user), class: "btn btn-outline-primary btn-fw btn-sm" do %>
     <i class="ti-pencil-alt btn-icon-prepend"></i>
     Modifica
   <% end %>
-</td>
+</td><%# 9 %>

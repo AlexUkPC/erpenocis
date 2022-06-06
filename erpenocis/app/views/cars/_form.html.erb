@@ -47,7 +47,7 @@
     <%= form.submit class: "btn btn-primary" %>
     <% if car.id %>
       <%= link_to "Renunta", cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-light" %>
-      <%= link_to 'Sterge masina', car_path(car, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %>
+      <%= link_to 'Sterge masina', car_path(car, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger float-end" %>
     <% end %>
   </div>
 <% end %>

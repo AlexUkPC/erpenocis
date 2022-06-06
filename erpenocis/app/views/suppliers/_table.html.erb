@@ -26,7 +26,6 @@
           <tr>
             <th>Id</th>
             <th>Nume furnizor</th>
-            <th style="display: none">Nume furnizor</th>
             <%# List all months and years %>
               <% @table_head.each do |th| %>
                 <th>
@@ -35,6 +34,7 @@
               <% end %>
             <%# End List all months and years %>
             <th>Total</th>
+            <th style="display: none">Nume furnizor</th>
           </tr>
         </thead>
 
@@ -49,7 +49,6 @@
             <tr>
               <td data-order="<%= supplier.id %>"><%= supplier.id %></td>
               <td data-order="<%= supplier.name %>"><%= link_to edit_supplier_path(supplier, current_tab: @current_tab,sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %><div><%= supplier.name %>&nbsp</div><% end %></td>
-              <td style="display: none"><%= supplier.name %></td>
 
               <% if of_what=="issued_supplier_invoices" %>
                 <% @supplier_invoices[supplier.id] = supplier.supplier_invoices.created_between(Date.parse(@start_year.to_s+'-'+@start_month.to_s+'-01'),Date.parse(@end_year.to_s+'-'+@end_month.to_s+'-01').next_month-1.day).order("date ASC") %>
@@ -92,8 +91,10 @@
                       <% end %>
                     </td>
               <% end %>
-              <td style="font-weight: 600">
+              <td style="font-weight: 600" data-order="<%= @total_per_supplier %>">
                 <%= @total_per_supplier %>
+              </td>
+              <td style="display: none"><%= supplier.name %></td>
             </tr>
           <% end %>
         </tbody>
@@ -101,7 +102,6 @@
               <tr>
                 <th></th>
                 <th>Total</th>
-                <th style="display: none"></th>
                 <%# Total per month %>
                   <% @months.times do |month| %>
                     <th>         
@@ -113,6 +113,7 @@
                 <%# GrandTotal of totals %>
                   <th><%= total_supplier_invoce_payments %></th>
                 <%# End GrandTotal of totals %>
+                  <th style="display: none"></th>
 
               </tr>
             </tfoot>

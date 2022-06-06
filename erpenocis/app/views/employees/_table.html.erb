@@ -32,7 +32,6 @@
           <tr>
             <th>Id</th>
             <th>Nume angajat</th>
-            <th style="display: none">Nume angajat</th>
             <%# List all months and years %>
               <% @table_head.each do |th| %>
                 <th>
@@ -41,6 +40,7 @@
               <% end %>
             <%# End List all months and years %>
             <th>Total</th>
+            <th style="display: none">Nume angajat</th>
           </tr>
         </thead>
 
@@ -58,9 +58,6 @@
               <%# Employee name with link %>
                 <td data-order="<%=employee.name%>">
                   <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
-                </td>
-                <td style="display: none">
-                  <%=employee.name%>
                 </td>
               <%# End Employee name with link %>
 
@@ -104,7 +101,9 @@
                   <% grand_total += total  %>
                 </td>
               <%# End Total per Employee %>
-
+                <td style="display: none">
+                  <%=employee.name%>
+                </td>
             </tr>
           <% end %>
         </tbody>
@@ -112,7 +111,7 @@
           <tr>
             <th></th>
             <th>Total</th>
-            <th style="display: none"></th>
+            
             <%# Total per month %>
               <%# extra_years = 0 %>
               <% @months.times do |month| %>
@@ -125,7 +124,7 @@
             <%# GrandTotal of totals %>
               <th><%= grand_total %></th>
             <%# End GrandTotal of totals %>
-
+            <th style="display: none"></th>
           </tr>
         </tfoot>
       </table>

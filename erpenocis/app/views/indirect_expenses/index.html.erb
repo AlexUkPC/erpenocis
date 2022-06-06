@@ -5,7 +5,7 @@
         <p class="card-title">Cheltuieli indirecte</p>
       </div>
       <div class="col-md-6">
-        <%= render 'layouts/date_form2' %>
+        <%= render 'layouts/date_form' %>
       </div>
     </div>
     <div class="row">
@@ -95,17 +95,19 @@
 
 <script>
   $(document).ready(function(){
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#indirectExpensesTable").DataTable({
       order: [],
       paging:   false,
       ordering: true,
       info:     false,
       filter: true,
-      stateSave: false,
+      deferRender: true,
+      stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
-      scrollY: 500,
       scrollX: true,
       fixedColumns:   true,
       fixedColumns: {
@@ -117,7 +119,12 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          sheetName: "Cheltuieli indirecte",
+          title: "Cheltuieli indirecte din perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Cheltuieli indirecte - " + date.slice(0, 10),
+          autoFilter: true,
+          footer: true
         }, 'spacer',
         {
           extend: 'searchPanes',
