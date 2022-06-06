@@ -165,7 +165,7 @@
       info:     false,
       filter: true,
       deferRender: true,
-      stateSave: true,
+      stateSave: true, 
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -206,7 +206,8 @@
         class: 'details-control',
         targets: [1,2,3,4,7],
         searchPanes: {
-          show: true
+          show: true,
+          layout: `columns-2`
         },
       },
       {
@@ -255,7 +256,8 @@
         },
         searchPanes: {
           clearMessage: 'Sterge filtre',
-          showAll: 'Arata',
+          showMessage: 'Arata toate',
+          collapseMessage: 'Ascunde toate',
           collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
           title: {
             _: 'Filtre Selectate - %d',
