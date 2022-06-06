@@ -78,3 +78,46 @@ tfoot{
 table.dataTable{
   margin-bottom: 0!important;
 }
+
+.dtsp-searchPane{
+  .dtsp-topRow {
+    .dtsp-subRow1{
+      .dtsp-searchCont{
+        .form-control {
+         padding: 0.25rem;
+        }
+        .dtsp-searchButtonCont{
+          .btn{
+            padding: 0.25rem;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+    .dtsp-subRow2{
+      .btn-group{
+        .btn{
+          padding: 0.25rem;
+        }
+      }
+    }
+  }
+  .dataTables_wrapper{
+    .dataTables_scroll{
+      .dataTables_scrollBody{
+        .dataTable{
+          tbody{
+            .dtsp-nameColumn{
+              .dtsp-nameCont{
+                .badge{
+                  min-width: 20px;
+                  line-height: 1em;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
