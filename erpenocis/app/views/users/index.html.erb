@@ -40,16 +40,16 @@
           <table id="usersTable" class="table" style="width:100%">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Poza</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th style="display: none">Rol</th>
-                <th style="min-width: 300px">Rol</th>
-                <th>Ultima autentificare</th>
-                <th style="display: none">Status</th>
-                <th>Status</th>
-                <th></th>
+                <th>ID</th><%# 0 %>
+                <th>Poza</th><%# 1 %>
+                <th>Username</th><%# 2 %>
+                <th>Email</th><%# 3 %>
+                <th style="display: none">Rol</th><%# 4 %>
+                <th style="min-width: 300px">Rol</th><%# 5 %>
+                <th>Ultima autentificare</th><%# 6 %>
+                <th style="display: none">Status</th><%# 7 %>
+                <th>Status</th><%# 8 %>
+                <th></th><%# 9 %>
               </tr>
             </thead>
             <tbody>
@@ -68,12 +68,14 @@
 
 <script>
   $(document).ready(function(){
+    let date = new Date().toISOString()
     var table = $("#usersTable").DataTable({
       order: [[0, 'asc']],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
+      deferRender: true,
       stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
@@ -89,11 +91,9 @@
           exportOptions: {
             columns: [ 0, 2, 3, 4, 6, 7 ]
           },
-          sheetName: "Utilizatori"
-          ,
-          title: "Utilizatori"
-          ,
-          filename: "Utilizatori",
+          sheetName: "Utilizatori",
+          title: "Utilizatori",
+          filename: "Utilizatori - " + date.slice(0, 10),
           autoFilter: true
         }, 'spacer',
         {

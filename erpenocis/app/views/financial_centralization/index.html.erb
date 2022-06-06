@@ -5,7 +5,7 @@
         <p class="card-title">Situatie financiara</p>
       </div>
       <div class="col-md-6">
-        <%= render 'layouts/date_form2' %>
+        <%= render 'layouts/date_form' %>
       </div>
     </div>
     <div class="row">
@@ -167,7 +167,7 @@
                 <% @solds[month] = 0 %> 
               <% end %>
               <tr>
-                <td>Sold to</td>
+                <td data-order="Sold to">Sold to</td>
                 <!-- afla care e soldul la prima luna afisata  -->
                 <% extra_years_before = 0 %>
                 <% sold = @last_january_sold.value %>  
@@ -194,90 +194,95 @@
                 <% extra_years = 0 %>
                 <% @months.times do |month| %>
                   <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-                  <td>
-                    <% project_situations_advance = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years).map(&:advance_payment).sum %>
-                    <% project_situations_closure = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years).map(&:closure_payment).sum %>
+                  <% project_situations_advance = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years).map(&:advance_payment).sum %>
+                  <% project_situations_closure = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years).map(&:closure_payment).sum %>
 
-                    <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
-                    <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
+                  <% employee_salaries = @employee_salaries.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day) %>
+                  <% for_total_salary_expenses = employee_salaries.map(&:net_salary).sum + employee_salaries.map(&:salary_tax).sum + employee_salaries.map(&:meal_vouchers).sum + employee_salaries.map(&:gift_vouchers).sum + employee_salaries.map(&:overtime).sum + employee_salaries.map(&:extra_salary).sum %>
 
-                    <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
+                  <% for_total_other_expenses = @expense_values.created_between(Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01'),Date.parse((@start_year + extra_years).to_s+'-'+((@start_month + month) - (extra_years * 12)).to_s+'-01').next_month-1.day).map(&:value).sum %>
 
-                    
-                    <% if @start_month + month - (extra_years * 12) == 1 %>
-                      <% @old_solds[@start_year + extra_years - 1] = @solds[month-1] %>
-                      <% current_year_now = @start_year + extra_years %>
-                      <% @solds[month-1] = @january_solds.find_by(year: current_year_now).value if @january_solds.find_by(year: current_year_now) %>
-                    <% end %>
-                    <% @january_solds.find_by(year: current_year_now) ? @jsid = @january_solds.find_by(year: current_year_now).id : @jsid = ""  %>
-                    <% if month == 0 %>
-                      <% if @start_month==1 %>
+                  
+                  <% if @start_month + month - (extra_years * 12) == 1 %>
+                    <% @old_solds[@start_year + extra_years - 1] = @solds[month-1] %>
+                    <% current_year_now = @start_year + extra_years %>
+                    <% @solds[month-1] = @january_solds.find_by(year: current_year_now).value if @january_solds.find_by(year: current_year_now) %>
+                  <% end %>
+                  <% @january_solds.find_by(year: current_year_now) ? @jsid = @january_solds.find_by(year: current_year_now).id : @jsid = ""  %>
+                  <% if month == 0 %>
+                    <% if @start_month==1 %>
+                      <td data-order="<%= sold %>">
                         <%= link_to financial_centralization_path(jsid: @jsid, year:  current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                           <%= sold %>
                         <% end %>
-                      <% else %>
+                      </td>
+                    <% else %>
+                      <td data-order="<%= sold %>">
                         <%= sold %>
-                      <% end %>
-                      <% @solds[month] = sold + project_situations_advance + project_situations_closure - @total_expenses_per_months[month] %>
-                    <% elsif @start_month + month - (extra_years * 12) == 1 %>
-
+                      </td>
+                    <% end %>
+                    <% @solds[month] = sold + project_situations_advance + project_situations_closure - @total_expenses_per_months[month] %>
+                  <% elsif @start_month + month - (extra_years * 12) == 1 %>
+                    <td data-order="<%= @solds[month-1] %>">
                       <%= link_to financial_centralization_path(jsid: @jsid, year: current_year_now, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                         <%= @solds[month-1] %>
                       <% end %>
                       <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
-                    <% else %>
+                    </td>
+                  <% else %>
+                    <td data-order="<%= @solds[month-1] %>">
                       <%= @solds[month-1] %>
                       <% @solds[month] = @solds[month-1] + project_situations_advance + project_situations_closure - @total_expenses_per_months[month]%>
-                    <% end %>
-                  </td>
+                    </td>
+                  <% end %>
                 <% end %>
-                <td> 
+                <td data-order=""> 
                 </td>
               </tr>
               <tr>
-                <td>Sume incasate avans</td>
+                <td data-order="Sume incasate avans">Sume incasate avans</td>
                 <% extra_years = 0 %>
                 <% @months.times do |month| %>
                   <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
                   <% project_situations = @project_situations.where(advance_month: @start_month + month - extra_years * 12, advance_year: @start_year + extra_years) %>
-                  <td>
+                  <td data-order="<%= project_situations.map(&:advance_payment).sum %>">
                     <%= total = project_situations.map(&:advance_payment).sum %>
                     <% total_values += total %>
                     <% @total_per_months[month] += total %>
                   </td>
                 <% end %>
-                <td style="font-weight: 600">
+                <td style="font-weight: 600" data-order="<%= total_values %>">
                   <%= total_values %>
                 </td>
               </tr>
               <% total_values = 0 %>
               <tr>
-                <td>Sume incasate final</td>
+                <td data-order="Sume incasate final">Sume incasate final</td>
                 <% extra_years = 0 %>
                 <% @months.times do |month| %>
                   <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
                   <% project_situations = @project_situations.where(closure_month: @start_month + month - extra_years * 12, closure_year: @start_year + extra_years) %>
-                  <td>
+                  <td data-order=" <%= project_situations.map(&:closure_payment).sum %>">
                     <%= total = project_situations.map(&:closure_payment).sum %>
                     <% total_values += total %>
                     <% @total_per_months[month] += total %>
                   </td>
                 <% end %>
-                <td style="font-weight: 600">
+                <td style="font-weight: 600" data-order="<%= total_values %>">
                   <%= total_values %>
                 </td>
               </tr>
               <tr>
-                <td>Cheltuieli materiale <br>proiect + ch indirecte</td>
+                <td data-order="Cheltuieli materiale proiect + ch indirecte">Cheltuieli materiale <br>proiect + ch indirecte</td>
 
                 <% @months.times do |month| %>
-                  <td>
+                  <td data-order="<%= @total_expenses_per_months[month] %>">
                     <%= sum = @total_expenses_per_months[month] %>
                     <% @total_per_months[month] -=sum %>
                     <% total_expenses += sum %>
                   </td>
                 <% end %>
-                <td style="font-weight: 600">
+                <td style="font-weight: 600" data-order="<%= total_expenses %>">
                   <%= total_expenses %>
                 </td>
               </tr>
@@ -285,25 +290,27 @@
             </tbody>
             <tfoot>
               <tr>
-                <th>Disponibil cash</th>
+                <th data-order="Disponibil cash">Disponibil cash</th>
                 <%# Total per month %>
                   <% extra_years = 0 %>
                   <% @months.times do |month| %>
                     <% @start_month + month - extra_years * 12 > 12 ? extra_years += 1 : extra_years %>
-                    <th>         
                       <% if @start_month + month - extra_years * 12 == 12 && @months-1 != month %>
-                        <%= @old_solds[@start_year + extra_years] %>
+                        <th data-order="<%= @old_solds[@start_year + extra_years] %>">         
+                          <%= @old_solds[@start_year + extra_years] %>
+                        </th>
                       <% else %>
-                        <%= @solds[month] %>
+                        <th data-order="<%= @solds[month] %>">
+                          <%= @solds[month] %>
+                        </th>
                       <% end %>
-                    </th>
                   <% end %>
                 <%# End Total per month %>
 
                 <%# GrandTotal of totals %>
 
                 <%# End GrandTotal of totals %>
-                <th></th>
+                <th data-order=""></th>
               </tr>
             </tfoot>
           </table>
@@ -317,12 +324,232 @@
 <%= render 'january_solds/form', january_sold: @january_sold %>
 <script>
   $(document).ready(function(){
+    function getHeaderNames(table) {
+      // Gets header names.
+      //params:
+      //  table: table ID.
+      //Returns:
+      //  Array of column header names.
+      
+      var header = $(table).DataTable().columns().header().toArray();
+
+      var names = [];
+      header.forEach(function(th) {
+      names.push($(th).html());
+      });
+          
+      return names;
+    }
+    function getFooterNames(table) {
+      // Gets footer names.
+      //params:
+      //  table: table ID.
+      //Returns:
+      //  Array of column footer names.
+      
+      var footer = $(table).DataTable().columns().footer().toArray();
+
+      var names = [];
+      footer.forEach(function(th) {
+      names.push($(th).html());
+      });
+          
+      return names;
+    }
+    
+    function buildCols(data) {
+      // Builds cols XML.
+      //To do: deifne widths for each column.
+      //Params:
+      //  data: row data.
+      //Returns:
+      //  String of XML formatted column widths.
+      
+      var cols = '<cols>';
+      
+      for (i=0; i<data.length; i++) {
+        colNum = i + 1;
+        cols += '<col min="' + colNum + '" max="' + colNum + '" width="12" customWidth="1"/>';
+      }
+      
+      cols += '</cols>';
+      return cols;
+    }
+    
+    function buildRow(data, rowNum, styleNum) {
+      // Builds row XML.
+      //Params:
+      //  data: Row data.
+      //  rowNum: Excel row number.
+      //  styleNum: style number or empty string for no style.
+      //Returns:
+      //  String of XML formatted row.
+      var style = styleNum ? ' s="' + styleNum + '"' : '';
+      
+      var row = '<row r="' + rowNum + '">';
+      for (i=0; i<data.length; i++) {
+        colNum = (i + 10).toString(36).toUpperCase();  // Convert to alpha
+
+        var cr = colNum + rowNum;
+        
+        row += '<c t="inlineStr" r="' + cr + '"' + style + '>' +
+                '<is>' +
+                  '<t>' + data[i] + '</t>' +
+                '</is>' +
+              '</c>';
+      }
+      row += '</row>';
+      return row;
+    }
+    
+    function getTableData(table, title) {
+      // Processes Datatable row data to build sheet.
+      //Params:
+      //  table: table ID.
+      //  title: Title displayed at top of SS or empty str for no title.
+      //Returns:
+      //  String of XML formatted worksheet.
+      
+      var header = getHeaderNames(table);
+      var footer = getFooterNames(table);
+      var table = $(table).DataTable();
+      var rowNum = 1;
+      var mergeCells = '';
+      var ws = '';
+      
+      ws += buildCols(header);
+      ws += '<sheetData>';
+      
+      if (title.length > 0) {
+        ws += buildRow([title], rowNum, 51);
+        rowNum++;
+        
+        mergeCol = ((header.length - 1) + 10).toString(36).toUpperCase();
+        
+        mergeCells = '<mergeCells count="1">'+
+          '<mergeCell ref="A1:' + mergeCol + '1"/>' +
+                    '</mergeCells>';
+      }
+                        
+      ws += buildRow(header, rowNum, 2);
+      rowNum++;
+      
+      // Loop through each row to append to sheet.    
+      table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+        var data = this.data();
+        
+        // If data is object based then it needs to be converted 
+        // to an array before sending to buildRow()
+        let x = []
+        for (const [key, value] of Object.entries(data)) {
+         value["@data-order"] ? x.push(value["@data-order"]) : x.push("")
+        }
+        ws += buildRow(x, rowNum, '');
+        
+        rowNum++;
+      } );
+      ws += buildRow(footer, rowNum, 2);
+      
+      ws += '</sheetData>' + mergeCells;
+      return ws;
+
+    }
+    
+    function setSheetName(xlsx, name) {
+      // Changes tab title for sheet.
+      //Params:
+      //  xlsx: xlxs worksheet object.
+      //  name: name for sheet.
+      
+      if (name.length > 0) {
+        var source = xlsx.xl['workbook.xml'].getElementsByTagName('sheet')[0];
+        source.setAttribute('name', name);
+      }
+    }
+    
+    function addSheet(xlsx, table, title, name, sheetId) {
+      //Clones sheet from Sheet1 to build new sheet.
+      //Params:
+      //  xlsx: xlsx object.
+      //  table: table ID.
+      //  title: Title for top row or blank if no title.
+      //  name: Name of new sheet.
+      //  sheetId: string containing sheetId for new sheet.
+      //Returns:
+      //  Updated sheet object.
+      
+      //Add sheet2 to [Content_Types].xml => <Types>
+      //============================================
+      var source = xlsx['[Content_Types].xml'].getElementsByTagName('Override')[sheetId-1];
+      var clone = source.cloneNode(true);
+      clone.setAttribute('PartName',`/xl/worksheets/sheet${sheetId}.xml`);
+      xlsx['[Content_Types].xml'].getElementsByTagName('Types')[0].appendChild(clone);
+      //Add sheet relationship to xl/_rels/workbook.xml.rels => Relationships
+      //=====================================================================
+      var source = xlsx.xl._rels['workbook.xml.rels'].getElementsByTagName('Relationship')[0];
+      var clone = source.cloneNode(true);
+      clone.setAttribute('Id',`rId${sheetId+1}`);
+      clone.setAttribute('Target',`worksheets/sheet${sheetId}.xml`);
+      xlsx.xl._rels['workbook.xml.rels'].getElementsByTagName('Relationships')[0].appendChild(clone);
+      
+      //Add second sheet to xl/workbook.xml => <workbook><sheets>
+      //=========================================================
+      var source = xlsx.xl['workbook.xml'].getElementsByTagName('sheet')[0];
+      var clone = source.cloneNode(true);
+      clone.setAttribute('name', name);
+      clone.setAttribute('sheetId', sheetId);
+      clone.setAttribute('r:id',`rId${sheetId+1}`);
+      xlsx.xl['workbook.xml'].getElementsByTagName('sheets')[0].appendChild(clone);
+      
+      //Add sheet2.xml to xl/worksheets
+      //===============================
+      var newSheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" mc:Ignorable="x14ac">'+
+        getTableData(table, title) +
+        
+        '</worksheet>';
+      xlsx.xl.worksheets[`sheet${sheetId}.xml`] = $.parseXML(newSheet);
+      
+    }
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
+    var table2 = $("#cashFlowTable").DataTable({
+      order: [],
+      paging:   false,
+      ordering: false,
+      info:     false,
+      filter: false,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between">>t<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollX: true,
+      fixedColumns: true,
+      fixedColumns: {
+        left: 1,
+        right: 1
+      },
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm' 
+        }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      }
+    });
+    let cf = "Cash flow din perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4))
     var table = $("#financialSituationTable").DataTable({
       order: [],
       paging:   false,
       ordering: true,
       info:     false,
       filter: true,
+      deferRender: true,
       stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
@@ -338,7 +565,15 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          sheetName: "Situatie financiara",
+          title: "Situatie financiara din perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Centralizare financiara - " + date.slice(0, 10),
+          autoFilter: true,
+          footer: true,
+          customize: function( xlsx ) {
+            addSheet(xlsx, '#cashFlowTable', cf , 'Cash Flow' , '2');
+          }
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -429,34 +664,6 @@
       },
     });
     $('.dt-buttons').removeClass('btn-group');
-    var table2 = $("#cashFlowTable").DataTable({
-      order: [],
-      paging:   false,
-      ordering: false,
-      info:     false,
-      filter: false,
-      stateSave: false,
-      dom: '<"top"<"d-flex justify-content-between">>t<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
-      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
-      pagingType: 'full_numbers',
-      scrollX: true,
-      fixedColumns: true,
-      fixedColumns: {
-        left: 1,
-        right: 1
-      },
-      scroller:    true,
-      colReorder: false,
-      buttons: [
-        { extend: 'excelHtml5', 
-          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
-        }
-      ],
-      select: {
-        style: 'os',
-        selector: 'td:first-child'
-      }
-    });
+    
   });
 </script>

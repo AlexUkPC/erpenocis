@@ -11,7 +11,7 @@
             <p class="card-title">Facturi</p>
           </div>
           <div class="col-md-6">
-            <%= render 'layouts/date_form2' %>
+            <%= render 'layouts/date_form' %>
           </div>
         </div>
         <div class="row mt-3">
@@ -20,51 +20,55 @@
               <table id="invoicesTable" class="display expandable-table" style="width:100%">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Nume proiect</th>
-                    <th>Descriere</th>
-                    <th>Categorie</th>
-                    <th>Nume furnizor</th>
-                    <th>Nr. factura</th>
-                    <th>Data factura</th>
-                    <th>Cod factura</th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th></th> 
+                    <th>Id</th><%# 0 %>
+                    <th>Nume proiect</th><%# 1 %>
+                    <th>Descriere</th><%# 2 %>
+                    <th>Categorie</th><%# 3 %>
+                    <th>Nume furnizor</th><%# 4 %>
+                    <th>Nr. factura</th><%# 5 %>
+                    <th>Data factura</th><%# 6 %>
+                    <th>Cod factura</th><%# 7 %> 
+                    <th style="display: none">Pic user</th><%# 8 %> 
+                    <th style="display: none">Utilizator ultima modificare</th><%# 9 %> 
+                    <th style="display: none">Data ultima modificare</th><%# 10 %> 
+                    <th style="display: none">Data si ora ultima modificare</th><%# 11 %> 
+                    <th style="display: none">Vezi Proiect</th><%# 12 %> 
+                    <th style="display: none">Data inserarii</th><%# 13 %> 
+                    <th style="display: none">Valoare factura fara TVA</th><%# 14 %> 
+                    <th style="display: none">Valoare pt proiect fara TVA</th><%# 15 %> 
+                    <th style="display: none">Observatii</th><%# 16 %> 
+                    <th style="display: none">Observatii short</th><%# 17 %> 
+                    <th style="display: none">Modifica</th><%# 18 %> 
+                    <th style="display: none">Sterge</th><%# 19 %> 
+                    <th></th><%# 20 %> 
                   </tr>
                 </thead>
                 <tbody>
                   <% @invoices.each do |invoice| %>
                     <% project = invoice.project %>
                     <tr>
-                      <td><%= invoice.id %></td>
-                      <td><%= project.name %></td>
-                      <td><%= invoice.description %></td>
-                      <td><%= invoice.category %></td>
-                      <td><%= invoice.supplier %></td>
-                      <td><%= invoice.invoice_number %></td>
-                      <td><%= invoice.invoice_date %></td>
-                      <td><%= invoice.code %></td>
+                      <td><%= invoice.id %></td><%# 0 %>
+                      <td><%= project.name %></td><%# 1 %>
+                      <td><%= invoice.description %></td><%# 2 %>
+                      <td><%= invoice.category %></td><%# 3 %>
+                      <td><%= invoice.supplier %></td><%# 4 %>
+                      <td><%= invoice.invoice_number %></td><%# 5 %>
+                      <td><%= invoice.invoice_date %></td><%# 6 %>
+                      <td><%= invoice.code %></td><%# 7 %>
 
-                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(invoice.user_id), 100) , alt: "profile" %></td>
-                      <td style="display: none"><%= @users.find(invoice.user_id).username %></td>
-                      <td style="display: none"><%= invoice.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
-                      <td style="display: none"><%= link_to 'Vezi proiect', project, class: "btn btn-primary" %></td>
-                      <td style="display: none"><%= invoice.created_at.strftime('%d/%m/%Y') %></td>
-                      <td style="display: none"><%= invoice.invoice_value_without_vat %></td>
-                      <td style="display: none"><%= invoice.invoice_value_for_project_without_vat %></td>
-                      <td style="display: none"><%= excerpt(invoice.obs, "", radius: 200) %></td>
-                      <td style="display: none"><%= link_to 'Modifica', edit_invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
-                      <td style="display: none"><%= link_to 'Sterge', invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' }, class: "btn btn-outline-danger btn-fw" %></td>
-                      <td class="details-control"></td>
+                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(invoice.user_id), 100) , alt: "profile" %></td><%# 8 %>
+                      <td style="display: none"><%= @users.find(invoice.user_id).username %></td><%# 9 %>
+                      <td style="display: none"><%= invoice.updated_at.strftime('%d/%m/%Y') %></td><%# 10 %>
+                      <td style="display: none"><%= invoice.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td><%# 11 %>
+                      <td style="display: none"><%= link_to 'Vezi proiect', project, class: "btn btn-primary" %></td><%# 12 %>
+                      <td style="display: none"><%= invoice.created_at.strftime('%d/%m/%Y') %></td><%# 13 %>
+                      <td style="display: none"><%= invoice.invoice_value_without_vat %></td><%# 14 %>
+                      <td style="display: none"><%= invoice.invoice_value_for_project_without_vat %></td><%# 15 %>
+                      <td style="display: none"><%= invoice.obs %></td><%# 16 %>
+                      <td style="display: none"><%= excerpt(invoice.obs, "", radius: 200) %></td><%# 17 %>
+                      <td style="display: none"><%= link_to 'Modifica', edit_invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td><%# 18 %>
+                      <td style="display: none"><%= link_to 'Sterge', invoice_path(invoice, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi factura?' }, class: "btn btn-outline-danger btn-fw" %></td><%# 19 %>
+                      <td class="details-control"></td><%# 20 %>
                     </tr>
                   <% end %>                 
                 </tbody>
@@ -114,11 +118,11 @@
                     '</div>'+
                     '<div class="expanded-table-normal-cell align-self-center">'+
                       '<div class="me-2 mb-4">'+
-                        '<p>Valoare factura</p>'+
+                        '<p>Valoare factura fara TVA</p>'+
                         '<h6>'+invoice_value_without_vat+'</h6>'+
                       '</div>'+
                       '<div class="me-2">'+
-                        '<p>Valoare pt proiect</p>'+
+                        '<p>Valoare pt proiect fara TVA</p>'+
                         '<h6>'+invoice_value_for_project_without_vat+'</h6>'+
                       '</div>'+
                     '</div>'+
@@ -144,13 +148,16 @@
           '</tr>'+
       '</table>';
     };
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#invoicesTable").DataTable({
       order: [[0, 'asc']],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
-      stateSave: false,
+      deferRender: true,
+      stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -160,7 +167,14 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 13, 14, 15, 16 ]
+          },
+          sheetName: "Facturi",
+          title: "Facturi cu data emiterii in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Facturi - " + date.slice(0, 10),
+          autoFilter: true
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -193,11 +207,11 @@
           show: false
         },
         class: 'details-control',
-        targets: [8,9,10,11,12,13,14,15,16,17,18]
+        targets: '_all'
       },
       {
         orderable: false,
-        targets: 18
+        targets: -1
       }
       ],
       select: {
@@ -254,7 +268,7 @@
       }
       else {
           // Open this row
-          row.child( format(row.data(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").text(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").html(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").text(),tr.find("td:eq(16)").html(),tr.find("td:eq(17)").html()) ).show();
+          row.child( format(row.data(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").html(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").text(),tr.find("td:eq(17)").text(),tr.find("td:eq(18)").html(),tr.find("td:eq(19)").html()) ).show();
           tr.addClass('shown');
       }
     } );

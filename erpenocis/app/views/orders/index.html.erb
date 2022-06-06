@@ -11,7 +11,7 @@
             <p class="card-title">Comenzi</p>
           </div>
           <div class="col-md-6">
-            <%= render 'layouts/date_form2' %>
+            <%= render 'layouts/date_form' %>
           </div>
         </div>
         <div class="row mt-3">
@@ -20,55 +20,59 @@
               <table id="ordersTable" class="display expandable-table" style="width:100%">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Nume proiect</th>
-                    <th>Status</th>
-                    <th>Categorie</th>
-                    <th>Denumire/Tip/Nuanta</th>
-                    <th>Cant. necesara</th>
-                    <th>UM</th>
-                    <th>Furnizor</th>
-                    <th>Cant. comandata</th>
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th style="display: none"></th> 
-                    <th></th> 
+                    <th>ID</th><%# 0 %>
+                    <th>Nume proiect</th><%# 1 %>
+                    <th>Status</th><%# 2 %>
+                    <th>Categorie</th><%# 3 %>
+                    <th>Denumire/Tip/Nuanta</th><%# 4 %>
+                    <th>Cant. necesara</th><%# 5 %>
+                    <th>UM</th><%# 6 %>
+                    <th>Furnizor</th><%# 7 %>
+                    <th>Cant. comandata</th><%# 8 %>
+                    <th style="display: none">User pic</th><%# 9 %>
+                    <th style="display: none">Utilizator ultima modificare</th><%# 10 %>
+                    <th style="display: none">Data ultima modificare</th><%# 11 %>
+                    <th style="display: none">Data si ora ultima modificare</th><%# 12 %>
+                    <th style="display: none">Vezi proiect</th><%# 13 %>
+                    <th style="display: none">Data inserarii</th><%# 14 %>
+                    <th style="display: none">Data comanda</th><%# 15 %>
+                    <th style="display: none">Data livrare</th><%# 16 %>
+                    <th style="display: none">Observatii</th><%# 17 %>
+                    <th style="display: none">Observatii short</th><%# 18 %>
+                    <th style="display: none">Muta</th><%# 19 %>
+                    <th style="display: none">Modifica</th><%# 20 %>
+                    <th style="display: none">Sterge</th><%# 21 %>
+                    <th></th><%# 22 %>
                   </tr>
                 </thead>
                 <tbody>
                   <% @orders.each do |order| %>
                     <% project = order.project %>
                     <tr>
-                      <td><%= order.id %></td>
-                      <td><%= project.name %></td>
-                      <td><%= order.status.titleize %></td>
-                      <td><%= order.category %></td>
-                      <td><%= order.name_type_color %></td>
-                      <td><%= order.needed_quantity %></td>
-                      <td><%= order.unit %></td>
-                      <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td>
-                      <td><%= order.ordered_quantity %></td>
+                      <td><%= order.id %></td><%# 0 %>
+                      <td><%= project.name %></td><%# 1 %>
+                      <td><%= order.status.titleize %></td><%# 2 %>
+                      <td><%= order.category %></td><%# 3 %>
+                      <td><%= order.name_type_color %></td><%# 4 %>
+                      <td><%= order.needed_quantity %></td><%# 5 %>
+                      <td><%= order.unit %></td><%# 6 %>
+                      <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td><%# 7 %>
+                      <td><%= order.ordered_quantity %></td><%# 8 %>
 
-                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(order.user_id), 100) , alt: "profile" %></td>
-                      <td style="display: none"><%= @users.find(order.user_id).username %></td>
-                      <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td>
-                      <td style="display: none"><%= link_to 'Vezi proiect', project, class: "btn btn-primary" %></td>
-                      <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td>
-                      <td style="display: none"><%= order.order_date %></td>
-                      <td style="display: none"><%= order.delivery_date %></td>
-                      <td style="display: none"><%= excerpt(order.obs, "", radius: 200) %></td>
-                      <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td>
-                      <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
-                      <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td>
-                      <td class="details-control"></td>
+                      <td style="display: none"><%= image_tag user_profile_picture(@users.find(order.user_id), 100) , alt: "profile" %></td><%# 9 %>
+                      <td style="display: none"><%= @users.find(order.user_id).username %></td><%# 10 %>
+                      <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y') %></td><%# 11 %>
+                      <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y<br>(ora: %H:%M)') %></td><%# 12 %>
+                      <td style="display: none"><%= link_to 'Vezi proiect', project, class: "btn btn-primary" %></td><%# 13 %>
+                      <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td><%# 14 %>
+                      <td style="display: none"><%= order.order_date %></td><%# 15 %>
+                      <td style="display: none"><%= order.delivery_date %></td><%# 16 %>
+                      <td style="display: none"><%= order.obs %></td><%# 17 %>
+                      <td style="display: none"><%= excerpt(order.obs, "", radius: 200) %></td><%# 18 %>
+                      <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td><%# 19 %>
+                      <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td><%# 20 %>
+                      <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td><%# 21 %>
+                      <td class="details-control"></td><%# 22 %>
                     </tr>
                   <% end %>
                   
@@ -152,13 +156,16 @@
           '</tr>'+
       '</table>';
     };
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#ordersTable").DataTable({
       order: [[0, 'asc']],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
-      stateSave: false,
+      deferRender: true,
+      stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -168,7 +175,14 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm',
+          exportOptions: {
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 14, 15, 16 ,17]
+          },
+          sheetName: "Comenzi",
+          title: "Comenzi inserate in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Comenzi - " + date.slice(0, 10),
+          autoFilter: true
         }, 'spacer',
         {
           extend: 'searchPanes',
@@ -201,11 +215,11 @@
           show: false
         },
         class: 'details-control',
-        targets: [5,6,8,9,10,11,12,13,14,15,16,17,18,19]
+        targets: '_all'
       },
       {
         orderable: false,
-        targets: 20
+        targets: -1
       }
       ],
       select: {
@@ -262,7 +276,7 @@
       }
       else {
           // Open this row
-          row.child( format(row.data(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").html(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").text(),tr.find("td:eq(16)").text(),tr.find("td:eq(17)").html(),tr.find("td:eq(18)").html(),tr.find("td:eq(19)").html()) ).show();
+          row.child( format(row.data(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").text(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").html(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").text(),tr.find("td:eq(16)").text(),tr.find("td:eq(18)").text(),tr.find("td:eq(19)").html(),tr.find("td:eq(20)").html(),tr.find("td:eq(21)").html()) ).show();
           tr.addClass('shown');
       }
     } );

@@ -7,7 +7,7 @@
             <p class="card-title">Situatie proiecte</p>
           </div>
           <div class="col-md-9">
-            <%= render 'layouts/date_form2' %>
+            <%= render 'layouts/date_form' %>
           </div>
         </div>
         <div class="row mt-3">
@@ -16,29 +16,29 @@
               <table id="projectTable" class="display expandable-table" style="width:100%">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Nume proiect</th>
-                    <th>Valoare proiect</th>
-                    <th>Rest de plata</th>
-                    <th>Cost materiale</th>
-                    <th>Profitabilitate</th>
-                    <th>Profitabilitate %</th>
+                    <th>ID</th><%# 0 %>
+                    <th>Nume proiect</th><%# 1 %>
+                    <th>Valoare proiect</th><%# 2 %>
+                    <th>Rest de plata</th><%# 3 %>
+                    <th>Cost materiale</th><%# 4 %>
+                    <th>Profitabilitate</th><%# 5 %>
+                    <th>Profitabilitate %</th><%# 6 %>
 
-                    <th style="display: none">Data ff avans</th>
-                    <th style="display: none">FF avans</th>
-                    <th style="display: none">Data avans</th>
-                    <th style="display: none">Avans</th>
-                    <th style="display: none">Luna comanda/avans</th>
-                    <th style="display: none">An comanda/avans</th>
-                    <th style="display: none">Data ff finala</th>
-                    <th style="display: none">FF finala</th>
-                    <th style="display: none">Data inchidere</th>
-                    <th style="display: none">Inchidere</th>
-                    <th style="display: none">Luna finalizare/rest de plata</th>
-                    <th style="display: none">An finalizare/rest de plata</th>
-                    <th style="display: none"></th>
+                    <th style="display: none">Data ff avans</th><%# 7 %>
+                    <th style="display: none">FF avans</th><%# 8 %>
+                    <th style="display: none">Data avans</th><%# 9 %>
+                    <th style="display: none">Avans</th><%# 10 %>
+                    <th style="display: none">Luna comanda/avans</th><%# 11 %>
+                    <th style="display: none">An comanda/avans</th><%# 12 %>
+                    <th style="display: none">Data ff finala</th><%# 13 %>
+                    <th style="display: none">FF finala</th><%# 14 %>
+                    <th style="display: none">Data inchidere</th><%# 15 %>
+                    <th style="display: none">Inchidere</th><%# 16 %>
+                    <th style="display: none">Luna finalizare/rest de plata</th><%# 17 %>
+                    <th style="display: none">An finalizare/rest de plata</th><%# 18 %>
+                    <th style="display: none">Modifica</th><%# 19 %>
                     
-                    <th></th> 
+                    <th></th><%# 20 %> 
                   </tr>
                 </thead>
                 <tbody>
@@ -49,30 +49,30 @@
                     <% sum = ProjectCost.where(project_id: project.id).sum(:amount) %>
 
                     <tr>
-                      <td><%= project.id %></td>
-                      <td><%= project.name %></td>
-                      <td><%= project.value %></td>
-                      <td><%= project.value - platit %></td>
-                      <td><%= sum %></td>
-                      <td><%= project.value - sum  %> </td>
-                      <td><%= sprintf('%.2f', (project.value - sum) * 100/  project.value)%>%</td>
+                      <td><%= project.id %></td><%# 0 %>
+                      <td><%= project.name %></td><%# 1 %>
+                      <td><%= project.value %></td><%# 2 %>
+                      <td><%= project.value - platit %></td><%# 3 %>
+                      <td><%= sum %></td><%# 4 %>
+                      <td><%= project.value - sum  %> </td><%# 5 %>
+                      <td><%= sprintf('%.2f', (project.value - sum) * 100/  project.value)%>%</td><%# 6 %>
                       
                       <% if project_situation %>
-                        <td style="display: none"><%= project_situation.advance_invoice_date %></td>
-                        <td style="display: none"><%= project_situation.advance_invoice_number %></td>
-                        <td style="display: none"><%= project_situation.advance_payment_date %></td>
-                        <td style="display: none"><%= project_situation.advance_payment %></td>
-                        <td style="display: none"><%= project_situation.advance_month %></td>
-                        <td style="display: none"><%= project_situation.advance_year %></td>
-                        <td style="display: none"><%= project_situation.closure_invoice_date %></td>
-                        <td style="display: none"><%= project_situation.closure_invoice_number %></td>
-                        <td style="display: none"><%= project_situation.closure_payment_date %></td>
-                        <td style="display: none"><%= project_situation.closure_payment %></td>
-                        <td style="display: none"><%= project_situation.closure_month %></td>
-                        <td style="display: none"><%= project_situation.closure_year %></td>
-                        <td style="display: none"><%= link_to 'Modifica', edit_project_situation_path(project_situation, which_date: @which_date, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td>
+                        <td style="display: none"><%= project_situation.advance_invoice_date %></td><%# 7 %>
+                        <td style="display: none"><%= project_situation.advance_invoice_number %></td><%# 8 %>
+                        <td style="display: none"><%= project_situation.advance_payment_date %></td><%# 9 %>
+                        <td style="display: none"><%= project_situation.advance_payment %></td><%# 10 %>
+                        <td style="display: none"><%= project_situation.advance_month %></td><%# 11 %>
+                        <td style="display: none"><%= project_situation.advance_year %></td><%# 12 %>
+                        <td style="display: none"><%= project_situation.closure_invoice_date %></td><%# 13 %>
+                        <td style="display: none"><%= project_situation.closure_invoice_number %></td><%# 14 %>
+                        <td style="display: none"><%= project_situation.closure_payment_date %></td><%# 15 %>
+                        <td style="display: none"><%= project_situation.closure_payment %></td><%# 16 %>
+                        <td style="display: none"><%= project_situation.closure_month %></td><%# 17 %>
+                        <td style="display: none"><%= project_situation.closure_year %></td><%# 18 %>
+                        <td style="display: none"><%= link_to 'Modifica', edit_project_situation_path(project_situation, which_date: @which_date, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td><%# 19 %>
                       <% end %>
-                      <td class="details-control"></td>
+                      <td class="details-control"></td><%# 20 %>
                     </tr>
                   <% end %>
                 </tbody>
@@ -162,13 +162,16 @@
           '</tr>'+
       '</table>';
     };
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
     var table = $("#projectTable").DataTable({
       order: [[0, 'asc']],
       paging:   true,
       ordering: true,
       info:     false,
       filter: true,
-      stateSave: false,
+      deferRender: true,
+      stateSave: true,
       dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
@@ -178,7 +181,14 @@
       buttons: [
         { extend: 'excelHtml5', 
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
-          className: 'btn-success text-light btn-sm' 
+          className: 'btn-success text-light btn-sm' ,
+          exportOptions: {
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ]
+          },
+          sheetName: "Situatie proiecte",
+          title: "Situatie proiecte cu " + (params.get('which_date')!=null ? params.get('which_date')=="advance" ? "data comanda/avans" : "data finalizare/rest de plata" : "data comanda/avans") + " in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
+          filename: "Situatie proiecte - " + date.slice(0, 10),
+          autoFilter: true
         }, 'spacer',
         {
           extend: 'searchPanes',
