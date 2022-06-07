@@ -1,0 +1,23 @@
+<h1>Importa auto</h1>
+
+<p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date. Primul rand este ignorat. Al doilea rand ar trebui sa contina coloanele Id | Nr inmatriculare | Data expirare Rca | Data expirare Rovinieta | Data expirare Itp</p>
+
+<p>Daca exista id in tabelul incarcat atunci se face update la inregistrarea existenta, daca nu (sau id-ul nu exista in baza de date) atunci se adauga o noua inregistrare</p>
+
+<%= form_for @car_import do |f| %>
+  <% if @car_import.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@car_import.errors.count, "error") %> prohibited this import from completing:</h2>
+      <ul>
+      <% @car_import.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.file_field :file %>
+  </div>
+  <div class="buttons"><%= f.submit "Import" %></div>
+<% end %>

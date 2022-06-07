@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'financial_centralization', to: 'financial_centralization#index'
   get 'indirect_expenses', to: 'indirect_expenses#index'
   get 'stock', to: 'stock#index'
+  resources :car_imports
   resources :records
   resources :cars
   resources :january_solds

@@ -11,7 +11,7 @@
 #  updated_at      :datetime         not null
 #
 class Car < ApplicationRecord
-  scope :between_dates, lambda {|start_date, end_date| where("rca_expiry_date >= ? AND rca_expiry_date <= ? OR rov_expiry_date >= ? AND rov_expiry_date <= ? OR itp_expiry_date >= ? AND itp_expiry_date <= ?", start_date, end_date, start_date, end_date, start_date, end_date )}
+  scope :between_dates, lambda {|start_date, end_date| where("(rca_expiry_date >= ? AND rca_expiry_date <= ? OR rov_expiry_date >= ? AND rov_expiry_date <= ? OR itp_expiry_date >= ? AND itp_expiry_date <= ?) OR (rca_expiry_date IS null AND rov_expiry_date IS null AND itp_expiry_date IS null)", start_date, end_date, start_date, end_date, start_date, end_date )}
   validate :after_01_01_2020
 
   def after_01_01_2020
@@ -24,5 +24,8 @@ class Car < ApplicationRecord
     if itp_expiry_date.present? && itp_expiry_date<Date.parse('2020.01.01')
       errors.add(:itp_expiry_date, "nu poate fi inainte de 01.01.2020")
     end
+  end
+  def self.accessible_attributes
+    ["number_plate", "rca_expiry_date", "rov_expiry_date", "itp_expiry_date"]
   end
 end
