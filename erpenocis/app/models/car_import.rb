@@ -19,7 +19,7 @@ class CarImport
     else
       imported_cars.each_with_index do |car, index|
         car.errors.full_messages.each do |message|
-          errors.add :base, "Row #{index+2}: #{message}"
+          errors.add :base, "Row #{index+3}: #{message}"
         end
       end
       false
