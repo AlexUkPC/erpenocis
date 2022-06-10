@@ -54,7 +54,7 @@ class Order < ApplicationRecord
   "Categorie:" +  self.category + " | Denumire/Tip/Nuanta:" + self.name_type_color + " | Cantitate necesara:" + self.needed_quantity.to_s + " | UM:" + self.unit + " | Cote:" + self.cote
   end
   def self.accessible_attributes
-    ["category", "name_type_color", "needed_quantity", "unit", "cote"]
+    ["category", "name_type_color", "needed_quantity", "unit", "cote", "obs"]
   end
   private
   def check_quantity

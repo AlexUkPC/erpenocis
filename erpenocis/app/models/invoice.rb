@@ -38,4 +38,7 @@ class Invoice < ApplicationRecord
       errors.add(:invoice_date, "nu poate fi inainte de 01.01.2020")
     end
   end
+  def self.accessible_attributes
+    ["description", "category", "supplier", "invoice_number", "invoice_date", "invoice_value_without_vat", "invoice_value_for_project_without_vat", "obs"]
+  end
 end
