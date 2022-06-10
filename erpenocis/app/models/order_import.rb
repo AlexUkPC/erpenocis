@@ -64,6 +64,11 @@ class OrderImport
         order.user_id = current_user.id
         order.project_id = project_id
         order.status = 0
+        if order.needed_quantity==""
+          order.needed_quantity = 0
+        else
+          order.needed_quantity = order.needed_quantity.to_i
+        end
         order
       end
     else

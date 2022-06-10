@@ -73,6 +73,16 @@ class InvoiceImport
             invoice.code = generate_code(3) 
           end 
         end
+        if invoice.invoice_value_without_vat==""
+          invoice.invoice_value_without_vat = 0
+        else
+          invoice.invoice_value_without_vat = invoice.invoice_value_without_vat.to_f
+        end
+        if invoice.invoice_value_for_project_without_vat==""
+          invoice.invoice_value_for_project_without_vat = 0
+        else
+          invoice.invoice_value_for_project_without_vat = invoice.invoice_value_for_project_without_vat.to_f
+        end
         invoice
       end
     else

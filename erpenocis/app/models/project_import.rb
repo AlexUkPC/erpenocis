@@ -68,6 +68,11 @@ class ProjectImport
         project.attributes = row.to_hash.slice(*Project.accessible_attributes)
         project.stoc = false
         project.user_id = current_user.id
+        if project.value==""
+          project.value = 0
+        else
+          project.value = project.value.to_f
+        end
         project
       end
     else
