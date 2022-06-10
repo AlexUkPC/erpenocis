@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'stock', to: 'stock#index'
   resources :car_imports
   resources :project_imports
+  resources :order_imports
   resources :records
   resources :cars
   resources :january_solds

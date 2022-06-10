@@ -91,21 +91,22 @@
                       <th>Denumire/Tip/Nuanta</th><%# 3 %>
                       <th>Cant. necesara</th><%# 4 %>
                       <th>UM</th><%# 5 %>
-                      <th>Furnizor</th><%# 6 %>
-                      <th>Cant. comandata</th><%# 7 %>
-                      <th style="display: none">User pic</th><%# 8 %>
-                      <th style="display: none">Utilizator ultima modificare</th><%# 9 %>
-                      <th style="display: none">Data ultima modificare</th><%# 10 %>
-                      <th style="display: none">Data si ora ultima modificare</th><%# 11 %>
-                      <th style="display: none">Data inserarii</th><%# 12 %>
-                      <th style="display: none">Data comanda</th><%# 13 %>
-                      <th style="display: none">Data livrare</th><%# 14 %>
-                      <th style="display: none">Observatii</th><%# 15 %>
-                      <th style="display: none">Observatii short</th><%# 16 %>
-                      <th style="display: none">Muta</th><%# 17 %>
-                      <th style="display: none">Modifica</th><%# 18 %>
-                      <th style="display: none">Sterge</th><%# 19 %>
-                      <th></th><%# 20 %>
+                      <th>Cote</th><%# 6 %>
+                      <th>Furnizor</th><%# 7 %>
+                      <th>Cant. comandata</th><%# 8 %>
+                      <th style="display: none">User pic</th><%# 9 %>
+                      <th style="display: none">Utilizator ultima modificare</th><%# 10 %>
+                      <th style="display: none">Data ultima modificare</th><%# 11 %>
+                      <th style="display: none">Data si ora ultima modificare</th><%# 12 %>
+                      <th style="display: none">Data inserarii</th><%# 13 %>
+                      <th style="display: none">Data comanda</th><%# 14 %>
+                      <th style="display: none">Data livrare</th><%# 15 %>
+                      <th style="display: none">Observatii</th><%# 16 %>
+                      <th style="display: none">Observatii short</th><%# 17 %>
+                      <th style="display: none">Muta</th><%# 18 %>
+                      <th style="display: none">Modifica</th><%# 19 %>
+                      <th style="display: none">Sterge</th><%# 20 %>
+                      <th></th><%# 21 %>
                     </tr>
                   </thead>
                   <tbody>
@@ -117,22 +118,23 @@
                         <td><%= order.name_type_color %></td><%# 3 %>
                         <td><%= order.needed_quantity %></td><%# 4 %>
                         <td><%= order.unit %></td><%# 5 %>
-                        <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td><%# 6 %>
-                        <td><%= order.ordered_quantity %></td><%# 7 %>
+                        <td><%= order.cote %></td><%# 6 %>
+                        <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td><%# 7 %>
+                        <td><%= order.ordered_quantity %></td><%# 8 %>
 
-                        <td style="display: none"><%= image_tag user_profile_picture(@users.find(order.user_id), 100) , alt: "profile" %></td><%# 8 %>
-                        <td style="display: none"><%= @users.find(order.user_id).username %></td><%# 9 %>
-                        <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y') %></td><%# 10 %>
-                        <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y <br> (ora: %H:%M)') %></td><%# 11 %>
-                        <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td><%# 12 %>
-                        <td style="display: none"><%= order.order_date %></td><%# 13 %>
-                        <td style="display: none"><%= order.delivery_date %></td><%# 14 %>
-                        <td style="display: none"><%= order.obs %></td><%# 15 %>
-                        <td style="display: none"><%= excerpt(order.obs, "", radius: 200) %></td><%# 16 %>
-                        <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td><%# 17 %>
-                        <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td><%# 18 %>
-                        <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td><%# 19 %>
-                        <td class="details-control"></td><%# 20 %>
+                        <td style="display: none"><%= image_tag user_profile_picture(@users.find(order.user_id), 100) , alt: "profile" %></td><%# 9 %>
+                        <td style="display: none"><%= @users.find(order.user_id).username %></td><%# 10 %>
+                        <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y') %></td><%# 11 %>
+                        <td style="display: none"><%= order.updated_at.strftime('%d/%m/%Y <br> (ora: %H:%M)') %></td><%# 12 %>
+                        <td style="display: none"><%= order.created_at.strftime('%d/%m/%Y ') %></td><%# 13 %>
+                        <td style="display: none"><%= order.order_date %></td><%# 14 %>
+                        <td style="display: none"><%= order.delivery_date %></td><%# 15 %>
+                        <td style="display: none"><%= order.obs %></td><%# 16 %>
+                        <td style="display: none"><%= excerpt(order.obs, "", radius: 200) %></td><%# 17 %>
+                        <td style="display: none"><%= if order.ordered_quantity>0 then  link_to 'Muta', move_order_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" end %></td><%# 18 %>
+                        <td style="display: none"><%= link_to 'Modifica', edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-outline-primary btn-fw" %></td><%# 19 %>
+                        <td style="display: none"><%= link_to 'Sterge', order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), method: :delete, data: { confirm: 'Esti sigur ca vrei sa stergi comanda?' }, class: "btn btn-outline-danger btn-fw" %></td><%# 20 %>
+                        <td class="details-control"></td><%# 21 %>
                       </tr>
                     <% end %>
                     
@@ -221,7 +223,11 @@
     </div>
   </div>
 <% end %>
-
+<p id="import_btn" style="display: none">
+  <%= link_to new_order_import_path(project: @project.id, show: params[:show]), class: "btn btn-warning text-light btn-sm" do %>
+    <i class="fas fa-upload"></i> Importa necesar materiale
+  <% end %>
+</p>
 <script>
   $(document).ready(function(){
     let params = new URLSearchParams(location.search)
@@ -483,7 +489,7 @@
       filter: true,
       deferRender: true,
       stateSave: true,
-      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY:     250,
@@ -494,7 +500,7 @@
           text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
           className: 'btn-success text-light btn-sm',
           exportOptions: {
-            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 13, 14, 15]
+            columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 13, 14, 15, 16]
           },
           sheetName: "Comenzi",
           title: "Comenzi pentru proiectul " + document.getElementById('project_name').innerText + " in perioada: " + (params.get('sm')!=null ? params.get('sm') + "/" + params.get('sy') + " - " + params.get('em') + "/" + params.get('ey') : "1/" + date.slice(0, 4) + " - 12/" + date.slice(0, 4)),
@@ -507,7 +513,7 @@
             cascadePanes: true 
           },
           className: 'btn-info text-light btn-sm' 
-        }
+        }, 'spacer'
       ],
       columnDefs: [{
         orderable: true,
@@ -521,7 +527,7 @@
       {
         searchable: true,
         class: 'details-control',
-        targets: [1,2,3,6],
+        targets: [1,2,3,6,7],
         searchPanes: {
           show: true
         },
@@ -584,6 +590,7 @@
       }
     });
     $('.dt-buttons').removeClass('btn-group');
+    $('div.import_btn').html($('#import_btn').html());
     $('#ordersTable tbody').on('click', 'td.details-control', function () {
       var tr = $(this).closest('tr');
       var row = table_orders.row( tr );
@@ -594,7 +601,7 @@
       }
       else {
           // Open this row
-          row.child( format_orders(row.data(),tr.find("td:eq(8)").html(),tr.find("td:eq(9)").text(),tr.find("td:eq(11)").text(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(16)").text(),tr.find("td:eq(17)").html(),tr.find("td:eq(18)").html(),tr.find("td:eq(19)").html()) ).show();
+          row.child( format_orders(row.data(),tr.find("td:eq(9)").html(),tr.find("td:eq(10)").text(),tr.find("td:eq(12)").text(),tr.find("td:eq(13)").text(),tr.find("td:eq(14)").text(),tr.find("td:eq(15)").text(),tr.find("td:eq(17)").text(),tr.find("td:eq(18)").html(),tr.find("td:eq(19)").html(),tr.find("td:eq(20)").html()) ).show();
           tr.addClass('shown');
       }
     } );
