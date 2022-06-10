@@ -34,16 +34,16 @@ class CarImport
     spreadsheet = open_spreadsheet
     header = spreadsheet.row(2)
     header.each_with_index do |x,i|
-      case x
-        when "Id"
+      case x.downcase
+        when "id"
           header[i]="id"
-        when "Nr inmatriculare"
+        when "nr inmatriculare"
           header[i]="number_plate"
-        when "Data expirare Rca"
+        when "data expirare rca"
           header[i]="rca_expiry_date"
-        when "Data expirare Rovinieta"
+        when "data expirare rovinieta"
           header[i]="rov_expiry_date"
-        when "Data expirare Itp"
+        when "data expirare itp"
           header[i]="itp_expiry_date"
         else      
       end

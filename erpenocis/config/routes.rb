@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'indirect_expenses', to: 'indirect_expenses#index'
   get 'stock', to: 'stock#index'
   resources :car_imports
+  resources :project_imports
   resources :records
   resources :cars
   resources :january_solds

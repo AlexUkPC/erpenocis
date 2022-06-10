@@ -23,7 +23,7 @@ class Project < ApplicationRecord
   validate :start_date_before_end_date
   
   accepts_nested_attributes_for :project_costs, reject_if: :all_blank, allow_destroy: true
-  scope :between_dates, lambda {|start_date, end_date| where("start_date >= ? AND start_date <= ?", start_date, end_date )}
+  scope :between_dates, lambda {|start_date, end_date| where("(start_date >= ? AND start_date <= ?) OR (start_date IS null)", start_date, end_date )}
   scope :created_between, lambda {|start_date, end_date| where("start_date >= ? AND start_date <= ?", start_date, end_date )}
 
   def after_01_01_2020
@@ -45,5 +45,8 @@ class Project < ApplicationRecord
       Order.where(ordered_quantity: 0, project_id: self.id).order("id ASC") 
     end
     # Order.where(if !self.stoc then (ordered_quantity: 0) end, project_id: self.id).order("id ASC")
+  end
+  def self.accessible_attributes
+    ["name", "start_date", "end_date", "value", "obs"]
   end
 end
