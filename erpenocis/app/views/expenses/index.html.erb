@@ -107,7 +107,16 @@
   </div>
 </div>
 <%= render 'form', expense: @expense %>
-
+<p id="import_btn" style="display: none">
+  <%= link_to new_expense_import_path(expense_type: params[:expense_type]), class: "btn btn-warning text-light btn-sm" do %>
+    <i class="fas fa-upload"></i> Importa <%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %> 
+  <% end %>
+</p>
+<p id="import_btn_expense_values" style="display: none">
+  <%= link_to new_expense_value_import_path(expense_type: params[:expense_type]), class: "btn btn-warning text-light btn-sm ms-4" do %>
+    <i class="fas fa-upload"></i> Importa sume <%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %> 
+  <% end %>
+</p>
 <script>
  
   $(document).ready(function(){
@@ -137,7 +146,7 @@
       filter: true,
       deferRender: true,
       stateSave: true,
-      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn"><"import_btn_expense_values">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY: 400,
@@ -167,7 +176,7 @@
             cascadePanes: true 
           },
           className: 'btn-info text-light btn-sm' 
-        }
+        }, 'spacer'
       ],
       columnDefs: [
         {
@@ -258,7 +267,8 @@
 
 
     $('.dt-buttons').removeClass('btn-group');
-
+    $('div.import_btn').html($('#import_btn').html());
+    $('div.import_btn_expense_values').html($('#import_btn_expense_values').html());
   });
   
 </script>

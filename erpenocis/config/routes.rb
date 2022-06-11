@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :invoice_imports
   resources :project_situation_imports
   resources :project_cost_imports
+  resources :expense_imports
+  resources :expense_value_imports
   resources :records
   resources :cars
   resources :january_solds
