@@ -48,8 +48,6 @@ class ProjectCostImport
     end
     if (header.include? "id") && (header.include? "amount") && (header.include? "month") && (header.include? "year")
       @new = true
-      puts "========@new = true==========="
-      puts @new
       (3..spreadsheet.last_row).map do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
           if ProjectCost.find_by(project_id: row["id"])
