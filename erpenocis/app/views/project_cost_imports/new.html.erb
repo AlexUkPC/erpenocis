@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <h1>Importa costuri proiecte</h1>
+        <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
+        <p>Poti folosi un tabel exportat din aplicatie pentru a avea id-urile proiectelor, dar creeaza un tabel nou care sa respecte urmatoarele</p>
+        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> ID | Cost | Luna cost | An cost <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate<br> Daca intr-o celula informatia nu este corecta(ex: daca e scris "In derulare" in coloana de data finalizare, deoarece aplicatia asteapta ceva ce seamana a data - zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz) nu va fi completata in baza de date</p>
+      
+        <p>ID-ul este id-ul proiectului si trebuie sa existe pentru a se putea adauga costurile la proiectul corect</p>
+        <p>Luna si an trebuie sa fie numere intregi(1..12, 2022, 2023)</p>
+
+          <%= form_for @project_cost_import do |f| %>
+            <% if @project_cost_import.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@project_cost_import.errors.count, "eroare", plural: 'erori') %> impiedica aceasta operatiune:</h2>
+                <ul>
+                <% @project_cost_import.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+          
+          <div class="field mb-3">
+            <%= f.file_field :file %>
+          </div>
+          <%= f.submit "Importa", class: "btn btn-warning text-light" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
