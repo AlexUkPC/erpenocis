@@ -22,11 +22,14 @@
               </div>
             <% end %>
             
-          <% if params[:project] %>
-            <h4>Importul va fi pentru proiectul: <%= Project.find_by_id(params[:project]).name %></h4>
-            <%= f.hidden_field :project_id, value: params[:project] %>
-            <%= f.hidden_field :proj_id, value: params[:project] %>
-            <%= f.hidden_field :show, value: params[:show] %>
+          <% if params[:project] || (params[:invoice_import] && params[:invoice_import][:proj_id]) %>
+            <h4>Importul va fi pentru proiectul: <%= params[:project] ? Project.find_by_id(params[:project]).name : Project.find_by_id(params[:invoice_import][:project_id]).name %></h4>
+            <%= f.hidden_field :project_id, value: params[:project] || params[:invoice_import][:project_id] %>
+            <%= f.hidden_field :proj_id, value: params[:project] || params[:invoice_import][:project_id] %>
+            <%= f.hidden_field :show, value: params[:show] || (params[:invoice_import] && params[:invoice_import][:show]) %>
+            <% if params[:st] || (params[:invoice_import] && params[:invoice_import][:st]) %>
+              <%= f.hidden_field :st, value: params[:st] || (params[:invoice_import] && params[:invoice_import][:st]) %>
+            <% end %>
           <% else %>
             <div class="form-group row">
               <%= f.label :project_id, "Proiect", class: "col-sm-3 col-form-label" %>

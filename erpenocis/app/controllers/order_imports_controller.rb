@@ -10,7 +10,7 @@ class OrderImportsController < ApplicationController
       @order_import.current_user = current_user
       if @order_import.save
         if params[:order_import][:proj_id]
-          redirect_to project_path(params[:order_import][:proj_id],show: params[:order_import][:show]), notice: "Imported orders successfully."
+          redirect_to project_path(params[:order_import][:proj_id],show: params[:order_import][:show],st: params[:order_import][:st]), notice: "Imported orders successfully."
         else
           redirect_to orders_url, notice: "Imported orders successfully."
         end

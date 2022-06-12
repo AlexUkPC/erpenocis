@@ -224,12 +224,12 @@
   </div>
 <% end %>
 <p id="import_btn" style="display: none">
-  <%= link_to new_order_import_path(project: @project.id, show: params[:show]), class: "btn btn-warning text-light btn-sm" do %>
+  <%= link_to new_order_import_path(project: @project.id, show: params[:show], st: (true if params[:st])), class: "btn btn-warning text-light btn-sm" do %>
     <i class="fas fa-upload"></i> Importa necesar materiale
   <% end %>
 </p>
 <p id="import_invoice_btn" style="display: none">
-  <%= link_to new_invoice_import_path(project: @project.id, show: params[:show]), class: "btn btn-warning text-light btn-sm" do %>
+  <%= link_to new_invoice_import_path(project: @project.id, show: params[:show], st: (true if params[:st])), class: "btn btn-warning text-light btn-sm" do %>
     <i class="fas fa-upload"></i> Importa facturi
   <% end %>
 </p>

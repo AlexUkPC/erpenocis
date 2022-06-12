@@ -6,119 +6,56 @@
               <span class="menu-title">Dashboard</span>
             <% end %>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">UI Elements</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Form elements</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="icon-bar-graph menu-icon"></i>
-              <span class="menu-title">Charts</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-              <i class="icon-grid-2 menu-icon"></i>
-              <span class="menu-title">Tables</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Basic table</a></li>
-              </ul>
-            </div>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="icon-contract menu-icon"></i>
-              <span class="menu-title">Icons</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="icons">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Mdi icons</a></li>
-              </ul>
-            </div>
-          </li> -->
           <% proj = Project.find_by(id: params[:id]) if Project.find_by(id: params[:id]) %>
           <% if current_user.admin? %>
-            <li class="nav-item <%= 'active' if controller_path=='projects' && (proj==nil || proj.stoc == false) && !params[:st] %>">
+            <li class="nav-item <%= 'active' if controller_path=='projects' && (proj==nil || proj.stoc == false) && !params[:st] || controller_path=='project_imports' || (controller_path=='order_imports' && (params[:project] || (params[:order_import] && params[:order_import][:proj_id])) && !(params[:st] || (params[:order_import] && params[:order_import][:st])))  || (controller_path=='invoice_imports' && (params[:project] || (params[:invoice_import] && params[:invoice_import][:proj_id])) && !(params[:st] || (params[:invoice_import] && params[:invoice_import][:st]))) %>">
               <%= link_to projects_path, class: "nav-link" do%>
                 <i class="far fa-folder-tree menu-icon"></i>
                 <span class="menu-title">Proiecte</span>
               <% end %>
             </li>
 
-            <li class="nav-item <%= 'active' if controller_path=='orders' %>">
+            <li class="nav-item <%= 'active' if controller_path=='orders' || (controller_path=='order_imports' && !(params[:project] || (params[:order_import] && params[:order_import][:proj_id])))%>">
               <%= link_to orders_path, class: "nav-link" do%>
                 <i class="far fa-ballot-check menu-icon"></i>
                 <span class="menu-title">Comenzi</span>
               <% end %>
             </li>
             
-            <li class="nav-item <%= 'active' if controller_path=='invoices' %>">
+            <li class="nav-item <%= 'active' if controller_path=='invoices' || (controller_path=='invoice_imports' && !(params[:project] || (params[:invoice_import] && params[:invoice_import][:proj_id]))) %>">
               <%= link_to invoices_path, class: "nav-link" do%>
                 <i class="far fa-file-invoice-dollar menu-icon"></i>
                 <span class="menu-title">Facturi</span>
               <% end %>
             </li>
 
-            <li class="nav-item <%= 'active' if controller_path=='stock' || (proj!=nil && proj.stoc == true) || params[:st] %>">
+            <li class="nav-item <%= 'active' if controller_path=='stock' || (proj!=nil && proj.stoc == true) || params[:st] || (params[:order_import] && params[:order_import][:st]) || (params[:invoice_import] && params[:invoice_import][:st]) %>">
               <%= link_to stock_path, class: "nav-link" do%>
                 <i class="far fa-layer-group menu-icon"></i>
                 <span class="menu-title">Stocuri</span>
               <% end %>
             </li>
             <hr>
-            <li class="nav-item <%= 'active' if controller_path=='project_situations' %>">
+            <li class="nav-item <%= 'active' if controller_path=='project_situations' || controller_path=='project_situation_imports' %>">
               <%= link_to project_situations_path, class: "nav-link" do%>
                 <i class="far fa-file-chart-line menu-icon"></i>
                 <span class="menu-title">Situatie proiecte</span>
               <% end %>
             </li>
 
-            <li class="nav-item <%= 'active' if controller_path=='project_costs' %>">
+            <li class="nav-item <%= 'active' if controller_path=='project_costs' || controller_path=='project_cost_imports' %>">
               <%= link_to project_costs_path, class: "nav-link" do%>
                 <i class="far fa-coins menu-icon"></i>
                 <span class="menu-title">Costuri proiecte</span>
               <% end %>
             </li>
-            <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>">
+            <li class="nav-item <%= 'active' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' || controller_path=='expense_imports' || controller_path=='expense_value_imports' || controller_path=='employee_imports' || controller_path=='employee_salary_imports' %>">
               <%= link_to indirect_expenses_path, class: "nav-link" do%>
                 <i class="far fa-file-contract menu-icon"></i>
                 <span class="menu-title">Cheltuieli indirecte</span>
                 <i class="menu-arrow"></i>
               <% end %>
-              <div class="collapse <%= 'show' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' %>" id="indirect_expenses">
+              <div class="collapse <%= 'show' if controller_path=='indirect_expenses' || controller_path=='expenses' || controller_path=='employees' || controller_path=='expense_imports' || controller_path=='expense_value_imports' || controller_path=='employee_imports' || controller_path=='employee_salary_imports' %>" id="indirect_expenses">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <%= link_to employees_path(current_tab: "to"), class: "nav-link" do%>Salariale <% end %></li>
                   <li class="nav-item"> <%= link_to expenses_path(expense_type: :administrative), class: "nav-link" do%>Administrative <% end %></li>
@@ -129,7 +66,7 @@
               </div>
             </li>
             
-            <li class="nav-item <%= 'active' if controller_path=='suppliers' %>">
+            <li class="nav-item <%= 'active' if controller_path=='suppliers' || controller_path=='supplier_imports' %>">
               <%= link_to suppliers_path(current_tab: "fe"), class: "nav-link" do%>
                 <i class="far fa-users-class menu-icon"></i>
                 <span class="menu-title">Situatie furnizori</span>
@@ -143,17 +80,10 @@
               <% end %>
             </li>
             <hr>
-            <li class="nav-item <%= 'active' if controller_path=='cars' %>">
+            <li class="nav-item <%= 'active' if controller_path=='cars' || controller_path=='car_imports' %>">
               <%= link_to cars_path, class: "nav-link" do%>
                 <i class="far fa-truck-couch menu-icon"></i>
                 <span class="menu-title">Flota auto</span>
-              <% end %>
-            </li>
-            
-            <li class="nav-item <%= 'active' if controller_path=='import_data' %>">
-              <%= link_to import_data_path, class: "nav-link" do%>
-                <i class="far fa-upload menu-icon"></i>
-                <span class="menu-title">Import date</span>
               <% end %>
             </li>
 
@@ -170,25 +100,5 @@
               <% end %>
             </li>
           <% end %>
-          <!-- <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
-              <i class="icon-ban menu-icon"></i>
-              <span class="menu-title">Error pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="error">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
-          -->
         </ul>
       </nav>

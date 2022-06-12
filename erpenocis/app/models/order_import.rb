@@ -6,6 +6,7 @@ class OrderImport
   attr_accessor :project_id
   attr_accessor :proj_id
   attr_accessor :show
+  attr_accessor :st
   attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
