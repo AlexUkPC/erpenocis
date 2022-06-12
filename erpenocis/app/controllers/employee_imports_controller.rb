@@ -12,7 +12,6 @@ class EmployeeImportsController < ApplicationController
         render :new
       end
     rescue => exception
-      puts "============"
       render :action => 'new', status: :unprocessable_entity
     end
     

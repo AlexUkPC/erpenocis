@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :expense_value_imports
   resources :employee_imports
   resources :employee_salary_imports
+  resources :supplier_imports
   resources :records
   resources :cars
   resources :january_solds

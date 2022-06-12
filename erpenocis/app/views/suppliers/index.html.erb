@@ -40,6 +40,11 @@
     <%= link_to 'Adauga furnizor', new_supplier_path(new: true, current_tab: "fe", sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn btn-primary mt-3" %>
   </div>
 </div>
+<p id="import_btn" style="display: none">
+  <%= link_to new_supplier_import_path, class: "btn btn-warning text-light btn-sm" do %>
+    <i class="fas fa-upload"></i> Importa furnizori 
+  <% end %>
+</p>
 <script>
  
   $(document).ready(function(){
@@ -267,7 +272,7 @@
         //   }         
         // });
       // },
-      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY: 280,
@@ -307,7 +312,7 @@
             cascadePanes: true 
           },
           className: 'btn-info text-light btn-sm' 
-        }
+        }, 'spacer'
       ],
       columnDefs: [
         {
@@ -397,6 +402,7 @@
     });
 
     $('.dt-buttons').removeClass('btn-group');
+    $('div.import_btn').html($('#import_btn').html());
     $(window).on('pageshow',function(){
       ["fp","fa","fr"].forEach(element =>{
         var element = $(`#${element}Table`).DataTable({
