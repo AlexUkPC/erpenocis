@@ -26,4 +26,7 @@
 class EmployeeSalary < ApplicationRecord
   belongs_to :employee
   scope :created_between, lambda {|start_date, end_date| where("date >= ? AND date <= ?", start_date, end_date )}
+  def self.accessible_attributes
+    ["date", "net_salary","salary_tax", "meal_vouchers", "gift_vouchers", "overtime", "extra_salary"]
+  end
 end

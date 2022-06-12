@@ -40,6 +40,10 @@
               <% end %>
             <%# End List all months and years %>
             <th>Total</th>
+            <% if of_what == 'total' %>
+              <th style="display: none">Data angajarii</th>
+              <th style="display: none">Data incheierii</th>
+            <% end %>
             <th style="display: none">Nume angajat</th>
           </tr>
         </thead>
@@ -101,6 +105,10 @@
                   <% grand_total += total  %>
                 </td>
               <%# End Total per Employee %>
+                <% if of_what == 'total' %>
+                  <td style="display: none"><%= employee.hire_date %></td>
+                  <td style="display: none"><%= employee.dismiss_date %></td>
+                <% end %>
                 <td style="display: none">
                   <%=employee.name%>
                 </td>
@@ -124,6 +132,10 @@
             <%# GrandTotal of totals %>
               <th><%= grand_total %></th>
             <%# End GrandTotal of totals %>
+            <% if of_what == 'total' %>
+              <th style="display: none"></th>
+              <th style="display: none"></th>
+            <% end %>
             <th style="display: none"></th>
           </tr>
         </tfoot>

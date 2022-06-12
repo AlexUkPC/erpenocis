@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <h1>Importa angajati</h1>
+        <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
+        <p>Poti folosi un tabel exportat din aplicatie(din care stergi ultimul rand - Total) sau poti creea un tabel nou care sa respecte urmatoarele</p>
+        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> ID | Nume angajat | Data angajarii | Data incheierii <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate<br> Daca intr-o celula informatia nu este corecta(ex: daca e scris "In derulare" in coloana de data finalizare, deoarece aplicatia asteapta ceva ce seamana a data - zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz) nu va fi completata in baza de date</p>
+        <p>Campurile de tip data pot fi scrise in oricare din urmatoare forme: zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz</p> 
+        <p>Daca exista id in tabelul incarcat atunci se face update la inregistrarea existenta, daca nu (sau id-ul nu exista in baza de date) atunci se adauga o noua inregistrare</p>
+
+          <%= form_for @employee_import do |f| %>
+            <% if @employee_import.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@employee_import.errors.count, "eroare", plural: 'erori') %> impiedica aceasta operatiune:</h2>
+                <ul>
+                <% @employee_import.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <%= f.hidden_field :file, value: "." %>
+          <div class="field mb-3">
+            <%= f.file_field :file %>
+          </div>
+          <%= f.submit "Importa", class: "btn btn-warning text-light" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

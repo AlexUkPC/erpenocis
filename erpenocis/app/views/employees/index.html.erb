@@ -57,7 +57,16 @@
   </div>
 </div>
 <%= render 'form', employee: @employee %>
-
+<p id="import_btn" style="display: none">
+  <%= link_to new_employee_import_path, class: "btn btn-warning text-light btn-sm" do %>
+    <i class="fas fa-upload"></i> Importa angajati 
+  <% end %>
+</p>
+<p id="import_btn_employee_salaries" style="display: none">
+  <%= link_to new_employee_salary_import_path, class: "btn btn-warning text-light btn-sm ms-4" do %>
+    <i class="fas fa-upload"></i> Importa salarii 
+  <% end %>
+</p>
 <script>
  
   $(document).ready(function(){
@@ -169,7 +178,7 @@
         ws += buildRow([title], rowNum, 51);
         rowNum++;
         
-        mergeCol = ((header.length - 2) + 10).toString(36).toUpperCase();
+        mergeCol = ((header.length - 1) + 10).toString(36).toUpperCase();
         
         mergeCells = '<mergeCells count="1">'+
           '<mergeCell ref="A1:' + mergeCol + '1"/>' +
@@ -285,7 +294,7 @@
         //   }         
         // });
       // },
-      dom: '<"top"<"d-flex justify-content-between"Bf>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn"><"import_btn_employee_salaries">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY: 315,
@@ -328,7 +337,7 @@
             cascadePanes: true 
           },
           className: 'btn-info text-light btn-sm' 
-        }
+        }, 'spacer'
       ],
       columnDefs: [
         {
@@ -401,7 +410,7 @@
           i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
             return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
         };
-        for (let i = 2; i < api.columns().header().length-1; i++) {
+        for (let i = 2; i < api.columns().header().length-3; i++) {
           pageTotal = api
             .column(i, { page: 'current' })
             .data()
@@ -418,6 +427,8 @@
     });
 
     $('.dt-buttons').removeClass('btn-group');
+    $('div.import_btn').html($('#import_btn').html());
+    $('div.import_btn_employee_salaries').html($('#import_btn_employee_salaries').html());
     $(window).on('pageshow',function(){
       ["ns","st","mv","gv","ot","es"].forEach(element =>{
         var element = $(`#${element}Table`).DataTable({
