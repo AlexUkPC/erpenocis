@@ -94,7 +94,7 @@ class ProjectCostImport
           end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Cost | Luna cost | An cost"
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Cost | Luna cost | An cost"
     end
   end
 

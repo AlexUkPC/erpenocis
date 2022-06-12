@@ -45,6 +45,11 @@
     <i class="fas fa-upload"></i> Importa furnizori 
   <% end %>
 </p>
+<p id="import_btn_supplier_invoice" style="display: none">
+  <%= link_to new_supplier_invoice_import_path, class: "btn btn-warning text-light btn-sm ms-4" do %>
+    <i class="fas fa-upload"></i> Importa facturi furnizori 
+  <% end %>
+</p>
 <script>
  
   $(document).ready(function(){
@@ -272,7 +277,7 @@
         //   }         
         // });
       // },
-      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B<"import_btn"><"import_btn_supplier_invoice">>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
       "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
       pagingType: 'full_numbers',
       scrollY: 280,
@@ -403,6 +408,7 @@
 
     $('.dt-buttons').removeClass('btn-group');
     $('div.import_btn').html($('#import_btn').html());
+    $('div.import_btn_supplier_invoice').html($('#import_btn_supplier_invoice').html());
     $(window).on('pageshow',function(){
       ["fp","fa","fr"].forEach(element =>{
         var element = $(`#${element}Table`).DataTable({

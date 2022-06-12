@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :employee_imports
   resources :employee_salary_imports
   resources :supplier_imports
+  resources :supplier_invoice_imports
   resources :records
   resources :cars
   resources :january_solds
