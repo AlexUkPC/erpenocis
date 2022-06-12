@@ -13,8 +13,8 @@ class CarImport
   end
 
   def save
-    if imported_cars.map(&:valid?).all?
-      imported_cars.each(&:save!)
+    if imported_cars.compact.map(&:valid?).all?
+      imported_cars.compact.each(&:save!)
       true
     else
       imported_cars.each_with_index do |car, index|

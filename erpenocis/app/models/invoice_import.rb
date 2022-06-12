@@ -17,8 +17,8 @@ class InvoiceImport
   end
 
   def save
-    if imported_invoices.map(&:valid?).all?
-      imported_invoices.each(&:save!)
+    if imported_invoices.compact.map(&:valid?).all?
+      imported_invoices.compact.each(&:save!)
       true
     else
       imported_invoices.each_with_index do |invoice, index|

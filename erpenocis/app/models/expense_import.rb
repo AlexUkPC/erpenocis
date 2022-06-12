@@ -14,8 +14,8 @@ class ExpenseImport
   end
 
   def save
-    if imported_expenses.map(&:valid?).all?
-      imported_expenses.each(&:save!)
+    if imported_expenses.compact.map(&:valid?).all?
+      imported_expenses.compact.each(&:save!)
       true
     else
       imported_expenses.each_with_index do |expense, index|
@@ -45,21 +45,23 @@ class ExpenseImport
     end
     if (header.include? "id") && (header.include? "name")
       (3..spreadsheet.last_row).map do |i|
-        row = Hash[[header, spreadsheet.row(i)].transpose]
-        expense = Expense.find_by_id(row["id"]) || Expense.new
-        expense.attributes = row.to_hash.slice(*Expense.accessible_attributes)
-        case expense_type
-          when "administrative"
-            expense.expense_type = 0
-          when "financiare"
-            expense.expense_type = 1
-          when "investitii"
-            expense.expense_type = 2
-          when "alte_cheltuieli"
-            expense.expense_type = 3
-          else
+        if spreadsheet.cell(i,2) != "Total"
+          row = Hash[[header, spreadsheet.row(i)].transpose]
+          expense = Expense.find_by_id(row["id"]) || Expense.new
+          expense.attributes = row.to_hash.slice(*Expense.accessible_attributes)
+          case expense_type
+            when "administrative"
+              expense.expense_type = 0
+            when "financiare"
+              expense.expense_type = 1
+            when "investitii"
+              expense.expense_type = 2
+            when "alte_cheltuieli"
+              expense.expense_type = 3
+            else
+          end
+          expense
         end
-        expense
       end
     else
       errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Denumire cheltuiala"

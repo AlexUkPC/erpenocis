@@ -13,8 +13,8 @@ class ProjectSituationImport
   end
 
   def save
-    if imported_project_situations.map(&:valid?).all?
-      imported_project_situations.each(&:save!)
+    if imported_project_situations.compact.map(&:valid?).all?
+      imported_project_situations.compact.each(&:save!)
       true
     else
       imported_project_situations.each_with_index do |project_situation, index|

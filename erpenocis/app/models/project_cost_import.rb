@@ -13,8 +13,8 @@ class ProjectCostImport
   end
 
   def save
-    if imported_project_costs.map(&:valid?).all?
-      imported_project_costs.each(&:save!)
+    if imported_project_costs.compact.map(&:valid?).all?
+      imported_project_costs.compact.each(&:save!)
       true
     else
       imported_project_costs.each_with_index do |project_cost, index|

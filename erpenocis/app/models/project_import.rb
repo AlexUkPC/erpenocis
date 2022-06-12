@@ -14,8 +14,8 @@ class ProjectImport
   end
 
   def save
-    if imported_projects.map(&:valid?).all?
-      imported_projects.each do |project|
+    if imported_projects.compact.map(&:valid?).all?
+      imported_projects.compact.each do |project|
         if Project.find_by_id(project.id)
           project.save
         else

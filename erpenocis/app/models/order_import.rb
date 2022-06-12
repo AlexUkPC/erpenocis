@@ -17,8 +17,8 @@ class OrderImport
   end
 
   def save
-    if imported_orders.map(&:valid?).all?
-      imported_orders.each(&:save!)
+    if imported_orders.compact.map(&:valid?).all?
+      imported_orders.compact.each(&:save!)
       true
     else
       imported_orders.each_with_index do |order, index|

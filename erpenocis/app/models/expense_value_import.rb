@@ -70,17 +70,27 @@ class ExpenseValueImport
     end
     if (header.include? "id") && (header.include? "name") && (header.include? "ian") && (header.include? "feb") && (header.include? "mar") && (header.include? "apr") && (header.include? "mai") && (header.include? "iun") && (header.include? "iul") && (header.include? "aug") && (header.include? "sep") && (header.include? "oct") && (header.include? "nov") && (header.include? "dec")
       (3..spreadsheet.last_row).map do |i|
-        row = Hash[[header, spreadsheet.row(i)].transpose]
-        (3..spreadsheet.last_column-1).map do |j|
-          if spreadsheet.cell(i,j)
-            if spreadsheet.cell(i,j).to_s[0].ord != 160
-              expense_value = ExpenseValue.created_between(set_start_date(j-2,year),set_end_date(j-2,year)).find_by(expense_id: row["id"]) || ExpenseValue.new
-              expense_value.value = spreadsheet.cell(i,j).to_f
-              unless expense_value.date?
-                expense_value.date = Date.parse(year.to_s+'-'+(j-2).to_s+'-01')
-                expense_value.expense_id = row["id"]
+        if spreadsheet.cell(i,2) != "Total"
+          row = Hash[[header, spreadsheet.row(i)].transpose]
+          (3..spreadsheet.last_column-1).map do |j|
+            if spreadsheet.cell(i,j)
+              if spreadsheet.cell(i,j).to_s[0].ord != 160
+                if Expense.find_by_id(row["id"])
+                  expense_value = ExpenseValue.created_between(set_start_date(j-2,year),set_end_date(j-2,year)).find_by(expense_id: row["id"]) || ExpenseValue.new
+                  expense_value.value = spreadsheet.cell(i,j).to_f
+                  unless expense_value.date?
+                    expense_value.date = Date.parse(year.to_s+'-'+(j-2).to_s+'-01')
+                    expense_value.expense_id = row["id"]
+                  end
+                  expense_value
+                else
+                  if row["id"].to_s==""
+                    errors.add :base, "Randul #{i} - id cheltuiala necompletat" 
+                  else
+                    errors.add :base, "Randul #{i} - id cheltuiala inexistent in baza de date"
+                  end
+                end
               end
-              expense_value
             end
           end
         end
