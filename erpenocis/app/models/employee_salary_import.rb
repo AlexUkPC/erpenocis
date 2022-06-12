@@ -100,7 +100,7 @@ class EmployeeSalaryImport
         end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Denumire cheltuiala | Ian | Feb | Mar | Apr | Mai | Iun | Iul | Aug | Sep | Oct | Nov | Dec "
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Denumire cheltuiala | Ian | Feb | Mar | Apr | Mai | Iun | Iul | Aug | Sep | Oct | Nov | Dec "
     end
   end
 

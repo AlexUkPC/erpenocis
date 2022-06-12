@@ -64,7 +64,7 @@ class ExpenseImport
         end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Denumire cheltuiala"
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Denumire cheltuiala"
     end
   end
 

@@ -3,9 +3,10 @@
     <div class="card">
       <div class="card-body">
         <h1>Importa salarii</h1>
+        <%= render 'example_table' %>
         <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
         <p>Poti folosi un tabel exportat din aplicatie(din care stergi ultimul rand - Total) sau poti creea un tabel nou care sa respecte urmatoarele</p>
-        <p>Primul rand contine anul pentru care se face importul(ultimele 4 caractere din text). <br>Al doilea rand ar trebui sa contina coloanele<br> ID | Nume angajat | Ian | Feb | Mar | Apr | Mai | Iun | Iul | Aug | Sep | Oct | Nov | Dec <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate</p> 
+        <p>Primul rand contine anul pentru care se face importul(ultimele 4 caractere din text). <br>Al doilea rand ar trebui sa contina coloanele<br> Id | Nume angajat | Ian | Feb | Mar | Apr | Mai | Iun | Iul | Aug | Sep | Oct | Nov | Dec <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate</p> 
         <p>Trebuie sa contina urmatoare sheet-uri: Salariu net | Taxe salariu | Bonuri de masa | Bonuri cadou | Ore suplimentare | Salariu extra<br> Daca exista alte sheet-uri decat cele de mai sus vor fi ignorate</p>
         <p>ID-ul este id-ul angajatului si trebuie sa existe pentru a se putea adauga salariile la angajatul corespunzator</p>
 
@@ -30,3 +31,4 @@
     </div>
   </div>
 </div>
+<script src=<%= root_url + "data_table_custom_js/employee_salary_imports.js"%>></script>

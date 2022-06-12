@@ -3,9 +3,10 @@
     <div class="card">
       <div class="card-body">
         <h1>Importa <% if params[:expense_type] %><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %><% else %><%= params[:expense_import][:expense_type]=="investitii" || params[:expense_import][:expense_type]=="alte_cheltuieli"  ? params[:expense_import][:expense_type].titleize : "Cheltuieli "+ params[:expense_import][:expense_type].titleize %><% end %></h1>
+        <%= render 'example_table' %>
         <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
         <p>Poti folosi un tabel exportat din aplicatie(din care stergi ultimul rand - Total) sau poti creea un tabel nou care sa respecte urmatoarele</p>
-        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> ID | Denumire cheltuiala <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate</p> 
+        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> Id | Denumire cheltuiala <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate</p> 
         <p>Daca exista id in tabelul incarcat atunci se face update la inregistrarea existenta, daca nu (sau id-ul nu exista in baza de date) atunci se adauga o noua inregistrare</p>
 
           <%= form_for @expense_import do |f| %>
@@ -29,3 +30,4 @@
     </div>
   </div>
 </div>
+<script src=<%= root_url + "data_table_custom_js/expense_imports.js"%>></script>

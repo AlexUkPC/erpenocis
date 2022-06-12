@@ -56,7 +56,7 @@ class EmployeeImport
         end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Nume angajat | Data angajarii | Data incheierii "
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Nume angajat | Data angajarii | Data incheierii "
     end
   end
 

@@ -76,7 +76,7 @@ class ProjectImport
         project
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Nume proiect | Data inceput | Data finalizare | Valoare | Observatii"
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Nume proiect | Data inceput | Data finalizare | Valoare | Observatii"
     end
   end
 

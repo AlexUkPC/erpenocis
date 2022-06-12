@@ -52,7 +52,7 @@ class SupplierImport
         end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Nume furnizor "
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Nume furnizor "
     end
   end
 

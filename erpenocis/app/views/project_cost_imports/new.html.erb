@@ -3,9 +3,10 @@
     <div class="card">
       <div class="card-body">
         <h1>Importa costuri proiecte</h1>
+        <%= render 'example_table' %>
         <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
-        <p>Poti folosi un tabel exportat din aplicatie pentru a avea id-urile proiectelor, dar creeaza un tabel nou care sa respecte urmatoarele</p>
-        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> ID | Cost | Luna cost | An cost <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate<br> Daca intr-o celula informatia nu este corecta(ex: daca e scris "In derulare" in coloana de data finalizare, deoarece aplicatia asteapta ceva ce seamana a data - zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz) nu va fi completata in baza de date</p>
+        <p>Poti folosi un tabel exportat din aplicatie pentru a avea id-urile proiectelor, dar foloseste tabelul din descarca model sau creeaza un tabel nou care sa respecte urmatoarele</p>
+        <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> Id | <i>Nume proiect</i> | Cost | Luna cost | An cost <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate<br> Daca intr-o celula informatia nu este corecta(ex: daca e scris "In derulare" in coloana de data finalizare, deoarece aplicatia asteapta ceva ce seamana a data - zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz) nu va fi completata in baza de date</p>
       
         <p>ID-ul este id-ul proiectului si trebuie sa existe pentru a se putea adauga costurile la proiectul corect</p>
         <p>Luna si an trebuie sa fie numere intregi(1..12, 2022, 2023)</p>
@@ -31,3 +32,4 @@
     </div>
   </div>
 </div>
+<script src=<%= root_url + "data_table_custom_js/project_cost_imports.js"%>></script>

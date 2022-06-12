@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <h1>Importa necesar materiale</h1>
-        
+        <%= render 'example_table' %>
         <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
         <p>Poti folosi un tabel exportat din aplicatie sau poti creea un tabel nou care sa respecte urmatoarele</p>
         <p>Primul rand este ignorat. <br>Al doilea rand ar trebui sa contina coloanele<br> Id | Categorie | Denumire/Tip/Nuanta | Cant. necesara | UM | Cote | Observatii <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate<br> Daca intr-o celula informatia nu este corecta(ex: daca e scris "In derulare" in coloana de data finalizare, deoarece aplicatia asteapta ceva ce seamana a data - zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz) nu va fi completata in baza de date</p>
@@ -47,3 +47,4 @@
     </div>
   </div>
 </div>
+<script src=<%= root_url + "data_table_custom_js/order_imports.js"%>></script>

@@ -90,7 +90,7 @@ class ProjectSituationImport
           end
       end
     else
-      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Data ff avans | FF avans | Data avans | Avans | Luna comanda/avans | An comanda/avans | Data ff finala | FF finala | Data inchidere | Inchidere | Luna finalizare/rest de plata | An finalizare/rest de plata"
+      errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: Id | Data ff avans | FF avans | Data avans | Avans | Luna comanda/avans | An comanda/avans | Data ff finala | FF finala | Data inchidere | Inchidere | Luna finalizare/rest de plata | An finalizare/rest de plata"
     end
   end
 
