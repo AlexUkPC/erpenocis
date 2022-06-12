@@ -10,4 +10,7 @@
 class Supplier < ApplicationRecord
   has_many :supplier_invoices, dependent: :destroy
   accepts_nested_attributes_for :supplier_invoices, reject_if: proc { |attributes| attributes['number'].blank? }, allow_destroy: true
+  def self.accessible_attributes
+    ["name"]
+  end
 end

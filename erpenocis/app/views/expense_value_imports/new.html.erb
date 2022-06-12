@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card mb-0">
+    <div class="card">
+      <div class="card-body">
+        <h1>Importa sume <% if params[:expense_type] %><%= params[:expense_type]=="investitii" || params[:expense_type]=="alte_cheltuieli"  ? params[:expense_type].titleize : "Cheltuieli "+ params[:expense_type].titleize %><% else %><%= params[:expense_value_import][:expense_type]=="investitii" || params[:expense_value_import][:expense_type]=="alte_cheltuieli"  ? params[:expense_value_import][:expense_type].titleize : "Cheltuieli "+ params[:expense_value_import][:expense_type].titleize %><% end %></h1>
+        <%= render 'example_table' %>
+        <p>Se poate folosi un fisier Excel(xls sau xlsx) pentru a importa date.
+        <p>Poti folosi un tabel exportat din aplicatie(din care stergi ultimul rand - Total) sau poti creea un tabel nou care sa respecte urmatoarele</p>
+        <p>Primul rand contine anul pentru care se face importul(ultimele 4 caractere din text). <br>Al doilea rand ar trebui sa contina coloanele<br> Id | Denumire cheltuiala | Ian | Feb | Mar | Apr | Mai | Iun | Iul | Aug | Sep | Oct | Nov | Dec <br> Trebuie sa fie toate aceste coloane chiar daca nu exista informatii in ele<br> Nu conteaza ordinea coloanelor <br> Daca exista alte coloane decat cele de mai sus vor fi ignorate</p> 
+        <p>ID-ul este id-ul cheltuielii si trebuie sa existe pentru a se putea adauga valorile la cheltuiala corespunzatoare</p>
+
+          <%= form_for @expense_value_import do |f| %>
+            <% if @expense_value_import.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@expense_value_import.errors.count, "eroare", plural: 'erori') %> impiedica aceasta operatiune:</h2>
+                <ul>
+                <% @expense_value_import.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+          <%= f.hidden_field :expense_type, value: (params[:expense_type] || params[:expense_value_import][:expense_type]) %>
+          <div class="field mb-3">
+            <%= f.file_field :file %>
+          </div>
+          <%= f.submit "Importa", class: "btn btn-warning text-light" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script src=<%= root_url + "data_table_custom_js/expense_value_imports.js"%>></script>
