@@ -7,13 +7,6 @@ pipeline {
         DOCKER = credentials('dockerhub-alexrogna-userpass')
     }
     stages {
-        stage('Prepare x files') {
-            steps {
-                sh 'chmod +x *.sh'
-                sh 'chmod +x erpenocis/docker-entrypoint.sh'
-                sh 'chmod +x erpenocis/bin/*'
-            }
-        }
         stage('Get next version') {
             agent {
                 dockerfile {
@@ -23,6 +16,9 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'chmod +x *.sh'
+                    sh 'chmod +x erpenocis/docker-entrypoint.sh'
+                    sh 'chmod +x erpenocis/bin/*'
                     version_g = sh (
                         script: 'sh get-next-version.sh',
                         returnStdout: true
