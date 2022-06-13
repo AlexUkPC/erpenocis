@@ -7,18 +7,10 @@ pipeline {
     }
     stages {
         stage('Prepare x files') {
-            steps {
-                sh 'chmod +x get-next-version.sh'
-                sh 'chmod +x integration-test.sh'
-                sh 'chmod +x package.sh'
+           steps {
+                sh 'chmod +x *.sh'
                 sh 'chmod +x erpenocis/docker-entrypoint.sh'
-                sh 'chmod +x erpenocis/bin/rails'
-                sh 'chmod +x erpenocis/bin/rake'
-                sh 'chmod +x erpenocis/bin/setup'
-                sh 'chmod +x erpenocis/bin/spring'
-                sh 'chmod +x erpenocis/bin/webpack'
-                sh 'chmod +x erpenocis/bin/webpack-dev-server'
-                sh 'chmod +x erpenocis/bin/yarn'
+                sh 'chmod +x erpenocis/bin/*'
             }
         }
         stage('Bundle Install') {
