@@ -10,7 +10,7 @@
         <p>Campurile de tip data pot fi scrise in oricare din urmatoare forme: zz/ll/aaaa zz.ll.aaaa zz-ll-aaaa aaaa/ll/zz aaaa.ll.zz aaaa-ll-zz</p>
         <p>Daca exista id in tabelul incarcat atunci se face update la inregistrarea existenta, daca nu (sau id-ul nu exista in baza de date) atunci se adauga o noua inregistrare</p>
           <%= form_for @car_import do |f| %>
-            <% if @car_import.errors.any? %>
+            <% if @car_import.errors.any? %> 
               <div id="error_explanation">
                 <h2><%= pluralize(@car_import.errors.count, "eroare", plural: 'erori') %> impiedica aceasta operatiune:</h2>
                 <ul>
