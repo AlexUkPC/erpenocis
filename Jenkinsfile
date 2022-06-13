@@ -12,6 +12,13 @@ pipeline {
                 sh 'chmod +x integration-test.sh'
                 sh 'chmod +x package.sh'
                 sh 'chmod +x erpenocis/docker-entrypoint.sh'
+                sh 'chmod +x erpenocis/bin/rails'
+                sh 'chmod +x erpenocis/bin/rake'
+                sh 'chmod +x erpenocis/bin/setup'
+                sh 'chmod +x erpenocis/bin/spring'
+                sh 'chmod +x erpenocis/bin/webpack'
+                sh 'chmod +x erpenocis/bin/webpack-dev-server'
+                sh 'chmod +x erpenocis/bin/yarn'
             }
         }
         stage('Bundle Install') {
