@@ -11,7 +11,7 @@ pipeline {
                 sh 'chmod +x get-next-version.sh'
                 sh 'chmod +x integration-test.sh'
                 sh 'chmod +x package.sh'
-                sh 'chmod +x /erpenocis/docker-entrypoint.sh'
+                sh 'chmod +x erpenocis/docker-entrypoint.sh'
             }
         }
         stage('Bundle Install') {
