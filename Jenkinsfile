@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Bundle Install') {
             steps {
+                sh 'ls -la'
                 sh '/usr/local/bin/docker-compose -f docker-compose-jenkins run --rm web_erpenocis_jenkins bundle install'
             }
         }
