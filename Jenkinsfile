@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Webpacker Install') {
             steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml run --rm web_erpenocis_jenkins bin/rails webpacker:install'
+                sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml run --user "$(id -u):$(id -g)" --rm web_erpenocis_jenkins bin/rails webpacker:install'
             }
         }
         stage('Stop old containers') {
