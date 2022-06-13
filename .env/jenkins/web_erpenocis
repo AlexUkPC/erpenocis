@@ -1,0 +1,7 @@
+DATABASE_HOST=database_erpenocis_jenkins
+DISABLE_SPRING=true
+ADMIN_EMAIL=alexrogna@yahoo.com
+ADMIN_USERNAME=alexrogna
+ADMIN_PASSWORD=123456
+EMAIL_USER_NAME=development@alexrogna.com
+EMAIL_PSW=ParolaDevelopment
