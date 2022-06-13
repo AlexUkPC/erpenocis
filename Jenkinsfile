@@ -6,6 +6,14 @@ pipeline {
         string(name: 'REF', defaultValue: '\${ghprbActualCommit}', description: 'Commit to build')
     }
     stages {
+        stage('Prepare x files') {
+            steps {
+                sh 'chmod +x get-next-version.sh'
+                sh 'chmod +x integration-test.sh'
+                sh 'chmod +x package.sh'
+                sh 'chmod +x /erpenocis/docker-entrypoint.sh'
+            }
+        }
         stage('Bundle Install') {
             steps {
                 sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml run --rm web_erpenocis_jenkins bundle install'
