@@ -50,7 +50,9 @@ pipeline {
             steps {
                 sh """
                     export version_s=\$(cat version_f)
-
+                    chmod +x *.sh
+                    chmod +x erpenocis/docker-entrypoint.sh
+                    chmod +x erpenocis/bin/*
                     ./package.sh \${version_s}
                     ./integration-test.sh
 
