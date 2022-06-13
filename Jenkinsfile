@@ -74,10 +74,10 @@ pipeline {
                 sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml exec -T --user "$(id -u):$(id -g)" web_erpenocis_jenkins bundle exec rspec spec/models'
             }   
         } 
-        stage('End-to-end test') {
-            steps {
-                sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml exec -T web_erpenocis_jenkins bundle exec rspec spec/system'
-            }   
-        } 
+        // stage('End-to-end test') {
+        //     steps {
+        //         sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml exec -T web_erpenocis_jenkins bundle exec rspec spec/system'
+        //     }   
+        // } 
     }
 }
