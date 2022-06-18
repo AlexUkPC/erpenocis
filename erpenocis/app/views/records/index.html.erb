@@ -5,11 +5,14 @@
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Record type</th>
       <th>Location</th>
+      <th>Model Id</th>
       <th>Initial data</th>
       <th>Modified data</th>
       <th>User</th>
+      <th>Date</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,11 +20,14 @@
   <tbody>
     <% @records.each do |record| %>
       <tr>
+        <td><%= record.id %></td>
         <td><%= record.record_type %></td>
         <td><%= record.location %></td>
+        <td><%= record.model_id %></td>
         <td><%= record.initial_data %></td>
         <td><%= record.modified_data %></td>
         <td><%= record.user_id %></td>
+        <td><%= record.created_at.strftime('%d/%m/%Y(ora: %H:%M)') %></td>
         <td><%= link_to 'Show', record %></td>
         <td><%= link_to 'Edit', edit_record_path(record) %></td>
         <td><%= link_to 'Destroy', record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
