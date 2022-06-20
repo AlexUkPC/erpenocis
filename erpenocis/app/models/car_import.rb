@@ -3,6 +3,7 @@ class CarImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,36 @@ class CarImport
 
   def save
     if imported_cars.compact.map(&:valid?).all?
-      imported_cars.compact.each(&:save!)
+      imported_cars.compact.each do |car|
+        if car.id
+          old_info_car = Car.find_by_id(car.id).dup
+          if car.save
+            old_s = ""
+            s = ""
+            if old_info_car.number_plate != car.number_plate
+              old_s += "Nr inmatriculare #{old_info_car.number_plate} | "
+              s += "Nr inmatriculare #{car.number_plate} | "
+            end
+            if old_info_car.rca_expiry_date != car.rca_expiry_date
+              old_s += "Data expirare Rca: #{old_info_car.rca_expiry_date} | "
+              s += "Data expirare Rca: #{car.rca_expiry_date} | "
+            end
+            if old_info_car.rov_expiry_date != car.rov_expiry_date
+              old_s += "Data expirare Rovinieta: #{old_info_car.rov_expiry_date} | "
+              s += "Data expirare Rovinieta: #{car.rov_expiry_date} | "
+            end
+            if old_info_car.itp_expiry_date != car.itp_expiry_date
+              old_s += "Data expirare Itp: #{old_info_car.itp_expiry_date} | "
+              s += "Data expirare Itp: #{car.itp_expiry_date} | "
+            end
+            Record.create(record_type: "Import M", location: "Flota auto", model_id: car.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
+        else
+          if car.save
+            Record.create(record_type: "Import A", location: "Flota auto", model_id: car.id, initial_data: "", modified_data: "Nr inmatriculare: #{car.number_plate} | Data expirare Rca: #{car.rca_expiry_date} | Data expirare Rovinieta: #{car.rov_expiry_date} | Data expirare Itp: #{car.itp_expiry_date}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_cars.each_with_index do |car, index|
