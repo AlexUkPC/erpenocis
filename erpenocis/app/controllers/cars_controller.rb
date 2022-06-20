@@ -31,7 +31,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        Record.create(record_type: "Adaugare", location: "Flota auto", model_id: @car.id, initial_data: "", modified_data: "Nr inmatriculare: #{@car.number_plate}, Data expirare Rca: #{@car.rca_expiry_date}, Data expirare Rovinieta: #{@car.rov_expiry_date}, Data expirare Itp: #{@car.itp_expiry_date}", user_id: current_user.id)
+        Record.create(record_type: "Adaugare", location: "Flota auto", model_id: @car.id, initial_data: "", modified_data: "Nr inmatriculare: #{@car.number_plate} | Data expirare Rca: #{@car.rca_expiry_date} | Data expirare Rovinieta: #{@car.rov_expiry_date} | Data expirare Itp: #{@car.itp_expiry_date}", user_id: current_user.id)
         format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost adaugat." }
         format.json { render :show, status: :created, location: @car }
       else
@@ -78,7 +78,7 @@ class CarsController < ApplicationController
   # DELETE /cars/1 or /cars/1.json
   def destroy
     @car.destroy
-    Record.create(record_type: "Stergere", location: "Flota auto", model_id: @car.id, initial_data: "Nr inmatriculare: #{@car.number_plate}, Data expirare Rca: #{@car.rca_expiry_date}, Data expirare Rovinieta: #{@car.rov_expiry_date}, Data expirare Itp: #{@car.itp_expiry_date}", modified_data: "", user_id: current_user.id)
+    Record.create(record_type: "Stergere", location: "Flota auto", model_id: @car.id, initial_data: "Nr inmatriculare: #{@car.number_plate} | Data expirare Rca: #{@car.rca_expiry_date} | Data expirare Rovinieta: #{@car.rov_expiry_date} | Data expirare Itp: #{@car.itp_expiry_date}", modified_data: "", user_id: current_user.id)
     respond_to do |format|
       format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost sters." }
       format.json { head :no_content }
