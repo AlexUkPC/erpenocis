@@ -17,13 +17,42 @@ class ProjectImport
     if imported_projects.compact.map(&:valid?).all?
       imported_projects.compact.each do |project|
         if Project.find_by_id(project.id)
-          project.save
+          old_info_project = Project.find_by_id(project.id).dup
+          if project.save
+            old_s = ""
+            s = ""
+            if old_info_project.name != project.name
+              old_s += "Nume proiect: #{old_info_project.name} | "
+              s += "Nume proiect: #{project.name} | "
+            end
+            if old_info_project.start_date != project.start_date
+              old_s += "Data inceput: #{old_info_project.start_date} | "
+              s += "Data inceput: #{project.start_date} | "
+            end
+            if old_info_project.end_date != project.end_date
+              old_s += "Data finalizare: #{old_info_project.end_date} | "
+              s += "Data finalizare: #{project.end_date} | "
+            end
+            if old_info_project.value != project.value
+              old_s += "Valoare: #{old_info_project.value} | "
+              s += "Valoare: #{project.value} | "
+            end
+            if old_info_project.obs != project.obs
+              old_s += "Observatii: #{old_info_project.obs} | "
+              s += "Observatii: #{project.obs} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Proiecte", model_id: project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
         else
-          project.save
-          project_situation = ProjectSituation.new(project_id: project.id)
-          project_situation.save
-          project_cost = ProjectCost.new(project_id: project.id)
-          project_cost.save
+          if project.save
+            Record.create(record_type: "Adaugare prin import", location: "Proiecte", model_id: project.id, initial_data: "", modified_data: "Nume proiect: #{project.name} | Data inceput: #{project.start_date} | Data finalizare: #{project.end_date} | Valoare: #{project.value} | Observatii: #{project.obs}", user_id: current_user.id)
+            project_situation = ProjectSituation.new(project_id: project.id)
+            project_situation.save
+            project_cost = ProjectCost.new(project_id: project.id)
+            project_cost.save
+          end
         end
       end
       true

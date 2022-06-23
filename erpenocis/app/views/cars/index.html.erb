@@ -33,7 +33,7 @@
                         <td>
                           <%= link_to cars_path(id: car.id,sm: @start_month, sy: @start_year, em: @end_month, ey:@end_year), {style: "text-decoration:none"} do %> 
                             <div>
-                              <%= car.number_plate %>&nbsp
+                              <%= car.number_plate!="" ? car.number_plate : 160.chr(Encoding::UTF_8) %>
                             </div>
                           <% end %>
                         </td>

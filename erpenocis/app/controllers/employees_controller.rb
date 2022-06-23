@@ -21,9 +21,9 @@ class EmployeesController < ApplicationController
         @employee_salary = EmployeeSalary.find(employee_salary_id)
       end 
     else
-      @employee = Employee.new()
+      @employee = Employee.new(hire_date: Date.today)
     end
-    @employee.employee_salaries.build
+    @employee.employee_salaries.build(date: Date.today)
     # @employee_salaries = EmployeeSalary.where(employee_id: @employees.ids)
 
   end

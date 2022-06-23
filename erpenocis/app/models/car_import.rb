@@ -16,7 +16,7 @@ class CarImport
   def save
     if imported_cars.compact.map(&:valid?).all?
       imported_cars.compact.each do |car|
-        if car.id
+        if Car.find_by_id(car.id)
           old_info_car = Car.find_by_id(car.id).dup
           if car.save
             old_s = ""
@@ -37,11 +37,13 @@ class CarImport
               old_s += "Data expirare Itp: #{old_info_car.itp_expiry_date} | "
               s += "Data expirare Itp: #{car.itp_expiry_date} | "
             end
-            Record.create(record_type: "Import M", location: "Flota auto", model_id: car.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Flota auto", model_id: car.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
           end
         else
           if car.save
-            Record.create(record_type: "Import A", location: "Flota auto", model_id: car.id, initial_data: "", modified_data: "Nr inmatriculare: #{car.number_plate} | Data expirare Rca: #{car.rca_expiry_date} | Data expirare Rovinieta: #{car.rov_expiry_date} | Data expirare Itp: #{car.itp_expiry_date}", user_id: current_user.id)
+            Record.create(record_type: "Adaugare prin import", location: "Flota auto", model_id: car.id, initial_data: "", modified_data: "Nr inmatriculare: #{car.number_plate} | Data expirare Rca: #{car.rca_expiry_date} | Data expirare Rovinieta: #{car.rov_expiry_date} | Data expirare Itp: #{car.itp_expiry_date}", user_id: current_user.id)
           end
         end
       end
