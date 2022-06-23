@@ -136,7 +136,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    Record.create(record_type: "Stergere", location: "Utilizatori", model_id: @user.id, initial_data: "", modified_data: "Username: #{@user.username} | Email: #{@user.email} | Rol: #{@user.role.titleize} | Status: #{@user.active ? "activ" : "inactiv"}", user_id: current_user.id)
+    Record.create(record_type: "Stergere", location: "Utilizatori", model_id: @user.id, initial_data: "Username: #{@user.username} | Email: #{@user.email} | Rol: #{@user.role.titleize} | Status: #{@user.active ? "activ" : "inactiv"}", modified_data: "", user_id: current_user.id)
     redirect_to users_path, :notice => "User-ul a fost sters."
   end
 

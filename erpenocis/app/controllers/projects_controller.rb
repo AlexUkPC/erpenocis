@@ -35,9 +35,11 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.save
         if params[:st]
+          Record.create(record_type: "Adaugare", location: "Stocuri", model_id: @project.id, initial_data: "", modified_data: "Nume: #{@project.name} | Observatii: #{@project.obs}", user_id: current_user.id)
           format.html { redirect_to stock_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Stocul a fost creeat." }
           format.json { render :show, status: :created, location: @project }
         else
+          Record.create(record_type: "Adaugare", location: "Proiecte", model_id: @project.id, initial_data: "", modified_data: "Nume proiect: #{@project.name} | Data inceput: #{@project.start_date} | Data finalizare: #{@project.end_date} | Valoare: #{@project.value} | Observatii: #{@project.obs}", user_id: current_user.id)
           format.html { redirect_to projects_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Proiectul a fost creeat." }
           format.json { render :show, status: :created, location: @project }
         end
@@ -54,12 +56,47 @@ class ProjectsController < ApplicationController
   end
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
+    @old_info_project = @project.dup
     respond_to do |format|
       if @project.update(project_params)
         if params[:st]
+          old_s = ""
+          s = ""
+          if @old_info_project.name != @project.name
+            old_s += "Nume proiect: #{@old_info_project.name} | "
+            s += "Nume proiect: #{@project.name} | "
+          end
+          if @old_info_project.obs != @project.obs
+            old_s += "Observatii: #{@old_info_project.obs} | "
+            s += "Observatii: #{@project.obs} | "
+          end
+          Record.create(record_type: "Modificare", location: "Stocuri", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
           format.html { redirect_to stock_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Stocul a fost modificat." }
           format.json { render :show, status: :ok, location: @project }
         else
+          old_s = ""
+          s = ""
+          if @old_info_project.name != @project.name
+            old_s += "Nume proiect: #{@old_info_project.name} | "
+            s += "Nume proiect: #{@project.name} | "
+          end
+          if @old_info_project.start_date != @project.start_date
+            old_s += "Data inceput: #{@old_info_project.start_date} | "
+            s += "Data inceput: #{@project.start_date} | "
+          end
+          if @old_info_project.end_date != @project.end_date
+            old_s += "Data finalizare: #{@old_info_project.end_date} | "
+            s += "Data finalizare: #{@project.end_date} | "
+          end
+          if @old_info_project.value != @project.value
+            old_s += "Valoare: #{@old_info_project.value} | "
+            s += "Valoare: #{@project.value} | "
+          end
+          if @old_info_project.obs != @project.obs
+            old_s += "Observatii: #{@old_info_project.obs} | "
+            s += "Observatii: #{@project.obs} | "
+          end
+          Record.create(record_type: "Modificare", location: "Proiecte", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
           format.html { redirect_to projects_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Proiectul a fost modificat." }
           format.json { render :show, status: :ok, location: @project }
         end
@@ -73,12 +110,13 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1 or /projects/1.json
   def destroy
     @project.destroy
-
     respond_to do |format|
       if params[:st]
+        Record.create(record_type: "Stergere", location: "Stocuri", model_id: @project.id, initial_data: "Nume: #{@project.name} | Observatii: #{@project.obs}", modified_data: "", user_id: current_user.id)
         format.html { redirect_to stock_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Stocul a fost sters." }
         format.json { head :no_content }
       else
+        Record.create(record_type: "Stergere", location: "Proiecte", model_id: @project.id, initial_data: "Nume proiect: #{@project.name} | Data inceput: #{@project.start_date} | Data finalizare: #{@project.end_date} | Valoare: #{@project.value} | Observatii: #{@project.obs}", modified_data: "", user_id: current_user.id)
         format.html { redirect_to projects_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Proiectul a fost sters." }
         format.json { head :no_content }
       end
