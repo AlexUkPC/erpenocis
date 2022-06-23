@@ -98,7 +98,7 @@
               </tbody>
             </table>
             <% unless @user == current_user  %>
-              <span class="text-danger">Atentie! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente ullam dolore asperiores illum libero cumque quidem blanditiis quia! Rem dolores impedit eos dolorum quis vitae perspiciatis doloribus quod atque nihil.</span> 
+              <span class="text-danger">Atentie! Stergerea userului duce implicit si la stergerea istoricului acestui user. Mai bine doar il faci inactiv. Foloseste acest buton doar daca abia ai creeat user-ul</span> 
               <br>
               <%= link_to(@user, :data => { :confirm => "Esti sigur ca vrei sa stergi acest user?" }, :method => :delete, class: "btn btn-outline-danger btn-icon-text float-end" ) do %>
                 <i class="ti-trash btn-icon-prepend"></i>

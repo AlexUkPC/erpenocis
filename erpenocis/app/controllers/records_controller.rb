@@ -3,7 +3,7 @@ class RecordsController < ApplicationController
 
   # GET /records or /records.json
   def index
-    @records = Record.all
+    @records = Record.all.order("id DESC")
     @users = User.all
   end
 

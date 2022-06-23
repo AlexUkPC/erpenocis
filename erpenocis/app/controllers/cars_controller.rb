@@ -50,8 +50,8 @@ class CarsController < ApplicationController
         old_s = ""
         s = ""
         if @old_info_car.number_plate != @car.number_plate
-          old_s += "Nr inmatriculare #{@old_info_car.number_plate} | "
-          s += "Nr inmatriculare #{@car.number_plate} | "
+          old_s += "Nr inmatriculare: #{@old_info_car.number_plate} | "
+          s += "Nr inmatriculare: #{@car.number_plate} | "
         end
         if @old_info_car.rca_expiry_date != @car.rca_expiry_date
           old_s += "Data expirare Rca: #{@old_info_car.rca_expiry_date} | "
