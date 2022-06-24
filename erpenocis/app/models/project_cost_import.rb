@@ -15,7 +15,11 @@ class ProjectCostImport
 
   def save
     if imported_project_costs.compact.map(&:valid?).all?
-      imported_project_costs.compact.each(&:save!)
+      imported_project_costs.compact.each do |project_cost|
+        if project_cost.save
+          Record.create(record_type: "Adaugare prin import", location: "Costuri proiecte", model_id: project_cost.project_id, initial_data: "", modified_data: "Proiect: #{project_cost.project.name} | Suma: #{project_cost.amount} | Luna: #{project_cost.month} | An: #{project_cost.year}", user_id: current_user.id)
+        end
+      end
       true
     else
       imported_project_costs.each_with_index do |project_cost, index|
@@ -51,48 +55,51 @@ class ProjectCostImport
       @new = true
       (3..spreadsheet.last_row).map do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
-          if ProjectCost.find_by(project_id: row["id"])
-            if ProjectCost.find_by(project_id: row["id"]).amount==nil && @new
-              project_cost = ProjectCost.find_by(project_id: row["id"])
-              @new = false
-            else
-              project_cost = ProjectCost.new
-              project_cost.project_id = row["id"]
-            end
-            project_cost.attributes = row.to_hash.slice(*ProjectCost.accessible_attributes) 
-            if project_cost.amount==""
-              project_cost.amount = 0
-            else
-              project_cost.amount = project_cost.amount.to_f
-            end
-            if project_cost.month==""
-              errors.add :base, "Randul #{i} - luna necompletata"
-              raise "No month"
-            else
-              project_cost.month = project_cost.month.to_i
-              if project_cost.month < 1 || project_cost.month > 12 
-                errors.add :base, "Randul #{i} - luna este gresita"
-                raise "Wrong month"
-              end
-            end
-            if project_cost.year==""
-              errors.add :base, "Randul #{i} - an necompletat"
-              raise "No year"
-            else
-              project_cost.year = project_cost.year.to_i
-              if project_cost.year < 2020
-                errors.add :base, "Randul #{i} - anul este inainte de 2020"
-                raise "Wrong year"
-              end
-            end
-              project_cost 
+        if row["id"]!=Hash[[header, spreadsheet.row(i-1)].transpose]["id"]
+          @new = true
+        end
+        if ProjectCost.find_by(project_id: row["id"])
+          if ProjectCost.find_by(project_id: row["id"]).amount==nil && @new
+            project_cost = ProjectCost.find_by(project_id: row["id"])
+            @new = false
           else
-            if row["id"].to_s==""
-              errors.add :base, "Randul #{i} - id proiect necompletat" 
-            else
-              errors.add :base, "Randul #{i} - id proiect inexistent in baza de date"
+            project_cost = ProjectCost.new
+            project_cost.project_id = row["id"]
+          end
+          project_cost.attributes = row.to_hash.slice(*ProjectCost.accessible_attributes) 
+          if project_cost.amount==""
+            project_cost.amount = 0
+          else
+            project_cost.amount = project_cost.amount.to_f
+          end
+          if project_cost.month==""
+            errors.add :base, "Randul #{i} - luna necompletata"
+            raise "No month"
+          else
+            project_cost.month = project_cost.month.to_i
+            if project_cost.month < 1 || project_cost.month > 12 
+              errors.add :base, "Randul #{i} - luna este gresita"
+              raise "Wrong month"
             end
           end
+          if project_cost.year==""
+            errors.add :base, "Randul #{i} - an necompletat"
+            raise "No year"
+          else
+            project_cost.year = project_cost.year.to_i
+            if project_cost.year < 2020
+              errors.add :base, "Randul #{i} - anul este inainte de 2020"
+              raise "Wrong year"
+            end
+          end
+            project_cost 
+        else
+          if row["id"].to_s==""
+            errors.add :base, "Randul #{i} - id proiect necompletat" 
+          else
+            errors.add :base, "Randul #{i} - id proiect inexistent in baza de date"
+          end
+        end
       end
     else
       errors.add :base, "Fisieru nu contine coloanele corespunzatoare. Acestea ar trebui sa fie: ID | Cost | Luna cost | An cost"
