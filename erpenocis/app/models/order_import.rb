@@ -55,7 +55,7 @@ class OrderImport
           end
         else
           if order.save
-            Record.create(record_type: "Adaugare prin import", location: "Comenzi", model_id: order.id, initial_data: "", modified_data: "Nume proiect: #{order.project.name} | Categorie: #{order.category} | Denumire/Tip/Nuanta: #{order.name_type_color} | Cant. necesara: #{order.needed_quantity} | UM: #{order.unit} | Cote: #{order.cote} | Observatii: #{order.obs}", user_id: current_user.id)
+            Record.create(record_type: "Adaugare prin import", location: "Comenzi", model_id: order.id, initial_data: "", modified_data: "Proiect: #{order.project.name} | Categorie: #{order.category} | Denumire/Tip/Nuanta: #{order.name_type_color} | Cant. necesara: #{order.needed_quantity} | UM: #{order.unit} | Cote: #{order.cote} | Observatii: #{order.obs}", user_id: current_user.id)
           end
         end
       end
@@ -103,6 +103,8 @@ class OrderImport
         order.attributes = row.to_hash.slice(*Order.accessible_attributes)
         order.user_id = current_user.id
         order.project_id = project_id
+        order.supplier_contact = ""
+        order.obs = ""
         order.status = 0
         if order.needed_quantity==""
           order.needed_quantity = 0

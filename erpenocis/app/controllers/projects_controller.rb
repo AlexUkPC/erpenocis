@@ -70,7 +70,9 @@ class ProjectsController < ApplicationController
             old_s += "Observatii: #{@old_info_project.obs} | "
             s += "Observatii: #{@project.obs} | "
           end
-          Record.create(record_type: "Modificare", location: "Stocuri", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          if s!="" || old_s != ""
+            Record.create(record_type: "Modificare", location: "Stocuri", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
           format.html { redirect_to stock_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Stocul a fost modificat." }
           format.json { render :show, status: :ok, location: @project }
         else
@@ -96,7 +98,9 @@ class ProjectsController < ApplicationController
             old_s += "Observatii: #{@old_info_project.obs} | "
             s += "Observatii: #{@project.obs} | "
           end
-          Record.create(record_type: "Modificare", location: "Proiecte", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          if s!="" || old_s != ""
+            Record.create(record_type: "Modificare", location: "Proiecte", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
           format.html { redirect_to projects_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Proiectul a fost modificat." }
           format.json { render :show, status: :ok, location: @project }
         end

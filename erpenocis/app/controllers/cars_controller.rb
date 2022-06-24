@@ -65,7 +65,9 @@ class CarsController < ApplicationController
           old_s += "Data expirare Itp: #{@old_info_car.itp_expiry_date} | "
           s += "Data expirare Itp: #{@car.itp_expiry_date} | "
         end
-        Record.create(record_type: "Modificare", location: "Flota auto", model_id: @car.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        if s!="" || old_s != ""
+          Record.create(record_type: "Modificare", location: "Flota auto", model_id: @car.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        end
         format.html { redirect_to cars_path(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Auto a fost modificat." }
         format.json { render :show, status: :ok, location: @car }
       else

@@ -80,7 +80,9 @@ class UsersController < ApplicationController
           old_s += "Status: #{@old_info_user.active ? "activ" : "inactiv"} | "
           s += "Status: #{@user.active ? "activ" : "inactiv"} | "
         end
-        Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        if s!="" || old_s != ""
+          Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        end
         format.html { redirect_to current_user.admin? ? users_path : edit_user_path(current_user), :notice => "User-ul a fost modificat." } 
       else
         format.html { render :edit, status: :unprocessable_entity}
@@ -102,7 +104,9 @@ class UsersController < ApplicationController
             old_s += "Username: #{@old_info_user.username} | "
             s += "Username: #{@user.username} | "
           end
-          Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          if s!="" || old_s != ""
+            Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
           format.html { redirect_to settings_path, :notice => "User-ul a fost modificat." } 
         else
           format.html { render "settings", :alert => "Nu se poate modifica user-ul." }

@@ -19,7 +19,58 @@ class InvoiceImport
 
   def save
     if imported_invoices.compact.map(&:valid?).all?
-      imported_invoices.compact.each(&:save!)
+      imported_invoices.compact.each do |invoice|
+        if Invoice.find_by_id(invoice.id)
+          old_info_invoice = Invoice.find_by_id(invoice.id).dup
+          if invoice.save
+            old_s = ""
+            s = ""
+            if old_info_invoice.project_id != invoice.project_id
+              old_s += "Proiect: #{old_info_invoice.project.name} | "
+              s += "Proiect: #{invoice.project.name} | "
+            end
+            if old_info_invoice.description != invoice.description
+              old_s += "Descriere: #{old_info_invoice.description} | "
+              s += "Descriere: #{invoice.description} | "
+            end
+            if old_info_invoice.category != invoice.category
+              old_s += "Categorie: #{old_info_invoice.category} | "
+              s += "Categorie: #{invoice.category} | "
+            end
+            if old_info_invoice.supplier != invoice.supplier
+              old_s += "Furnizor: #{old_info_invoice.supplier} | "
+              s += "Furnizor: #{invoice.supplier} | "
+            end
+            if old_info_invoice.invoice_number != invoice.invoice_number
+              old_s += "Nr. factura: #{old_info_invoice.invoice_number} | "
+              s += "Nr. factura: #{invoice.invoice_number} | "
+            end
+            if old_info_invoice.invoice_date != invoice.invoice_date
+              old_s += "Data factura: #{old_info_invoice.invoice_date} | "
+              s += "Data factura: #{invoice.invoice_date} | "
+            end
+            if old_info_invoice.invoice_value_without_vat != invoice.invoice_value_without_vat
+              old_s += "Valoare factura fara TVA: #{old_info_invoice.invoice_value_without_vat} | "
+              s += "Valoare factura fara TVA: #{invoice.invoice_value_without_vat} | "
+            end
+            if old_info_invoice.invoice_value_for_project_without_vat != invoice.invoice_value_for_project_without_vat
+              old_s += "Valoare factura pt proiect fara TVA: #{old_info_invoice.invoice_value_for_project_without_vat} | "
+              s += "Valoare factura pt proiect fara TVA: #{invoice.invoice_value_for_project_without_vat} | "
+            end
+            if old_info_invoice.obs != invoice.obs
+              old_s += "Observatii: #{old_info_invoice.obs} | "
+              s += "Observatii: #{invoice.obs} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Facturi", model_id: invoice.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if invoice.save
+            Record.create(record_type: "Adaugare prin import", location: "Facturi", model_id: invoice.id, initial_data: "", modified_data: "Proiect: #{invoice.project.name} | Descriere: #{invoice.description} | Categorie: #{invoice.category} | Furnizor: #{invoice.supplier} | Nr. factura: #{invoice.invoice_number} | Data factura: #{invoice.invoice_date} | Valoare factura fara TVA: #{invoice.invoice_value_without_vat} | Valoare factura pt proiect fara TVA: #{invoice.invoice_value_for_project_without_vat}| Observatii: #{invoice.obs}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_invoices.each_with_index do |invoice, index|
