@@ -18,7 +18,6 @@ class ProjectSituationImport
       imported_project_situations.compact.each do |project_situation|
         old_info_project_situation = ProjectSituation.find_by_id(project_situation.id).dup
           if project_situation.save
-            puts "=================="
             old_s = ""
             s = ""
             if old_info_project_situation.advance_invoice_date != project_situation.advance_invoice_date
@@ -72,7 +71,6 @@ class ProjectSituationImport
             if s!="" || old_s != ""
               Record.create(record_type: "Modificare prin import", location: "Situatie proiecte", model_id: project_situation.project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
             end
-            puts "=================="
           end
       end
       true

@@ -3,6 +3,7 @@ class ProjectCostImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
