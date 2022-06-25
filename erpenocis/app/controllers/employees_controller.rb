@@ -136,7 +136,7 @@ class EmployeesController < ApplicationController
   # DELETE /employees/1 or /employees/1.json
   def destroy
     @employee.destroy
-
+    Record.create(record_type: "Stergere", location: "Cheltuieli salariale", model_id: @employee.id, initial_data: "Nume: #{@employee.name} | Data angajarii: #{@employee.hire_date} | Data incheierii: #{@employee.dismiss_date}", modified_data: "", user_id: current_user.id)
     respond_to do |format|
       format.html { redirect_to employees_path(current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Employee was successfully destroyed." }
       format.json { head :no_content }

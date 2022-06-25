@@ -4,6 +4,7 @@ class ExpenseValueImport
   include ActiveModel::Validations
   attr_accessor :file
   attr_accessor :expense_type
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -15,7 +16,32 @@ class ExpenseValueImport
 
   def save
     if imported_expense_values.flatten.compact.map(&:valid?).all?
-      imported_expense_values.flatten.compact.each(&:save!)
+      imported_expense_values.flatten.compact.each do |expense_value|
+        if ExpenseValue.find_by_id(expense_value.id)
+          old_info_expense_value = ExpenseValue.find_by_id(expense_value.id).dup
+          if expense_value.save
+            old_s = ""
+            s = ""
+            if old_info_expense_value.value != expense_value.value
+              old_s += "Suma: #{old_info_expense_value.value} | "
+              s += "Suma: #{expense_value.value} | "
+            end
+            if old_info_expense_value.date != expense_value.date
+              old_s += "Data cheltuiala: #{old_info_expense_value.date} | "
+              s += "Data cheltuiala: #{expense_value.date} | "
+            end
+            if s!="" || old_s != ""
+              expense = Expense.find_by_id(expense_value.expense_id)
+              Record.create(record_type: "Modificare prin import", location: expense.expense_type=="investitii" || expense.expense_type=="alte_cheltuieli"  ? expense.expense_type.titleize : "Cheltuieli "+ expense.expense_type.titleize, model_id: expense_value.expense_id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if expense_value.save
+            expense = Expense.find_by_id(expense_value.expense_id)
+            Record.create(record_type: "Adaugare prin import", location: expense.expense_type=="investitii" || expense.expense_type=="alte_cheltuieli"  ? expense.expense_type.titleize : "Cheltuieli "+ expense.expense_type.titleize, model_id: expense_value.expense_id, initial_data: "", modified_data: "Suma: #{expense_value.value} | Data cheltuiala: #{expense_value.date}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_expense_values.each_with_index do |expense_value, index|
