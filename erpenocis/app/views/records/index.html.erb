@@ -24,7 +24,7 @@
             </thead>
 
             <tbody>
-              <% @records.each do |record| %>
+              <% @records.includes(:user).each do |record| %>
                 <tr>
                   <td><%= record.id %></td>
                   <td><%= record.record_type %></td>
@@ -32,7 +32,7 @@
                   <td><%= record.model_id %></td>
                   <td><%= record.initial_data %></td>
                   <td><%= record.modified_data %></td>
-                  <td><%= @users.find(record.user_id).username %></td>
+                  <td><%= record.user.username %></td>
                   <td><%= record.created_at.strftime('%d/%m/%Y(ora: %H:%M)') %></td>
                   <td style="display: none"><%= record.created_at.strftime('%d/%m/%Y') %></td>
                   <td><%= link_to 'Show', record %></td>

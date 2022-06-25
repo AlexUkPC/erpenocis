@@ -3,6 +3,7 @@ class EmployeeSalaryImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,55 @@ class EmployeeSalaryImport
 
   def save
     if imported_employee_salaries.flatten.compact.map(&:valid?).all?
-      imported_employee_salaries.flatten.compact.each(&:save!)
+      imported_employee_salaries.flatten.compact.each do |employee_salary|
+        if EmployeeSalary.find_by_id(employee_salary.id)
+          old_info_employee_salary = EmployeeSalary.find_by_id(employee_salary.id).dup
+        
+          if employee_salary.save
+            old_s = ""
+            s = ""
+            if old_info_employee_salary.net_salary != employee_salary.net_salary
+              old_s += "Salariu net: #{old_info_employee_salary.net_salary} | "
+              s += "Salariu net: #{employee_salary.net_salary} | "
+            end
+            if old_info_employee_salary.salary_tax != employee_salary.salary_tax
+              old_s += "Taxe de achitat: #{old_info_employee_salary.salary_tax} | "
+              s += "Taxe de achitat: #{employee_salary.salary_tax} | "
+            end
+            if old_info_employee_salary.salary_tax_due_date != employee_salary.salary_tax_due_date
+              old_s += "Data scadenta taxe: #{old_info_employee_salary.salary_tax_due_date} | "
+              s += "Data scadenta taxe: #{employee_salary.salary_tax_due_date} | "
+            end
+            if old_info_employee_salary.meal_vouchers != employee_salary.meal_vouchers
+              old_s += "Bonuri de masa: #{old_info_employee_salary.meal_vouchers} | "
+              s += "Bonuri de masa: #{employee_salary.meal_vouchers} | "
+            end
+            if old_info_employee_salary.gift_vouchers != employee_salary.gift_vouchers
+              old_s += "Bonuri cadou: #{old_info_employee_salary.gift_vouchers} | "
+              s += "Bonuri cadou: #{employee_salary.gift_vouchers} | "
+            end
+            if old_info_employee_salary.overtime != employee_salary.overtime
+              old_s += "Ore suplimentare: #{old_info_employee_salary.overtime} | "
+              s += "Ore suplimentare: #{employee_salary.overtime} | "
+            end
+            if old_info_employee_salary.extra_salary != employee_salary.extra_salary
+              old_s += "Salariu extra: #{old_info_employee_salary.extra_salary} | "
+              s += "Salariu extra: #{employee_salary.extra_salary} | "
+            end
+            if old_info_employee_salary.date != employee_salary.date
+              old_s += "Data: #{old_info_employee_salary.date} | "
+              s += "Data: #{employee_salary.date} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Cheltuieli salariale", model_id: employee_salary.employee_id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if employee_salary.save
+            Record.create(record_type: "Adaugare prin import", location: "Cheltuieli salariale", model_id: employee_salary.employee_id, initial_data: "", modified_data: "Salariu net: #{employee_salary.net_salary} | Taxe de achitat: #{employee_salary.salary_tax} | Data scadenta taxe: #{employee_salary.salary_tax_due_date} | Bonuri de masa: #{employee_salary.meal_vouchers} | Bonuri cadou: #{employee_salary.gift_vouchers} | Ore suplimentare: #{employee_salary.overtime} | Salariu extra: #{employee_salary.extra_salary} | Data: #{employee_salary.date}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_employee_salaries.each_with_index do |employee_salary, index|
