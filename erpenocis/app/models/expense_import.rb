@@ -4,6 +4,7 @@ class ExpenseImport
   include ActiveModel::Validations
   attr_accessor :file
   attr_accessor :expense_type
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -15,7 +16,26 @@ class ExpenseImport
 
   def save
     if imported_expenses.compact.map(&:valid?).all?
-      imported_expenses.compact.each(&:save!)
+      imported_expenses.compact.each do |expense|
+        if Expense.find_by_id(expense.id)
+          old_info_expense = Expense.find_by_id(expense.id).dup
+          if expense.save
+            old_s = ""
+            s = ""
+            if old_info_expense.name != expense.name
+              old_s += "Denumire cheltuiala: #{old_info_expense.name} | "
+              s += "Denumire cheltuiala: #{expense.name} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: expense.expense_type=="investitii" || expense.expense_type=="alte_cheltuieli"  ? expense.expense_type.titleize : "Cheltuieli "+ expense.expense_type.titleize, model_id: expense.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if expense.save
+            Record.create(record_type: "Adaugare prin import", location: expense.expense_type=="investitii" || expense.expense_type=="alte_cheltuieli"  ? expense.expense_type.titleize : "Cheltuieli "+ expense.expense_type.titleize, model_id: expense.id, initial_data: "", modified_data: "Denumire cheltuiala: #{expense.name}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_expenses.each_with_index do |expense, index|

@@ -47,8 +47,63 @@ class ProjectSituationsController < ApplicationController
 
   # PATCH/PUT /project_situations/1 or /project_situations/1.json
   def update
+    @old_info_project_situation = ProjectSituation.find_by_id(@project_situation.id).dup
     respond_to do |format|
       if @project_situation.update(project_situation_params)
+        old_s = ""
+        s = ""
+        if @old_info_project_situation.advance_invoice_date != @project_situation.advance_invoice_date
+          old_s += "Data ff avans: #{@old_info_project_situation.advance_invoice_date} | "
+          s += "Data ff avans: #{@project_situation.advance_invoice_date} | "
+        end
+        if @old_info_project_situation.advance_invoice_number != @project_situation.advance_invoice_number
+          old_s += "FF avans: #{@old_info_project_situation.advance_invoice_number} | "
+          s += "FF avans: #{@project_situation.advance_invoice_number} | "
+        end
+        if @old_info_project_situation.advance_payment_date != @project_situation.advance_payment_date
+          old_s += "Data avans: #{@old_info_project_situation.advance_payment_date} | "
+          s += "Data avans: #{@project_situation.advance_payment_date} | "
+        end
+        if @old_info_project_situation.advance_payment != @project_situation.advance_payment
+          old_s += "Avans: #{@old_info_project_situation.advance_payment} | "
+          s += "Avans: #{@project_situation.advance_payment} | "
+        end
+        if @old_info_project_situation.advance_month != @project_situation.advance_month
+          old_s += "Luna comanda/avans: #{@old_info_project_situation.advance_month} | "
+          s += "Luna comanda/avans: #{@project_situation.advance_month} | "
+        end
+        if @old_info_project_situation.advance_year != @project_situation.advance_year
+          old_s += "An comanda/avans: #{@old_info_project_situation.advance_year} | "
+          s += "An comanda/avans: #{@project_situation.advance_year} | "
+        end
+        if @old_info_project_situation.closure_invoice_date != @project_situation.closure_invoice_date
+          old_s += "Data ff finala: #{@old_info_project_situation.closure_invoice_date} | "
+          s += "Data ff finala: #{@project_situation.closure_invoice_date} | "
+        end
+        if @old_info_project_situation.closure_invoice_number != @project_situation.closure_invoice_number
+          old_s += "FF finala: #{@old_info_project_situation.closure_invoice_number} | "
+          s += "FF finala: #{@project_situation.closure_invoice_number} | "
+        end
+        if @old_info_project_situation.closure_payment_date != @project_situation.closure_payment_date
+          old_s += "Data inchidere: #{@old_info_project_situation.closure_payment_date} | "
+          s += "Data inchidere: #{@project_situation.closure_payment_date} | "
+        end
+        if @old_info_project_situation.closure_payment != @project_situation.closure_payment
+          old_s += "Inchidere: #{@old_info_project_situation.closure_payment} | "
+          s += "Inchidere: #{@project_situation.closure_payment} | "
+        end
+        if @old_info_project_situation.closure_month != @project_situation.closure_month
+          old_s += "Luna finalizare/rest de plata: #{@old_info_project_situation.closure_month} | "
+          s += "Luna finalizare/rest de plata: #{@project_situation.closure_month} | "
+        end
+        if @old_info_project_situation.closure_year != @project_situation.closure_year
+          old_s += "An finalizare/rest de plata: #{@old_info_project_situation.closure_year} | "
+          s += "An finalizare/rest de plata: #{@project_situation.closure_year} | "
+        end
+        
+        if s!="" || old_s != ""
+          Record.create(record_type: "Modificare", location: "Situatie proiecte", model_id: @project_situation.project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        end
         format.html { redirect_to project_situations_path(which_date: @which_date, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Project situation was successfully updated." }
         format.json { render :show, status: :ok, location: @project_situation }
       else

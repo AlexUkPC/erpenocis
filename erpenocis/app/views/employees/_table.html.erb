@@ -61,7 +61,7 @@
               <td data-order="<%= employee.id %>"><%= employee.id %></td>
               <%# Employee name with link %>
                 <td data-order="<%=employee.name%>">
-                  <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%=employee.name%>&nbsp</div><% end %>
+                  <%= link_to employees_path(employee_id: employee.id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %> <div><%= employee.name!="" ? employee.name : 160.chr(Encoding::UTF_8) %></div><% end %>
                 </td>
               <%# End Employee name with link %>
 
@@ -82,7 +82,7 @@
                         <% end %>
                           <%= link_to employees_path(employee_id: employee.id, employee_salary_id: employee.employee_salaries[index].id, current_tab: @current_tab, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), {style: "text-decoration:none"} do %>
                             <div>
-                              <%= t %>&nbsp
+                              <%= t ? t : 160.chr(Encoding::UTF_8) %>
                               <% total += t %>
                               <% @total_per_months[month] += t %>
                             </div>

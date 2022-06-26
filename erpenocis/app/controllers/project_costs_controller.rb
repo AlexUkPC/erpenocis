@@ -39,10 +39,43 @@ class ProjectCostsController < ApplicationController
   # PATCH/PUT /project_costs/1 or /project_costs/1.json
   def update
     respond_to do |format|
+      @old_info_project_costs = []
+      @project.project_costs.clone.map(&:clone).each do |project_cost|
+        @old_info_project_costs.push(project_cost.clone.freeze)
+      end
       if @project.update(project_params)
         if @project.project_costs.empty?
           project_cost = ProjectCost.new(project_id: @project.id)
           project_cost.save
+        end
+        @project.project_costs.each do |project_cost|
+          if @old_info_project_costs.include? project_cost
+            old_info_project_cost = @old_info_project_costs.select{|h| project_cost.id == h[:id]}
+            old_s = ""
+            s = ""
+            if old_info_project_cost[0].amount != project_cost.amount
+              old_s += "Suma: #{old_info_project_cost[0].amount} | "
+              s += "Suma: #{project_cost.amount} | "
+            end
+            if old_info_project_cost[0].month != project_cost.month
+              old_s += "Luna: #{old_info_project_cost[0].month} | "
+              s += "Luna: #{project_cost.month} | "
+            end
+            if old_info_project_cost[0].year != project_cost.year
+              old_s += "An: #{old_info_project_cost[0].year} | "
+              s += "An: #{project_cost.year} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare", location: "Costuri proiecte", model_id: @project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          else
+            Record.create(record_type: "Adaugare", location: "Costuri proiecte", model_id: @project.id, initial_data: "", modified_data: "Proiect: #{@project.name} | Suma: #{project_cost.amount} | Luna: #{project_cost.month} | An: #{project_cost.year}", user_id: current_user.id)
+          end
+        end
+        @old_info_project_costs.each do |old_info_project_cost|
+          if !@project.project_costs.include? old_info_project_cost
+            Record.create(record_type: "Stergere", location: "Costuri proiecte", model_id: @project.id, initial_data: "Proiect: #{@project.name} | Suma: #{old_info_project_cost.amount} | Luna: #{old_info_project_cost.month} | An: #{old_info_project_cost.year}", modified_data: "", user_id: current_user.id)
+          end
         end
         format.html { redirect_to project_costs_url(sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Costuri proiecte modificate cu success." }
         format.json { render :show, status: :ok, location: @project }

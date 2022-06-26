@@ -53,6 +53,8 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(expense_params)
     respond_to do |format|
       if @expense.save
+        expense_value = expense_params[:expense_values_attributes]["0"]
+        Record.create(record_type: "Adaugare", location: @expense.expense_type=="investitii" || @expense.expense_type=="alte_cheltuieli"  ? @expense.expense_type.titleize : "Cheltuieli "+ @expense.expense_type.titleize, model_id: @expense.id, initial_data: "", modified_data: "Denumire cheltuiala: #{@expense.name} | Suma: #{expense_value[:value]} | Data cheltuiala: #{expense_value[:date]} | Data scadenta: #{expense_value[:due_date]} | Taxe stat/TVA?: #{expense_value[:vat_taxes]==1 ? "da" : "nu"}", user_id: current_user.id)
         format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully created." }
         format.json { render :show, status: :created, location: @expense }
       else
@@ -64,8 +66,46 @@ class ExpensesController < ApplicationController
 
   # PATCH/PUT /expenses/1 or /expenses/1.json
   def update
+    @old_info_expense = @expense.dup
+    @old_info_expense_value = @expense.expense_values.find_by_id(expense_params[:expense_values_attributes]["0"][:id])
     respond_to do |format|
       if @expense.update(expense_params)
+        old_s = ""
+        s = ""
+        if @old_info_expense.name != @expense.name
+          old_s += "Denumire cheltuiala: #{@old_info_expense.name} | "
+          s += "Denumire cheltuiala: #{@expense.name} | "
+        end
+        if s!="" || old_s != ""
+          Record.create(record_type: "Modificare", location: @expense.expense_type=="investitii" || @expense.expense_type=="alte_cheltuieli"  ? @expense.expense_type.titleize : "Cheltuieli "+ @expense.expense_type.titleize, model_id: @expense.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        end
+        if expense_params[:expense_values_attributes]["0"][:id]
+          @expense_value = @expense.expense_values.find_by_id(expense_params[:expense_values_attributes]["0"][:id])
+          old_s = ""
+          s = ""
+          if @old_info_expense_value.value != @expense_value.value
+            old_s += "Suma: #{@old_info_expense_value.value} | "
+            s += "Suma: #{@expense_value.value} | "
+          end
+          if @old_info_expense_value.date != @expense_value.date
+            old_s += "Data cheltuiala: #{@old_info_expense_value.date} | "
+            s += "Data cheltuiala: #{@expense_value.date} | "
+          end
+          if @old_info_expense_value.due_date != @expense_value.due_date
+            old_s += "Data scadenta: #{@old_info_expense_value.due_date} | "
+            s += "Data scadenta: #{@expense_value.due_date} | "
+          end
+          if @old_info_expense_value.vat_taxes != @expense_value.vat_taxes
+            old_s += "Taxe stat/TVA?: #{@old_info_expense_value.vat_taxes==1 ? "da" : "nu"} | "
+            s += "Taxe stat/TVA?: #{@expense_value.vat_taxes==1 ? "da" : "nu"} | "
+          end
+          if s!="" || old_s != ""
+            Record.create(record_type: "Modificare", location: @expense.expense_type=="investitii" || @expense.expense_type=="alte_cheltuieli"  ? @expense.expense_type.titleize : "Cheltuieli "+ @expense.expense_type.titleize, model_id: @expense.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
+        else
+          expense_value = expense_params[:expense_values_attributes]["0"]
+          Record.create(record_type: "Adaugare", location: @expense.expense_type=="investitii" || @expense.expense_type=="alte_cheltuieli"  ? @expense.expense_type.titleize : "Cheltuieli "+ @expense.expense_type.titleize, model_id: @expense.id, initial_data: "", modified_data: "Suma: #{expense_value[:value]} | Data cheltuiala: #{expense_value[:date]} | Data scadenta: #{expense_value[:due_date]} | Taxe stat/TVA?: #{expense_value[:vat_taxes]==1 ? "da" : "nu"}", user_id: current_user.id)
+        end
         format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully updated." }
         format.json { render :show, status: :ok, location: @expense }
       else
@@ -78,7 +118,7 @@ class ExpensesController < ApplicationController
   # DELETE /expenses/1 or /expenses/1.json
   def destroy
     @expense.destroy
-
+    Record.create(record_type: "Stergere", location: @expense.expense_type=="investitii" || @expense.expense_type=="alte_cheltuieli"  ? @expense.expense_type.titleize : "Cheltuieli "+ @expense.expense_type.titleize, model_id: @expense.id, initial_data: "Denumire cheltuiala: #{@expense.name}", modified_data: "", user_id: current_user.id)
     respond_to do |format|
       format.html { redirect_to expenses_path(expense_type: @expense.expense_type, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), notice: "Expense was successfully destroyed." }
       format.json { head :no_content }

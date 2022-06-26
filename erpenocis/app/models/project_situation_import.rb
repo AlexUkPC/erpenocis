@@ -3,6 +3,7 @@ class ProjectSituationImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,64 @@ class ProjectSituationImport
 
   def save
     if imported_project_situations.compact.map(&:valid?).all?
-      imported_project_situations.compact.each(&:save!)
+      imported_project_situations.compact.each do |project_situation|
+        old_info_project_situation = ProjectSituation.find_by_id(project_situation.id).dup
+          if project_situation.save
+            old_s = ""
+            s = ""
+            if old_info_project_situation.advance_invoice_date != project_situation.advance_invoice_date
+              old_s += "Data ff avans: #{old_info_project_situation.advance_invoice_date} | "
+              s += "Data ff avans: #{project_situation.advance_invoice_date} | "
+            end
+            if old_info_project_situation.advance_invoice_number != project_situation.advance_invoice_number
+              old_s += "FF avans: #{old_info_project_situation.advance_invoice_number} | "
+              s += "FF avans: #{project_situation.advance_invoice_number} | "
+            end
+            if old_info_project_situation.advance_payment_date != project_situation.advance_payment_date
+              old_s += "Data avans: #{old_info_project_situation.advance_payment_date} | "
+              s += "Data avans: #{project_situation.advance_payment_date} | "
+            end
+            if old_info_project_situation.advance_payment != project_situation.advance_payment
+              old_s += "Avans: #{old_info_project_situation.advance_payment} | "
+              s += "Avans: #{project_situation.advance_payment} | "
+            end
+            if old_info_project_situation.advance_month != project_situation.advance_month
+              old_s += "Luna comanda/avans: #{old_info_project_situation.advance_month} | "
+              s += "Luna comanda/avans: #{project_situation.advance_month} | "
+            end
+            if old_info_project_situation.advance_year != project_situation.advance_year
+              old_s += "An comanda/avans: #{old_info_project_situation.advance_year} | "
+              s += "An comanda/avans: #{project_situation.advance_year} | "
+            end
+            if old_info_project_situation.closure_invoice_date != project_situation.closure_invoice_date
+              old_s += "Data ff finala: #{old_info_project_situation.closure_invoice_date} | "
+              s += "Data ff finala: #{project_situation.closure_invoice_date} | "
+            end
+            if old_info_project_situation.closure_invoice_number != project_situation.closure_invoice_number
+              old_s += "FF finala: #{old_info_project_situation.closure_invoice_number} | "
+              s += "FF finala: #{project_situation.closure_invoice_number} | "
+            end
+            if old_info_project_situation.closure_payment_date != project_situation.closure_payment_date
+              old_s += "Data inchidere: #{old_info_project_situation.closure_payment_date} | "
+              s += "Data inchidere: #{project_situation.closure_payment_date} | "
+            end
+            if old_info_project_situation.closure_payment != project_situation.closure_payment
+              old_s += "Inchidere: #{old_info_project_situation.closure_payment} | "
+              s += "Inchidere: #{project_situation.closure_payment} | "
+            end
+            if old_info_project_situation.closure_month != project_situation.closure_month
+              old_s += "Luna finalizare/rest de plata: #{old_info_project_situation.closure_month} | "
+              s += "Luna finalizare/rest de plata: #{project_situation.closure_month} | "
+            end
+            if old_info_project_situation.closure_year != project_situation.closure_year
+              old_s += "An finalizare/rest de plata: #{old_info_project_situation.closure_year} | "
+              s += "An finalizare/rest de plata: #{project_situation.closure_year} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Situatie proiecte", model_id: project_situation.project.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+      end
       true
     else
       imported_project_situations.each_with_index do |project_situation, index|

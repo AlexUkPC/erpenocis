@@ -48,6 +48,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         WelcomeMailer.welcome(@user, token).deliver
+        Record.create(record_type: "Adaugare", location: "Utilizatori", model_id: @user.id, initial_data: "", modified_data: "Username: #{@user.username} | Email: #{@user.email} | Rol: #{@user.role.titleize} | Status: #{@user.active ? "activ" : "inactiv"}", user_id: current_user.id)
         format.html { redirect_to users_path, notice: "User-ul a fost creeat." }
         format.json { render :show, status: :created, location: @user }
       else
@@ -58,8 +59,30 @@ class UsersController < ApplicationController
   end
 
   def update
+    @old_info_user = @user.dup
     respond_to do |format|
       if @user.update(secure_params)
+        old_s = ""
+        s = ""
+        if @old_info_user.username != @user.username
+          old_s += "Username: #{@old_info_user.username} | "
+          s += "Username: #{@user.username} | "
+        end
+        if @old_info_user.email != @user.email
+          old_s += "Email: #{@old_info_user.email} | "
+          s += "Email: #{@user.email} | "
+        end
+        if @old_info_user.role != @user.role
+          old_s += "Rol: #{@old_info_user.role.titleize} | "
+          s += "Rol: #{@user.role.titleize} | "
+        end
+        if @old_info_user.active != @user.active
+          old_s += "Status: #{@old_info_user.active ? "activ" : "inactiv"} | "
+          s += "Status: #{@user.active ? "activ" : "inactiv"} | "
+        end
+        if s!="" || old_s != ""
+          Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+        end
         format.html { redirect_to current_user.admin? ? users_path : edit_user_path(current_user), :notice => "User-ul a fost modificat." } 
       else
         format.html { render :edit, status: :unprocessable_entity}
@@ -69,11 +92,21 @@ class UsersController < ApplicationController
   end
 
   def update_settings
+    @old_info_user = @user.dup
     respond_to do |format|
       if params[:user][:password].blank? || params[:user][:password_confirmation].blank?
         params[:user].delete(:password) 
         params[:user].delete(:password_confirmation)
         if @user.update(settings_params_psw)
+          old_s = ""
+          s = ""
+          if @old_info_user.username != @user.username
+            old_s += "Username: #{@old_info_user.username} | "
+            s += "Username: #{@user.username} | "
+          end
+          if s!="" || old_s != ""
+            Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+          end
           format.html { redirect_to settings_path, :notice => "User-ul a fost modificat." } 
         else
           format.html { render "settings", :alert => "Nu se poate modifica user-ul." }
@@ -85,6 +118,15 @@ class UsersController < ApplicationController
           format.json { render json: @user.errors, status: :unprocessable_entity }
         else
           if @user.update_with_password(settings_params)
+            old_s = ""
+            s = ""
+            if @old_info_user.username != @user.username
+              old_s += "Username: #{@old_info_user.username} | "
+              s += "Username: #{@user.username} | "
+            end
+            old_s += "Parola schimbata | "
+            s += "Parola schimbata | "
+            Record.create(record_type: "Modificare", location: "Utilizatori", model_id: @user.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
             bypass_sign_in(@user)
             format.html { redirect_to settings_path, :notice => "User-ul a fost modificat." } 
           else
@@ -98,6 +140,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+    Record.create(record_type: "Stergere", location: "Utilizatori", model_id: @user.id, initial_data: "Username: #{@user.username} | Email: #{@user.email} | Rol: #{@user.role.titleize} | Status: #{@user.active ? "activ" : "inactiv"}", modified_data: "", user_id: current_user.id)
     redirect_to users_path, :notice => "User-ul a fost sters."
   end
 

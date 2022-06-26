@@ -49,6 +49,7 @@ class User < ApplicationRecord
   after_save { profile_picture.purge if (remove_profile_picture == '1' ) }
   attr_writer :login
   enum role: [:user_achizitii, :user_facturi, :admin]
+  has_many :records, dependent: :destroy
   # after_initialize :set_default_role, :if => :new_record?
 
   # def set_default_role

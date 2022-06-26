@@ -19,7 +19,46 @@ class OrderImport
 
   def save
     if imported_orders.compact.map(&:valid?).all?
-      imported_orders.compact.each(&:save!)
+      imported_orders.compact.each do |order|
+        if Order.find_by_id(order.id)
+          old_info_order = Order.find_by_id(order.id).dup
+          if order.save
+            old_s = ""
+            s = ""
+            if old_info_order.category != order.category
+              old_s += "Categorie: #{old_info_order.category} | "
+              s += "Categorie: #{order.category} | "
+            end
+            if old_info_order.name_type_color != order.name_type_color
+              old_s += "Denumire/Tip/Nuanta: #{old_info_order.name_type_color} | "
+              s += "Denumire/Tip/Nuanta: #{order.name_type_color} | "
+            end
+            if old_info_order.needed_quantity != order.needed_quantity
+              old_s += "Cant. necesara: #{old_info_order.needed_quantity} | "
+              s += "Cant. necesara: #{order.needed_quantity} | "
+            end
+            if old_info_order.unit != order.unit
+              old_s += "UM: #{old_info_order.unit} | "
+              s += "UM: #{order.unit} | "
+            end
+            if old_info_order.cote != order.cote
+              old_s += "Cote: #{old_info_order.cote} | "
+              s += "Cote: #{order.cote} | "
+            end
+            if old_info_order.obs != order.obs
+              old_s += "Observatii: #{old_info_order.obs} | "
+              s += "Observatii: #{order.obs} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Comenzi", model_id: order.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if order.save
+            Record.create(record_type: "Adaugare prin import", location: "Comenzi", model_id: order.id, initial_data: "", modified_data: "Proiect: #{order.project.name} | Categorie: #{order.category} | Denumire/Tip/Nuanta: #{order.name_type_color} | Cant. necesara: #{order.needed_quantity} | UM: #{order.unit} | Cote: #{order.cote} | Observatii: #{order.obs}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_orders.each_with_index do |order, index|
@@ -64,6 +103,8 @@ class OrderImport
         order.attributes = row.to_hash.slice(*Order.accessible_attributes)
         order.user_id = current_user.id
         order.project_id = project_id
+        order.supplier_contact = ""
+        order.obs = ""
         order.status = 0
         if order.needed_quantity==""
           order.needed_quantity = 0

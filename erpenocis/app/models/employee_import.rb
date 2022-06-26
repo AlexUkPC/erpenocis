@@ -3,6 +3,7 @@ class EmployeeImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,34 @@ class EmployeeImport
 
   def save
     if imported_employees.compact.map(&:valid?).all?
-      imported_employees.compact.each(&:save!)
+      imported_employees.compact.each do |employee|
+        if Employee.find_by_id(employee.id)
+          old_info_employee = Employee.find_by_id(employee.id).dup
+          if employee.save
+            old_s = ""
+            s = ""
+            if old_info_employee.name != employee.name
+              old_s += "Nume angajat: #{old_info_employee.name} | "
+              s += "Nume angajat: #{employee.name} | "
+            end
+            if old_info_employee.hire_date != employee.hire_date
+              old_s += "Data angajarii: #{old_info_employee.hire_date} | "
+              s += "Data angajarii: #{employee.hire_date} | "
+            end
+            if old_info_employee.dismiss_date != employee.dismiss_date
+              old_s += "Data incheierii: #{old_info_employee.dismiss_date} | "
+              s += "Data incheierii: #{employee.dismiss_date} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Cheltuieli salariale", model_id: employee.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if employee.save
+            Record.create(record_type: "Adaugare prin import", location: "Cheltuieli salariale", model_id: employee.id, initial_data: "", modified_data: "Nume angajat: #{employee.name} | Data angajarii: #{employee.hire_date} | Data incheierii: #{employee.dismiss_date}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_employees.each_with_index do |employee, index|
