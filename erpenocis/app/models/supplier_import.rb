@@ -3,6 +3,7 @@ class SupplierImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,26 @@ class SupplierImport
 
   def save
     if imported_suppliers.compact.map(&:valid?).all?
-      imported_suppliers.compact.each(&:save!)
+      imported_suppliers.compact.each do |supplier|
+        if Supplier.find_by_id(supplier.id)
+          old_info_supplier = Supplier.find_by_id(supplier.id).dup
+          if supplier.save
+            old_s = ""
+            s = ""
+            if old_info_supplier.name != supplier.name
+              old_s += "Nume furnizor: #{old_info_supplier.name} | "
+              s += "Nume furnizor: #{supplier.name} | "
+            end
+            if s!="" || old_s != ""
+              Record.create(record_type: "Modificare prin import", location: "Situatie furnizori", model_id: supplier.id, initial_data: old_s[0..-3], modified_data: s[0..-3], user_id: current_user.id)
+            end
+          end
+        else
+          if supplier.save
+            Record.create(record_type: "Adaugare prin import", location: "Situatie furnizori", model_id: supplier.id, initial_data: "", modified_data: "Nume furnizor: #{supplier.name}", user_id: current_user.id)
+          end
+        end
+      end
       true
     else
       imported_suppliers.each_with_index do |supplier, index|

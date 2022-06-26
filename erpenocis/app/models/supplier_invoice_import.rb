@@ -3,6 +3,7 @@ class SupplierInvoiceImport
   include ActiveModel::Conversion
   include ActiveModel::Validations
   attr_accessor :file
+  attr_accessor :current_user
   require 'roo'
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -14,7 +15,11 @@ class SupplierInvoiceImport
 
   def save
     if imported_supplier_invoices.compact.map(&:valid?).all?
-      imported_supplier_invoices.compact.each(&:save!)
+      imported_supplier_invoices.compact.each do |supplier_invoice|
+        if supplier_invoice.save
+          Record.create(record_type: "Adaugare prin import", location: "Situatie furnizori - facturi", model_id: supplier_invoice.supplier_id, initial_data: "", modified_data: "Furnizor: #{supplier_invoice.supplier.name} | Numar factura: #{supplier_invoice.number} | Suma: #{supplier_invoice.value} | Data emiterii: #{supplier_invoice.date} | Data scadenta: #{supplier_invoice.due_date}", user_id: current_user.id)
+        end
+      end
       true
     else
       imported_supplier_invoices.each_with_index do |supplier_invoice, index|
