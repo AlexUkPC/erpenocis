@@ -10,6 +10,14 @@
             <%= render 'layouts/date_form' %>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-3">
+            Total avansuri incasate: <span class="text-primary fw-bold"><%= @total_advance_payment %></span>
+          </div>
+          <div class="col-md-3">
+            Total proiecte de incasat: <span class="text-primary fw-bold"><%= @total_to_be_collected %></span>
+          </div>
+        </div>
         <div class="row mt-3">
           <div class="col-12">
             <div class="table-responsive">

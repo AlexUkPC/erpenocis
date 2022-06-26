@@ -14,7 +14,7 @@ class ProjectSituationsController < ApplicationController
     
     total_closure_payment = @project_situations.sum(:closure_payment)
     @total_advance_payment = @project_situations.sum(:advance_payment)
-    @total_to_be_collected = Project.all.sum(:value) - @total_advance_payment - total_closure_payment
+    @total_to_be_collected = @projects.sum(:value) - @total_advance_payment - total_closure_payment
   end
 
   # GET /project_situations/1 or /project_situations/1.json
