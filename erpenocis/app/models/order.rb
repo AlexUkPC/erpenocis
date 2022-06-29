@@ -39,6 +39,7 @@ class Order < ApplicationRecord
   enum status: [:necesar_materiale, :in_asteptare, :livrat, :intarziat, :anulat ]
   before_save :check_quantity
   scope :between_dates, lambda {|start_date, end_date| where("order_date IS null OR order_date >= ? AND order_date <= ?", start_date, end_date )}
+  scope :dashboard_between_dates, lambda {|start_date, end_date| where("(status = 1 AND delivery_date >= ? AND delivery_date <= ?) OR (status = 3)", start_date, end_date )}
   validate :after_01_01_2020
 
   def after_01_01_2020

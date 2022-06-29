@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item <%= 'active' if controller_path=='dashboard' %>">
-            <%= link_to root_path, class: "nav-link" do %>
+            <%= link_to root_path(sup_range: "7"), class: "nav-link" do %>
               <i class="far fa-border-all menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             <% end %>

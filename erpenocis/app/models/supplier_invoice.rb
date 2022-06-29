@@ -24,7 +24,7 @@ class SupplierInvoice < ApplicationRecord
   has_many :supplier_invoice_payments, dependent: :destroy
   accepts_nested_attributes_for :supplier_invoice_payments, reject_if: :all_blank, allow_destroy: true
   scope :created_between, lambda {|start_date, end_date| where("date >= ? AND date <= ?", start_date, end_date )}
-  scope :created_between_due_date, lambda {|start_date, end_date| where("due_date >= ? AND due_date <= ?", start_date, end_date )}
+  scope :between_due_dates, lambda {|start_date, end_date| where("due_date >= ? AND due_date <= ?", start_date, end_date )}
   def self.accessible_attributes
     ["number", "value", "date", "due_date"]
   end

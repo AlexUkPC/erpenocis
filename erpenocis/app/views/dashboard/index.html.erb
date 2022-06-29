@@ -1,34 +1,258 @@
 <div class="row">
   <div class="col-md-12 grid-margin">
-    <div class="row">
+    <!--<div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bold">Welcome <%= current_user.username.titleize() %></h3>
+         <h3 class="font-weight-bold">Welcome <%= current_user.username.titleize() %></h3>
         <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6>
       </div>
       <div class="col-12 col-xl-4">
         <div class="justify-content-end d-flex">
-        <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
-          <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" id="dropdownMenuDate2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class=""></i> Today (<%= Date.today().strftime("%d-%h-%Y") %>)
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
-            <a class="dropdown-item" href="#">January - March</a>
-            <a class="dropdown-item" href="#">March - June</a>
-            <a class="dropdown-item" href="#">June - August</a>
-            <a class="dropdown-item" href="#">August - November</a>
+          <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
+            <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" id="dropdownMenuDate2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <i class=""></i> Today (<%= Date.today().strftime("%d-%h-%Y") %>)
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
+              <a class="dropdown-item" href="#">January - March</a>
+              <a class="dropdown-item" href="#">March - June</a>
+              <a class="dropdown-item" href="#">June - August</a>
+              <a class="dropdown-item" href="#">August - November</a>
+            </div>
           </div>
         </div>
+      </div>
+    </div>-->
+    <div class="card">
+      <div class="card-body mt-auto">
+        <div class="row">
+          <div class="col-md-6">
+            <span class="fs-30"><b>Enocis - Enterprise Resource Planing</b></span>
+          </div>
+          <div class="col-md-6">
+            <%= render 'layouts/date_form_full' %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <div class="row">
+  <div class="col-md-6 grid-margin transparent">
+    <div class="row">
+      <div class="col-md-6 mb-4 stretch-card transparent">
+        <div class="card card-tale">
+          <div class="card-body">
+            <p class="mb-4">Numar comenzi adaugate</p>
+            <p class="fs-30 mb-2"><%= @orders_last_30 %></p>
+            <p><%= params[:start_date] && params[:end_date] ? "In perioada selectata" : "In ultimele 30 de zile" %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4 stretch-card transparent">
+        <div class="card card-dark-blue">
+          <div class="card-body">
+            <p class="mb-4">Numar facturi adaugate</p>
+            <p class="fs-30 mb-2"><%= @invoices_last_30 %></p>
+            <p><%= params[:start_date] && params[:end_date] ? "In perioada selectata" : "In ultimele 30 de zile" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+        <div class="card card-light-blue">
+          <div class="card-body">
+            <p class="mb-4">Numar proiecte adaugate</p>
+            <p class="fs-30 mb-2"><%= @projects_last_30 %></p>
+            <p><%= params[:start_date] && params[:end_date] ? "In perioada selectata" : "In ultimele 30 de zile" %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 stretch-card transparent">
+        <div class="card card-light-danger">
+          <div class="card-body">
+            <p class="mb-4">Total profit (Val proiecte ad - Val fact ad)</p>
+            <p class="fs-30 mb-2"><%= @profit_last_30 %> RON</p>
+            <p><%= params[:start_date] && params[:end_date] ? "In perioada selectata" : "In ultimele 30 de zile" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-mb-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                Total cheltuieli indirecte
+                <br>
+                <span class="fs-30"><%= @indirect_expenses %></span> RON
+              </div>
+              <div class="col-md-8">
+                <table id="dashboardIndirectExpensesTable" class="table table-borderless report-table">
+                  <tr>
+                    <td class="text-muted">Cheltuieli salariale</td>
+                    <td class="w-100 px-0">
+                      <div class="progress progress-md mx-4">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: <%= @employee_salaries*100/@indirect_expenses %>%" aria-valuenow="<%= @employee_salaries*100/@indirect_expenses %>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </td>
+                    <td><h5 class="font-weight-bold mb-0"><%= @employee_salaries %></h5></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">Cheltuieli administrative</td>
+                    <td class="w-100 px-0">
+                      <div class="progress progress-md mx-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: <%= @administrative*100/@indirect_expenses %>%" aria-valuenow="<%= @administrative*100/@indirect_expenses %>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </td>
+                    <td><h5 class="font-weight-bold mb-0"><%= @administrative %></h5></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">Cheltuieli financiare</td>
+                    <td class="w-100 px-0">
+                      <div class="progress progress-md mx-4">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: <%= @financiare*100/@indirect_expenses %>%" aria-valuenow="<%= @financiare*100/@indirect_expenses %>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </td>
+                    <td><h5 class="font-weight-bold mb-0"><%= @financiare %></h5></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">Investitii</td>
+                    <td class="w-100 px-0">
+                      <div class="progress progress-md mx-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: <%= @investitii*100/@indirect_expenses %>%" aria-valuenow="<%= @investitii*100/@indirect_expenses %>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </td>
+                    <td><h5 class="font-weight-bold mb-0"><%= @investitii %></h5></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">Alte cheltuieli</td>
+                    <td class="w-100 px-0">
+                      <div class="progress progress-md mx-4">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: <%= @alte_cheltuieli*100/@indirect_expenses %>%" aria-valuenow="<%= @alte_cheltuieli*100/@indirect_expenses %>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </td>
+                    <td><h5 class="font-weight-bold mb-0"><%= @alte_cheltuieli %></h5></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-md-6 grid-margin stretch-card">
-    <div class="card tale-bg">
-      <div class="card-people mt-auto">
-        <img src="../../images/dashboard/people.svg" alt="people">
-        <div class="weather-info">
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-2">
+          <div class="col-md-12">
+            <p class="card-title fftstst">Facturi furnizori/Taxe salarii/Taxe stat/TVA de plata</p>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <%= link_to "Urmatoarele 7 zile", root_path(sup_range: "7"), class: "btn btn-sm #{params[:sup_range]=="7" ? "btn-primary" : "btn-outline-primary"} btn-rounded " %>
+            <%= link_to "Urmatoarele 15 zile", root_path(sup_range: "15"), class: "btn btn-sm #{params[:sup_range]=="15" ? "btn-primary" : "btn-outline-primary"} btn-rounded" %>
+            <%= link_to "Urmatoarele 30 zile", root_path(sup_range: "30"), class: "btn btn-sm #{params[:sup_range]=="30" ? "btn-primary" : "btn-outline-primary"} btn-rounded" %>
+            <%= link_to "Urmatoarele 45 zile", root_path(sup_range: "45"), class: "btn btn-sm #{params[:sup_range]=="45" ? "btn-primary" : "btn-outline-primary"} btn-rounded" %>
+            <%= link_to "Urmatoarele 60 zile", root_path(sup_range: "60"), class: "btn btn-sm #{params[:sup_range]=="60" ? "btn-primary" : "btn-outline-primary"} btn-rounded" %>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <% @total = 0 %>
+          <table id="dashboardSuppliersTable" class="table" style="width:100%">
+            <thead>
+              <tr>
+                <th>Furnizor/Taxe salarii/Taxe stat/TVA</th>
+                <th>Suma</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @suppliers.each do |supplier| %> 
+                <% @supplier_invoices = SupplierInvoice.where(supplier_id: supplier.id).between_due_dates(params[:sup_range] ? Date.today : params[:start_date] || Date.today-1.month, params[:sup_range] ? Date.today+params[:sup_range].to_i.days : params[:end_date] || Date.today) %>
+                <% if @supplier_invoices.sum(:value) > 0 %>
+                  <tr>
+                    <td><%= supplier.name %></td>
+                    <% @to_be_payed = @supplier_invoices.sum(:value) - SupplierInvoicePayment.where(supplier_invoice_id: @supplier_invoices.ids).sum(:paid_amount) %>
+                    <% @total += @to_be_payed %>
+                    <td><%= @to_be_payed %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+              <% @employee_taxes = EmployeeSalary.between_due_dates(params[:sup_range] ? Date.today : params[:start_date] || Date.today-1.month, params[:sup_range] ? Date.today+params[:sup_range].to_i.days : params[:end_date] || Date.today).sum(:salary_tax) %>
+              <% if @employee_taxes > 0 %>
+                <tr>
+                  <td>Taxe salarii</td>
+                  <td><%= @employee_taxes %></td>
+                  <% @total += @employee_taxes %>
+                </tr>        
+              <% end %>
+              <% @expense_taxes_tva = ExpenseValue.where("vat_taxes = true").between_due_dates(params[:sup_range] ? Date.today : params[:start_date] || Date.today-1.month, params[:sup_range] ? Date.today+params[:sup_range].to_i.days : params[:end_date] || Date.today).sum(:value) %>
+              <% if @expense_taxes_tva > 0 %>
+                <tr>
+                  <td>Taxe stat/TVA</td>
+                  <td><%= @expense_taxes_tva %></td>
+                  <% @total += @expense_taxes_tva %>
+                </tr>        
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th><%= @total %></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body mt-auto">
+        <div class="row mb-2">
+          <div class="col-md-12">
+            <p class="card-title">Comenzi</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table id="dashboardOrdersTable" class="table" style="width:100%">
+            <thead>
+              <tr>
+                <th>Nume proiect</th>
+                <th>Status</th>
+                <th>Produs</th>
+                <th>Furnizor</th>
+                <th>Cant</th>
+                <th>Data livrare</th>
+                <th>Modifica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @orders.each do |order| %>
+                <% project = order.project %>
+                <tr>
+                  <td><%= project.name %></td>
+                  <td><span class="status <%= (order.delivery_date && order.delivery_date < Date.today) || order.status.titleize == "Intarziat" ? "bg-danger" : "bg-warning" %>"><%= order.delivery_date && order.delivery_date < Date.today ? "Intarziat" : order.status.titleize %></span></td>
+                  <td><%= order.category + " " + order.name_type_color %></td>
+                  <td><%= order.supplier_id ? @suppliers.find(order.supplier_id).name : "" %></td>
+                  <td><%= order.ordered_quantity %></td>
+                  <td><%= order.delivery_date %></td>
+                  <td>
+                    <%= link_to edit_order_path(order, sm: @start_month, sy: @start_year, em: @end_month, ey: @end_year), class: "btn" do %>
+                      <i class="ti-pencil-alt btn-icon-prepend text-success"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="weather-info">
           <div class="d-flex">
             <div>
               <h2 class="mb-0 font-weight-normal"><i class="icon-sun me-2"></i>31<sup>C</sup></h2>
@@ -38,55 +262,13 @@
               <h6 class="font-weight-normal">Illinois</h6>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6 grid-margin transparent">
-    <div class="row">
-      <div class="col-md-6 mb-4 stretch-card transparent">
-        <div class="card card-tale">
-          <div class="card-body">
-            <p class="mb-4">Today’s Bookings</p>
-            <p class="fs-30 mb-2">4006</p>
-            <p>10.00% (30 days)</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mb-4 stretch-card transparent">
-        <div class="card card-dark-blue">
-          <div class="card-body">
-            <p class="mb-4">Total Bookings</p>
-            <p class="fs-30 mb-2">61344</p>
-            <p>22.00% (30 days)</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-        <div class="card card-light-blue">
-          <div class="card-body">
-            <p class="mb-4">Number of Meetings</p>
-            <p class="fs-30 mb-2">34040</p>
-            <p>2.00% (30 days)</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 stretch-card transparent">
-        <div class="card card-light-danger">
-          <div class="card-body">
-            <p class="mb-4">Number of Clients</p>
-            <p class="fs-30 mb-2">47033</p>
-            <p>0.22% (30 days)</p>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-6 grid-margin stretch-card">
+
+  <!--<div class="col-md-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <p class="card-title">Order Details</p>
@@ -113,14 +295,14 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6 grid-margin stretch-card">
+  <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-        <p class="card-title">Sales Report</p>
+        <p class="card-title">Situatie furnizori</p>
         <a href="#" class="text-info">View all</a>
         </div>
-        <p class="font-weight-500">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
+        <p class="font-weight-500">Facturi de plata</p>
         <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
         <canvas id="sales-chart"></canvas>
       </div>
@@ -640,7 +822,196 @@
       </div>
     </div>
   </div>
+-->
 
 
 
+<script>
+  $(document).ready(function(){
+    var table = $("#dashboardOrdersTable").DataTable({
+      order: [],
+      paging:   false,
+      ordering: true,
+      info:     false,
+      filter: false,
+      deferRender: true,
+      stateSave: false,
+      dom: 't',
+      pagingType: 'full_numbers',
+      scrollY: 500,
+      scrollX: true,
+      fixedColumns:   true,
+      scroller:    true,
+      colReorder: false,
+      columnDefs: [
+        {
+          orderable: false,
+          targets: [-1]
+        },
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ comenzi",
+        info:           "Se afiseaza comenzile de la _START_ pana la _END_ din _TOTAL_ comenzi",
+        infoEmpty:      "Se afiseaza comenzile de la 0 pana la 0 din 0 comenzi",
+        infoFiltered:   "(filtrate din _MAX_ comenzi in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici o comanda de afisat",
+        emptyTable:     "Nu exista comenzi in baza de date",
+        paginate: {
+            first:      "<<",
+            previous:   "<",
+            next:       ">",
+            last:       ">>"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d comenzi",
+            1: "Ai selectat o comanda"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showMessage: 'Arata toate',
+          collapseMessage: 'Ascunde toate',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      }
+    });
+    let params = new URLSearchParams(location.search)
+    let date = new Date().toISOString()
+    var table = $("#dashboardSuppliersTable").DataTable({
+      order: [],
+      paging:   true,
+      ordering: true,
+      info:     false,
+      filter: true,
+      deferRender: true,
+      stateSave: false,
+      dom: '<"top"<"d-flex justify-content-between"<"d-flex"B>f>>rt<"bottom"><"d-flex justify-content-between align-items-center"lp><"clear">',
+      "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "Toate"] ],
+      pagingType: 'full_numbers',
+      scrollY: 270,
+      scrollX: true,
+      fixedColumns:   true,
+      fixedColumns: {
+        right: 1
+      },
+      scroller:    true,
+      colReorder: false,
+      buttons: [
+        { extend: 'excelHtml5', 
+          text: '<i class="far fa-file-excel"></i> &nbsp;Exporta in excel',
+          className: 'btn-success text-light btn-sm',
+          sheetName: "De plata",
+          title: params.get('sup_range') ? "De plata in urmatoarele " + params.get('sup_range') + " zile" : "De plata in perioada: " + params.get('start_date') + " - " + params.get('end_date'),
+          filename: "De plata - " + date.slice(0, 10),
+        }, 'spacer',
+        {
+          extend: 'searchPanes',
+          config: {
+            cascadePanes: true 
+          },
+          className: 'btn-info text-light btn-sm' 
+        }, 'spacer'
+      ],
+      columnDefs: [
+        {
+        searchable: true,
+        targets: [0],
+        searchPanes: {
+          show: true
+        },
+        },
+        {
+          searchable: false,
+          targets: '_all',
+          searchPanes: {
+            show: false
+          }
+        }
+      ],
+      select: {
+        style: 'os',
+        selector: 'td:first-child'
+      },
+      language: {
+        processing:     "Se proceseaza...",
+        search:         "Cauta&nbsp;:",
+        lengthMenu:    "Afiseaza cate _MENU_ elemente",
+        info:           "Se afiseaza furnizorii de la _START_ pana la _END_ din _TOTAL_ furnizori",
+        infoEmpty:      "Se afiseaza furnizorii de la 0 pana la 0 din 0 furnizori",
+        infoFiltered:   "(filtrate din _MAX_ furnizori in total)",
+        infoPostFix:    "",
+        loadingRecords: "Se incarca datele...",
+        zeroRecords:    "Nici un furnizor de afisat",
+        emptyTable:     "Nu exista furnizori in baza de date",
+        paginate: {
+            first:      "<<",
+            previous:   "<",
+            next:       ">",
+            last:       ">>"
+        },
+        aria: {
+            sortAscending:  ": activati pentru a sorta coloana în ordine crescatoare",
+            sortDescending: ": activati pentru a sorta coloana în ordine descrescatoare"
+        },
+        select: {
+          rows: {
+            _: "Ai selectat %d furnizori",
+            1: "Ai selectat 1 furnizor"
+          }
+        },
+        searchPanes: {
+          clearMessage: 'Sterge filtre',
+          showMessage: 'Arata toate',
+          collapseMessage: 'Ascunde toate',
+          collapse: {0: '<i class="fal fa-filter"></i> &nbsp;Filtre', _: '<i class="fas fa-filter"></i> &nbsp;Filtre (%d)'},
+          title: {
+            _: 'Filtre Selectate - %d',
+            0: 'Nici un filtru selectat',
+            1: 'Un filtru selectat'
+          }
+        }
+      },
+      footerCallback: function (row, data, start, end, display) {
+        var api = this.api();
 
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+          i === 'string' ? i : typeof i === 'number' ? i : i = i.replace(/\n/ig, '').replace(/&nbsp;/ig, '').replace(/(<([^>]+)>)/ig, '').replace(/\s+/ig, '') ;
+            return typeof i === 'string' ? i=="" ? 0 : parseFloat(i)*100 : typeof i === 'number' ? i : 0;
+        };
+        for (let i = 1; i < api.columns().header().length; i++) {
+          pageTotal = api
+            .column(i, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+        
+        // Update footer
+        $(api.column(i).footer()).html(pageTotal/100);
+        } 
+        // Total over this page
+        
+      },
+    });
+    $('.dt-buttons').removeClass('btn-group');
+  });
+</script>

@@ -7,6 +7,7 @@
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
+        <!--
         <ul class="navbar-nav mr-lg-2">
           <li class="nav-item nav-search d-none d-lg-block">
             <div class="input-group">
@@ -19,13 +20,16 @@
             </div>
           </li>
         </ul>
+        -->
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item">Welcome, <%= current_user.username.titleize() %></li>
+          <!--
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
+            
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
               <a class="dropdown-item preview-item">
@@ -69,6 +73,7 @@
               </a>
             </div>
           </li>
+          -->
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
             <%= image_tag user_profile_picture(current_user, 100) , alt: "profile" %>
@@ -84,11 +89,13 @@
               <% end %>
             </div>
           </li>
+          <!--
           <li class="nav-item nav-settings d-none d-lg-flex">
             <%= link_to "#", class:"nav-link", data: { turbolinks: false } do %>
               <i class="icon-ellipsis"></i>
             <% end %>
           </li>
+          -->
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>

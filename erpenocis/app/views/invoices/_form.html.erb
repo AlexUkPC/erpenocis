@@ -17,7 +17,11 @@
   <div class="form-group row">
     <%= form.label :project_id, "Proiect", class: "col-sm-3 col-form-label" %>
     <div class="col-sm-9">
-      <%= form.select :project_id, Project.all.map {|c| [c.name, c.id]},{}, class: "form-control form-control-lg" %>
+      <%= form.select :project_id, Project.all.order("name ASC").map {|c| [c.name, c.id]},{
+        selected: form.object.project_id || "",
+        disabled: "",
+        prompt: 'Selecteaza proiectul'
+        }, class: "form-control form-control-lg" %>
     </div>
   </div>
 

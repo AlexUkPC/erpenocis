@@ -182,15 +182,15 @@
       var SalesChart = new Chart(SalesChartCanvas, {
         type: 'bar',
         data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          labels: ["Jan", "Feb", "Mar", "Apr", "May","Jan", "Feb", "Mar", "Apr", "May", "Apr", "May", "Jan", "Feb", "Mar", "Apr", "May","Jan", "Feb", "Mar", "Apr", "May", "Apr", "May"],
           datasets: [{
               label: 'Offline Sales',
-              data: [480, 230, 470, 210, 330],
+              data: [480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 210, 330, 400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 480, 170],
               backgroundColor: '#98BDFF'
             },
             {
               label: 'Online Sales',
-              data: [400, 340, 550, 480, 170],
+              data: [400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 480, 170, 480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 210, 330],
               backgroundColor: '#4B49AC'
             }
           ]

@@ -1,6 +1,9 @@
 // Place all the styles related to the Dashboard controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "/common/light/variables";
 .navbar{
   .navbar-brand-wrapper{
     .navbar-brand{
@@ -9,4 +12,28 @@
       }
     }
   }
+}
+#dashboardOrdersTable{
+  tbody{
+    tr{
+      td{
+        padding: 3px;
+        line-height: 16px;
+      }
+    }
+  }
+}
+.dashboard_date_form{
+  .form-control{
+    padding: 5px;
+    text-align: center;
+  } 
+}
+.card-title.fftstst{
+  text-transform: initial;
+}
+.status{
+  color: white;
+  border-radius: 50px;
+  padding: 3px 10px;
 }
