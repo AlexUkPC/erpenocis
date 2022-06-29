@@ -1,0 +1,29 @@
+
+<%= form_with( method: "get" ) do |form| %>
+  <div class="row align-items-center dashboard_date_form">  
+    <div class="col-sm-5">
+      <div class="row align-items-center">
+        <div class="col-sm-6 p-1 text-end">
+          De la: 
+        </div>
+        <div class="col-sm-6 p-1">
+          <%= form.date_field :start_date, value: params[:start_date] || Date.today-1.month, required: true, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="row align-items-center">
+        <div class="col-sm-6 p-1 text-end">
+          Pana la: 
+        </div>
+        <div class="col-sm-6 p-1">
+          <%= form.date_field :end_date, value: params[:end_date] || Date.today, required: true, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <%= form.submit "Afiseaza", class: "btn btn-outline-success btn-fw btn-sm" %>
+    </div>
+  </div>
+<% end %>
+    

@@ -22,6 +22,7 @@
 class ExpenseValue < ApplicationRecord
   belongs_to :expense
   scope :created_between, lambda {|start_date, end_date| where("date >= ? AND date <= ?", start_date, end_date )}
+  scope :between_due_dates, lambda {|start_date, end_date| where("due_date >= ? AND due_date <= ?", start_date, end_date )}
   def self.accessible_attributes
     ["date", "value"]
   end
