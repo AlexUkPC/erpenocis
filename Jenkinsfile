@@ -50,7 +50,7 @@ pipeline {
                     waitUntil {
                         script {
                             try {
-                                def response = httpRequest 'http://0.0.0.0:13028'
+                                def response = httpRequest 'http://0.0.0.0:13001'
                                 return (response.status == 200)
                             }
                             catch (exception) {
@@ -71,5 +71,10 @@ pipeline {
         //         sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml exec -T web_erpenocis_jenkins bundle exec rspec spec/system'
         //     }   
         // } 
+        stage('Stop containers') {
+            steps {
+                sh '/usr/local/bin/docker-compose -f docker-compose-jenkins.yml stop'
+            }
+        }
     }
 }

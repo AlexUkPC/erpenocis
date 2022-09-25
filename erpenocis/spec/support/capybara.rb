@@ -10,5 +10,5 @@ Capybara.register_driver :headless_selenium_chrome_in_container do |app|
 end
 Capybara.default_driver = :headless_selenium_chrome_in_container
 Capybara.server_host = "0.0.0.0"
-Capybara.server_port = 5028
-Capybara.app_host = 'http://web_erpenocis:5028'
+Capybara.server_port = 5001
+Capybara.app_host = 'http://web_erpenocis:5001'
