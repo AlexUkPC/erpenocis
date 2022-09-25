@@ -18,7 +18,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
 
   database_erpenocis:
-    image: postgres
+    image: postgres:14
     env_file:
       - .env/production/database_erpenocis
     volumes:

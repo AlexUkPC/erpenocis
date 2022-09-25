@@ -7,8 +7,8 @@ services:
         USER_ID: "${USER_ID:-1000}"
         GROUP_ID: "${GROUP_ID:-1000}"
     ports:
-      - "3028:3000"
-      - "5028:4000"
+      - "3001:3000"
+      - "5001:4000"
     volumes: 
       - ./erpenocis:/opt/app
       - gem_cache_erpenocis:/gems
@@ -29,7 +29,7 @@ services:
         GROUP_ID: "${GROUP_ID:-1000}"
     command: ./bin/webpack-dev-server
     ports: 
-      - "4028:4028"
+      - "4001:4001"
     volumes: 
       - ./erpenocis:/opt/app
       - gem_cache_erpenocis:/gems
@@ -41,7 +41,7 @@ services:
     networks:
       - network_erpenocis
   database_erpenocis:
-    image: postgres
+    image: postgres:14
     env_file: 
       - .env/development/database_erpenocis
     volumes: 
@@ -64,4 +64,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.16.238.0/24"
+        - subnet: "172.10.1.0/24"
